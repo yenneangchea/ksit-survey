@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="km">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>កម្រងសំណួរវាយតម្លៃ KSIT - Telegram Mini App</title>
+  <title>កម្រងសំណួរវាយតម្លៃគុណភាព និងហេដ្ឋារចនាសម្ព័ន្ធ KSIT</title>
   <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <!-- Tailwind CSS CDN -->
@@ -14,9 +13,7 @@
   <!-- Google Fonts: Kantumruy Pro & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -49,49 +46,43 @@
       font-family: 'Kantumruy Pro', 'Inter', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
-
     .rating-btn.active {
       transform: scale(1.05);
       border-color: #0284c7;
       background-color: #e0f2fe;
       box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
     }
-
+    .nps-btn.active {
+      background-color: #0284c7;
+      color: white;
+      border-color: #0284c7;
+      transform: scale(1.1);
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3);
+    }
     .step-card {
       animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
-
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
 
   <!-- TOP HEADER -->
   <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm px-4 py-3">
     <div class="max-w-md mx-auto flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <div
-          class="w-10 h-10 rounded-xl bg-gradient-to-br from-ksit-700 to-ksit-500 flex items-center justify-center text-white shadow-md font-bold text-lg">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-ksit-700 to-ksit-500 flex items-center justify-center text-white shadow-md font-bold text-lg">
           <i class="fa-solid fa-graduation-cap"></i>
         </div>
         <div>
           <h1 class="text-sm font-bold text-ksit-800 leading-tight">វិទ្យាស្ថានបច្ចេកវិទ្យាកំពង់ស្ពឺ</h1>
-          <p class="text-xs text-slate-500 font-medium">ការវាយតម្លៃហេដ្ឋារចនាសម្ព័ន្ធ ២០២៦</p>
+          <p class="text-xs text-slate-500 font-medium">ការវាយតម្លៃគុណភាព & ហេដ្ឋារចនាសម្ព័ន្ធ</p>
         </div>
       </div>
-      <div id="userBadge"
-        class="text-xs bg-sky-50 text-sky-700 font-semibold px-2.5 py-1 rounded-full border border-sky-200 flex items-center gap-1.5">
+      <div id="userBadge" class="text-xs bg-sky-50 text-sky-700 font-semibold px-2.5 py-1 rounded-full border border-sky-200 flex items-center gap-1.5">
         <i class="fa-brands fa-telegram text-sky-500"></i>
         <span id="tgUserName">សិស្ស-និស្សិត</span>
       </div>
@@ -101,12 +92,10 @@
     <div class="max-w-md mx-auto mt-3">
       <div class="flex justify-between items-center text-xs font-semibold text-slate-500 mb-1.5">
         <span id="stepTitle">ផ្នែកទី ១៖ ព័ត៌មានទូទៅ</span>
-        <span id="stepIndicator" class="text-sky-600 font-bold">ជំហាន ១/៧</span>
+        <span id="stepIndicator" class="text-sky-600 font-bold">ជំហាន ១/១០</span>
       </div>
       <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-        <div id="progressBar"
-          class="bg-gradient-to-r from-sky-500 to-emerald-500 h-full rounded-full transition-all duration-300 ease-out"
-          style="width: 14.28%;"></div>
+        <div id="progressBar" class="bg-gradient-to-r from-sky-500 to-emerald-500 h-full rounded-full transition-all duration-300 ease-out" style="width: 10%;"></div>
       </div>
     </div>
   </header>
@@ -122,31 +111,27 @@
             <i class="fa-solid fa-user-tag text-lg"></i>
             <h2 class="text-base font-bold text-slate-800">I. ព័ត៌មានទូទៅ</h2>
           </div>
-          <p class="text-xs text-slate-500 mb-4">សូមបំពេញព័ត៌មានមូលដ្ឋានខាងក្រោម៖</p>
+          <p class="text-xs text-slate-500 mb-4">សូមបំពេញព័ត៌មានមូលដ្ឋានខាងក្រោមដើម្បីចាប់ផ្តើម៖</p>
 
           <!-- Role -->
           <div class="space-y-2 mb-4">
-            <label class="block text-xs font-bold text-slate-700">១. មុខរបរ / ស្ថានភាពបច្ចុប្បន្ន <span
-                class="text-rose-500">*</span></label>
+            <label class="block text-xs font-bold text-slate-700">១. មុខរបរ / ស្ថានភាពបច្ចុប្បន្ន <span class="text-rose-500">*</span></label>
             <div class="grid grid-cols-3 gap-2">
               <label class="cursor-pointer">
                 <input type="radio" name="role" value="និស្សិត" checked class="peer sr-only">
-                <div
-                  class="p-3 text-center rounded-xl border border-slate-200 peer-checked:border-sky-500 peer-checked:bg-sky-50 peer-checked:text-sky-700 font-medium text-xs transition-all">
+                <div class="p-3 text-center rounded-xl border border-slate-200 peer-checked:border-sky-500 peer-checked:bg-sky-50 peer-checked:text-sky-700 font-medium text-xs transition-all">
                   <i class="fa-solid fa-user-graduate block text-base mb-1"></i>និស្សិត
                 </div>
               </label>
               <label class="cursor-pointer">
                 <input type="radio" name="role" value="សិស្ស" class="peer sr-only">
-                <div
-                  class="p-3 text-center rounded-xl border border-slate-200 peer-checked:border-sky-500 peer-checked:bg-sky-50 peer-checked:text-sky-700 font-medium text-xs transition-all">
+                <div class="p-3 text-center rounded-xl border border-slate-200 peer-checked:border-sky-500 peer-checked:bg-sky-50 peer-checked:text-sky-700 font-medium text-xs transition-all">
                   <i class="fa-solid fa-school block text-base mb-1"></i>សិស្ស (៩+៣)
                 </div>
               </label>
               <label class="cursor-pointer">
                 <input type="radio" name="role" value="បុគ្គលិកវិទ្យាស្ថាន" class="peer sr-only">
-                <div
-                  class="p-3 text-center rounded-xl border border-slate-200 peer-checked:border-sky-500 peer-checked:bg-sky-50 peer-checked:text-sky-700 font-medium text-xs transition-all">
+                <div class="p-3 text-center rounded-xl border border-slate-200 peer-checked:border-sky-500 peer-checked:bg-sky-50 peer-checked:text-sky-700 font-medium text-xs transition-all">
                   <i class="fa-solid fa-chalkboard-user block text-base mb-1"></i>បុគ្គលិក/គ្រូ
                 </div>
               </label>
@@ -156,42 +141,34 @@
           <!-- Gender & Age -->
           <div class="grid grid-cols-2 gap-3 mb-4">
             <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1.5">២. ភេទ <span
-                  class="text-rose-500">*</span></label>
-              <select name="gender"
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">២. ភេទ <span class="text-rose-500">*</span></label>
+              <select name="gender" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
                 <option value="ប្រុស">ប្រុស</option>
                 <option value="ស្រី">ស្រី</option>
               </select>
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1.5">៣. អាយុ <span
-                  class="text-rose-500">*</span></label>
-              <input type="number" name="age" value="20" min="15" max="60"
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">៣. អាយុ <span class="text-rose-500">*</span></label>
+              <input type="number" name="age" value="20" min="15" max="65" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
             </div>
           </div>
 
           <!-- Residence -->
           <div class="mb-4">
-            <label class="block text-xs font-bold text-slate-700 mb-1.5">៤. ទីកន្លែងស្នាក់នៅ <span
-                class="text-rose-500">*</span></label>
-            <select name="residence"
-              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
+            <label class="block text-xs font-bold text-slate-700 mb-1.5">៤. ទីកន្លែងស្នាក់នៅ <span class="text-rose-500">*</span></label>
+            <select name="residence" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
               <option value="អគារថ្មី">អន្តេវាសិកដ្ឋាន (អគារថ្មី)</option>
               <option value="អគារ A B C D">អន្តេវាសិកដ្ឋាន (អគារ A B C D)</option>
               <option value="អគារសូឡា">អគារសូឡា</option>
               <option value="កសិដ្ឋាន">កសិដ្ឋាន</option>
-              <option value="នៅក្រៅវិទ្យាស្ថាន">នៅក្រៅវិទ្យាស្ថាន (ផ្ទះជួល/ផ្ទះខ្លួនឯង)</option>
+              <option value="នៅក្រៅវិទ្យាស្ថាន">នៅក្រៅវិទ្យាស្ថាន (ផ្ទះជួល/ផ្ទះផ្ទាល់ខ្លួន)</option>
             </select>
           </div>
 
           <!-- Major -->
           <div class="mb-4">
-            <label class="block text-xs font-bold text-slate-700 mb-1.5">៥. ជំនាញសិក្សា <span
-                class="text-rose-500">*</span></label>
-            <select name="major"
-              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
+            <label class="block text-xs font-bold text-slate-700 mb-1.5">៥. ជំនាញសិក្សា <span class="text-rose-500">*</span></label>
+            <select name="major" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
               <option value="ជំនាញវិទ្យាសាស្រ្តកុំព្យូទ័រ">ជំនាញ វិទ្យាសាស្រ្តកុំព្យូទ័រ</option>
               <option value="ជំនាញបច្ចេកវិទ្យាអាហារ">ជំនាញ បច្ចេកវិទ្យាអាហារ</option>
               <option value="ជំនាញការដំឡើងប្រព័ន្ធអគ្គិសនី">ជំនាញ ការដំឡើងប្រព័ន្ធអគ្គិសនី</option>
@@ -203,17 +180,21 @@
           </div>
 
           <!-- Academic Year -->
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1.5">៦. សិស្ស-និស្សិតឆ្នាំទី <span
-                class="text-rose-500">*</span></label>
-            <select name="year"
-              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          <div class="mb-4">
+            <label class="block text-xs font-bold text-slate-700 mb-1.5">៦. សិស្ស-និស្សិតឆ្នាំទី <span class="text-rose-500">*</span></label>
+            <select name="year" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
               <option value="1">ឆ្នាំទី ១</option>
               <option value="2">ឆ្នាំទី ២</option>
               <option value="3">ឆ្នាំទី ៣</option>
               <option value="4">ឆ្នាំទី ៤</option>
               <option value="បញ្ចប់ការសិក្សា">បញ្ចប់ការសិក្សា / បុគ្គលិក</option>
             </select>
+          </div>
+
+          <!-- Other Info -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1.5">៧. ព័ត៌មានបន្ថែម ឬកត់សម្គាល់ផ្សេងៗ (ប្រសិនបើមាន)</label>
+            <input type="text" name="other_info" placeholder="ឧ. បន្ទប់លេខ... ឬចំណាំ..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none">
           </div>
         </div>
       </section>
@@ -271,67 +252,151 @@
         <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
           <div class="flex items-center space-x-2 text-orange-500 mb-2">
             <i class="fa-solid fa-solar-panel text-lg"></i>
-            <h2 class="text-base font-bold text-slate-800">VI. អគារសូឡា</h2>
+            <h2 class="text-base font-bold text-slate-800">VI. អគារសូឡា (Solar Building)</h2>
           </div>
           <p class="text-xs text-slate-500 mb-4">តើប្អូនពេញចិត្តចំពោះ អគារសូឡាកម្រិតណា?</p>
           <div id="container_solar" class="space-y-4"></div>
         </div>
       </section>
 
-      <!-- STEP 7: FEEDBACK & SUBMISSION -->
+      <!-- STEP 7: IT & WI-FI -->
       <section id="step7" class="step-card space-y-4 hidden">
         <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
           <div class="flex items-center space-x-2 text-sky-600 mb-2">
-            <i class="fa-solid fa-comment-dots text-lg"></i>
-            <h2 class="text-base font-bold text-slate-800">VII. មតិយោបល់ និងសំណូមពរ</h2>
+            <i class="fa-solid fa-wifi text-lg"></i>
+            <h2 class="text-base font-bold text-slate-800">VII. ប្រព័ន្ធអ៊ីនធឺណិត និងបច្ចេកវិទ្យា (IT & Wi-Fi)</h2>
           </div>
-          <p class="text-xs text-slate-500 mb-4">តើប្អូនមានមតិយោបល់ ឬសំណូមពរអ្វីខ្លះដើម្បីកែលម្អវិទ្យាស្ថាន?</p>
+          <p class="text-xs text-slate-500 mb-4">តើប្អូនពេញចិត្តចំពោះប្រព័ន្ធបច្ចេកវិទ្យា និង Wi-Fi កម្រិតណា?</p>
+          <div id="container_it" class="space-y-4"></div>
+        </div>
+      </section>
 
-          <!-- Quick Tags -->
-          <div class="mb-3">
-            <p class="text-[11px] font-bold text-slate-500 mb-2">ជ្រើសរើសស្លាករហ័ស (Quick Tags):</p>
-            <div class="flex flex-wrap gap-1.5">
-              <button type="button" onclick="addTag('#អនាម័យ')"
-                class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">🧹
-                #អនាម័យ</button>
-              <button type="button" onclick="addTag('#ធុងសំរាម')"
-                class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">🗑️
-                #ធុងសំរាម</button>
-              <button type="button" onclick="addTag('#ទឹកភ្លើង')"
-                class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">💡
-                #ទឹកភ្លើង</button>
-              <button type="button" onclick="addTag('#WiFi')"
-                class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">📶
-                #WiFi</button>
-              <button type="button" onclick="addTag('#ដើមឈើ')"
-                class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">🌳
-                #ដើមឈើម្លប់</button>
-              <button type="button" onclick="addTag('#បន្ទប់ទឹក')"
-                class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">🚻
-                #បន្ទប់ទឹក</button>
+      <!-- STEP 8: ACADEMIC LABS, WORKSHOPS & FARMS -->
+      <section id="step8" class="step-card space-y-4 hidden">
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <div class="flex items-center space-x-2 text-teal-600 mb-2">
+            <i class="fa-solid fa-flask-vial text-lg"></i>
+            <h2 class="text-base font-bold text-slate-800">VIII. បណ្ណាល័យ រោងជាង និងកសិដ្ឋានអនុវត្ត</h2>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">តើប្អូនពេញចិត្តចំពោះទីតាំងអនុវត្តជាក់ស្តែង និងការស្រាវជ្រាវកម្រិតណា?</p>
+          <div id="container_academic" class="space-y-4"></div>
+        </div>
+      </section>
+
+      <!-- STEP 9: SUPPORT SERVICES & WELL-BEING -->
+      <section id="step9" class="step-card space-y-4 hidden">
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <div class="flex items-center space-x-2 text-rose-600 mb-2">
+            <i class="fa-solid fa-hand-holding-heart text-lg"></i>
+            <h2 class="text-base font-bold text-slate-800">IX. សេវាគាំទ្រ សុខុមាលភាព និងកីឡា</h2>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">តើប្អូនពេញចិត្តចំពោះសេវាគាំទ្រ និងបរិយាកាសទូទៅកម្រិតណា?</p>
+          <div id="container_welfare" class="space-y-4"></div>
+        </div>
+      </section>
+
+      <!-- STEP 10: NPS, PRIORITIES & FEEDBACK -->
+      <section id="step10" class="step-card space-y-4 hidden">
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-5">
+          <div class="flex items-center space-x-2 text-ksit-700">
+            <i class="fa-solid fa-chart-line text-lg"></i>
+            <h2 class="text-base font-bold text-slate-800">X. ការវាយតម្លៃយុទ្ធសាស្ត្រ & មតិយោបល់</h2>
+          </div>
+
+          <!-- 1. NPS Question (0 - 10) -->
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <label class="block text-xs font-bold text-slate-800 mb-1 leading-relaxed">
+              ១. តើប្អូនមានទំនោរចិត្តក្នុងការណែនាំមិត្តភក្តិ ឬសាច់ញាតិឱ្យមកបន្តការសិក្សានៅ KSIT កម្រិតណា? (Net Promoter Score)
+            </label>
+            <p class="text-[11px] text-slate-500 mb-3">(០ = មិនណែនាំទាល់តែសោះ ដល់ ១០ = ណែនាំខ្លាំងបំផុត)</p>
+            <input type="hidden" name="nps_score" id="nps_score" value="9">
+            <div class="grid grid-cols-11 gap-1">
+              <button type="button" onclick="selectNPS(0, this)" class="nps-btn py-2 text-xs font-bold rounded-lg border border-slate-200 bg-white">0</button>
+              <button type="button" onclick="selectNPS(1, this)" class="nps-btn py-2 text-xs font-bold rounded-lg border border-slate-200 bg-white">1</button>
+              <button type="button" onclick="selectNPS(2, this)" class="nps-btn py-2 text-xs font-bold rounded-lg border border-slate-200 bg-white">2</button>
+              <button type="button" onclick="selectNPS(3, this)" class="nps-btn py-2 text-xs font-bold rounded-lg border border-slate-200 bg-white">3</button>
+              <button type="button" onclick="selectNPS(4, this)" class="nps-btn py-2 text-xs font-bold rounded-lg border border-slate-200 bg-white">4</button>
+              <button type="button" onclick="selectNPS(5, this)" class="nps-btn py-2 text-xs font-bold rounded-lg border border-slate-200 bg-white">5</button>
+              <button type="button" onclick="selectNPS(6, this)" class="nps-btn py-2 text-xs font-bold rounded-lg border border-slate-200 bg-white">6</button>
+              <button type="button" onclick="selectNPS(7, this)" class="nps-btn py-2 text-xs font-bold rounded-lg border border-slate-200 bg-white">7</button>
+              <button type="button" onclick="selectNPS(8, this)" class="nps-btn py-2 text-xs font-bold rounded-lg border border-slate-200 bg-white">8</button>
+              <button type="button" onclick="selectNPS(9, this)" class="nps-btn py-2 text-xs font-bold rounded-lg border border-slate-200 bg-white active">9</button>
+              <button type="button" onclick="selectNPS(10, this)" class="nps-btn py-2 text-xs font-bold rounded-lg border border-slate-200 bg-white">10</button>
             </div>
           </div>
 
-          <textarea id="feedbackText" name="feedback" rows="4"
-            placeholder="សូមសរសេរមតិយោបល់ ឬសំណូមពររបស់ប្អូននៅទីនេះ..."
-            class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+          <!-- 2. Top 3 Priorities -->
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <label class="block text-xs font-bold text-slate-800 mb-1">
+              ២. ជ្រើសរើសអាទិភាពកំពូលទាំង ៣ ដែលវិទ្យាស្ថានគួរកែលម្អជាបន្ទាន់៖
+            </label>
+            <p class="text-[11px] text-slate-500 mb-3">(សូមជ្រើសរើស ៣ ចំណុចសំខាន់បំផុត)</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <label class="flex items-center space-x-2 bg-white p-2 rounded-lg border border-slate-200 cursor-pointer hover:bg-sky-50">
+                <input type="checkbox" name="priorities" value="Wi-Fi & IT" class="rounded text-sky-600 focus:ring-sky-500">
+                <span class="text-slate-700">📶 ប្រព័ន្ធ Wi-Fi & IT</span>
+              </label>
+              <label class="flex items-center space-x-2 bg-white p-2 rounded-lg border border-slate-200 cursor-pointer hover:bg-sky-50">
+                <input type="checkbox" name="priorities" value="បន្ទប់ទឹកស្អាត" class="rounded text-sky-600 focus:ring-sky-500">
+                <span class="text-slate-700">🚻 អនាម័យបន្ទប់ទឹក</span>
+              </label>
+              <label class="flex items-center space-x-2 bg-white p-2 rounded-lg border border-slate-200 cursor-pointer hover:bg-sky-50">
+                <input type="checkbox" name="priorities" value="ទឹកភ្លើងអន្តេវាសិកដ្ឋាន" class="rounded text-sky-600 focus:ring-sky-500">
+                <span class="text-slate-700">💡 ទឹកភ្លើងអន្តេវាសិកដ្ឋាន</span>
+              </label>
+              <label class="flex items-center space-x-2 bg-white p-2 rounded-lg border border-slate-200 cursor-pointer hover:bg-sky-50">
+                <input type="checkbox" name="priorities" value="សម្ភាររោងជាង & Lab" class="rounded text-sky-600 focus:ring-sky-500">
+                <span class="text-slate-700">🔬 សម្ភាររោងជាង & Lab</span>
+              </label>
+              <label class="flex items-center space-x-2 bg-white p-2 rounded-lg border border-slate-200 cursor-pointer hover:bg-sky-50">
+                <input type="checkbox" name="priorities" value="អាហារដ្ឋាន & ទឹកពិសារ" class="rounded text-sky-600 focus:ring-sky-500">
+                <span class="text-slate-700">🍲 អាហារដ្ឋាន & ទឹកពិសារ</span>
+              </label>
+              <label class="flex items-center space-x-2 bg-white p-2 rounded-lg border border-slate-200 cursor-pointer hover:bg-sky-50">
+                <input type="checkbox" name="priorities" value="ភ្លើងបំភ្លឺផ្លូវយប់ & សន្តិសុខ" class="rounded text-sky-600 focus:ring-sky-500">
+                <span class="text-slate-700">🔦 ភ្លើងបំភ្លឺផ្លូវយប់ & សន្តិសុខ</span>
+              </label>
+              <label class="flex items-center space-x-2 bg-white p-2 rounded-lg border border-slate-200 cursor-pointer hover:bg-sky-50">
+                <input type="checkbox" name="priorities" value="ទីលានកីឡា" class="rounded text-sky-600 focus:ring-sky-500">
+                <span class="text-slate-700">⚽ ទីលានកីឡា & លំហែ</span>
+              </label>
+              <label class="flex items-center space-x-2 bg-white p-2 rounded-lg border border-slate-200 cursor-pointer hover:bg-sky-50">
+                <input type="checkbox" name="priorities" value="បណ្ណាល័យ & សៀវភៅ" class="rounded text-sky-600 focus:ring-sky-500">
+                <span class="text-slate-700">📚 បណ្ណាល័យ & សៀវភៅ</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 3. Qualitative Feedback -->
+          <div>
+            <label class="block text-xs font-bold text-slate-800 mb-1.5">៣. មតិយោបល់ និងសំណូមពរផ្សេងៗ៖</label>
+            <div class="mb-2">
+              <p class="text-[11px] font-bold text-slate-400 mb-1.5">ស្លាករហ័ស (Quick Tags):</p>
+              <div class="flex flex-wrap gap-1.5">
+                <button type="button" onclick="addTag('#អនាម័យ')" class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">🧹 #អនាម័យ</button>
+                <button type="button" onclick="addTag('#Wi-Fi')" class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">📶 #Wi-Fi</button>
+                <button type="button" onclick="addTag('#ធុងសំរាម')" class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">🗑️ #ធុងសំរាម</button>
+                <button type="button" onclick="addTag('#សម្ភារពិសោធន៍')" class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">🔬 #សម្ភារពិសោធន៍</button>
+                <button type="button" onclick="addTag('#ភ្លើងផ្លូវ')" class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">💡 #ភ្លើងផ្លូវ</button>
+                <button type="button" onclick="addTag('#អាហារដ្ឋាន')" class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">🍲 #អាហារដ្ឋាន</button>
+              </div>
+            </div>
+            <textarea id="feedbackText" name="feedback" rows="4" placeholder="សូមបញ្ចេញមតិយោបល់ ឬសំណូមពរបន្ថែមនៅទីនេះ..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+          </div>
         </div>
       </section>
 
       <!-- SUCCESS SCREEN -->
       <section id="successScreen" class="step-card space-y-4 hidden">
         <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-md text-center">
-          <div
-            class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+          <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
             <i class="fa-solid fa-check"></i>
           </div>
           <h2 class="text-xl font-bold text-slate-800 mb-2">សូមអរគុណច្រើន!</h2>
           <p class="text-xs text-slate-500 mb-6 leading-relaxed">
-            ការឆ្លើយតបរបស់ប្អូនត្រូវបានកត់ត្រាដោយជោគជ័យ។
-            មតិយោបល់របស់ប្អូនមានតម្លៃយ៉ាងខ្លាំងក្នុងការអភិវឌ្ឍន៍វិទ្យាស្ថានបច្ចេកវិទ្យាកំពង់ស្ពឺ។
+            ការឆ្លើយតប និងការវាយតម្លៃរបស់ប្អូនត្រូវបានកត់ត្រាចូលក្នុងប្រព័ន្ធដោយជោគជ័យ។ មតិយោបល់ទាំងអស់នឹងត្រូវយកទៅវិភាគដើម្បីកែលម្អវិទ្យាស្ថានបច្ចេកវិទ្យាកំពង់ស្ពឺ (KSIT) ឱ្យកាន់តែប្រសើរឡើង។
           </p>
-          <button type="button" onclick="closeApp()"
-            class="w-full py-3.5 bg-ksit-700 hover:bg-ksit-800 text-white font-bold text-xs rounded-xl shadow-md transition-all">
+          <button type="button" onclick="closeApp()" class="w-full py-3.5 bg-ksit-700 hover:bg-ksit-800 text-white font-bold text-xs rounded-xl shadow-md transition-all">
             បិទកម្មវិធី (Close App)
           </button>
         </div>
@@ -341,16 +406,13 @@
   </main>
 
   <!-- BOTTOM FIXED NAVIGATION -->
-  <footer id="bottomNav"
-    class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t border-slate-200 p-3 z-30">
+  <footer id="bottomNav" class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t border-slate-200 p-3 z-30">
     <div class="max-w-md mx-auto flex items-center justify-between gap-3">
-      <button id="prevBtn" type="button" onclick="changeStep(-1)"
-        class="hidden px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl flex items-center gap-1.5 transition">
+      <button id="prevBtn" type="button" onclick="changeStep(-1)" class="hidden px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl flex items-center gap-1.5 transition">
         <i class="fa-solid fa-chevron-left"></i>
         <span>ថយក្រោយ</span>
       </button>
-      <button id="nextBtn" type="button" onclick="changeStep(1)"
-        class="flex-1 py-3.5 bg-gradient-to-r from-sky-600 to-ksit-700 hover:from-sky-700 hover:to-ksit-800 text-white font-bold text-xs rounded-xl shadow-md shadow-sky-600/20 flex items-center justify-center gap-2 transition-all">
+      <button id="nextBtn" type="button" onclick="changeStep(1)" class="flex-1 py-3.5 bg-gradient-to-r from-sky-600 to-ksit-700 hover:from-sky-700 hover:to-ksit-800 text-white font-bold text-xs rounded-xl shadow-md shadow-sky-600/20 flex items-center justify-center gap-2 transition-all">
         <span id="nextBtnText">បន្តទៅមុខ</span>
         <i id="nextBtnIcon" class="fa-solid fa-chevron-right"></i>
       </button>
@@ -359,9 +421,7 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // ==========================================
-    // ⚙️ CONFIGURATION: Set your Web App URL here
-    // ==========================================
+    // ⚙️ Web App URL (Live Deployed API)
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJsMkU5HJgdyHvsWirk7UG7fSRaHz_6j1q3n9AoxIzitIX8DjCY1XWmwL_cXXYZCA/exec";
 
     // Initialize Telegram WebApp
@@ -376,8 +436,7 @@
       }
     }
 
-    // Step definitions
-    const totalSteps = 7;
+    const totalSteps = 10;
     let currentStep = 1;
 
     const stepTitles = [
@@ -387,10 +446,13 @@
       "ផ្នែកទី ៤៖ អគាររដ្ឋបាល",
       "ផ្នែកទី ៥៖ អន្តេវាសិកដ្ឋាន",
       "ផ្នែកទី ៦៖ អគារសូឡា",
-      "ផ្នែកទី ៧៖ មតិយោបល់ និងសំណូមពរ"
+      "ផ្នែកទី ៧៖ ប្រព័ន្ធ IT & Wi-Fi",
+      "ផ្នែកទី ៨៖ បណ្ណាល័យ រោងជាង & កសិដ្ឋាន",
+      "ផ្នែកទី ៩៖ សេវាគាំទ្រ & សុខុមាលភាព",
+      "ផ្នែកទី ១០៖ ការវាយតម្លៃយុទ្ធសាស្ត្រ & មតិយោបល់"
     ];
 
-    // Survey questions configuration
+    // Comprehensive Questions Configuration
     const surveyConfig = {
       env: {
         container: "container_env",
@@ -444,9 +506,38 @@
         container: "container_solar",
         prefix: "solar_q",
         questions: [
-          "១. បរិស្ថានទូទៅជុំវិញអគារសូឡា",
-          "២. បន្ទប់រៀន និងឧបករណ៍បរិក្ខារក្នុងអគារសូឡា",
-          "៣. ប្រព័ន្ធភ្លើង និងផាសុកភាពក្នុងអគារសូឡា"
+          "១. បរិស្ថានទូទៅ និងបន្ទប់រៀនក្នុងអគារសូឡា",
+          "២. ប្រព័ន្ធភ្លើង និងថាមពលពន្លឺព្រះអាទិត្យ (Solar Power)",
+          "៣. សម្ភារបរិក្ខារបំពាក់ និងសុវត្ថិភាពទូទៅក្នុងអគារ"
+        ]
+      },
+      it: {
+        container: "container_it",
+        prefix: "it_q",
+        questions: [
+          "១. ល្បឿន និងភាពងាយស្រួលក្នុងការភ្ជាប់ Wi-Fi សម្រាប់សិក្សាស្រាវជ្រាវ",
+          "២. បន្ទប់កុំព្យូទ័រ (Computer Lab) ភាពទំនើប និងឧបករណ៍បច្ចេកវិទ្យា"
+        ]
+      },
+      academic: {
+        container: "container_academic",
+        prefix: "acad_q",
+        questions: [
+          "១. បណ្ណាល័យ សៀវភៅ ឯកសារស្រាវជ្រាវ និងកន្លែងអាន",
+          "២. រោងជាងបច្ចេកទេស និងឧបករណ៍អនុវត្តជាក់ស្តែង (អគ្គិសនី, អាហារ...)",
+          "៣. កសិដ្ឋានអនុវត្ត និងស្រាវជ្រាវ (ដំណាំ, សត្វ)",
+          "៤. សុវត្ថិភាពការងារ និងឧបករណ៍ការពារ (OSH & PPE) ពេលអនុវត្ត"
+        ]
+      },
+      welfare: {
+        container: "container_welfare",
+        prefix: "welf_q",
+        questions: [
+          "១. អាហារដ្ឋាន (អនាម័យ តម្លៃ និងគុណភាពអាហារ) និងទឹកស្អាតពិសារ",
+          "២. សេវាសុខភាពបឋម / គិលានដ្ឋានសង្គ្រោះបឋម",
+          "៣. ភ្លើងបំភ្លឺផ្លូវពេលយប់ និងសន្តិសុខទូទៅក្នុងបរិវេណវិទ្យាស្ថាន",
+          "៤. ទីលានកីឡា (បាល់ទាត់, បាល់ទះ, ប៉េតង់...) និងកន្លែងលំហែកម្សាន្ត",
+          "៥. សេវាកម្មរដ្ឋបាល និងទំនាក់ទំនងគាំទ្រសិស្ស-និស្សិត"
         ]
       }
     };
@@ -459,7 +550,6 @@
       { val: "5. ពេញចិត្តខ្លាំងបំផុត", emoji: "🤩", label: "ខ្លាំងបំផុត" }
     ];
 
-    // Render questions dynamically
     function renderSurveyQuestions() {
       for (const key in surveyConfig) {
         const section = surveyConfig[key];
@@ -494,9 +584,15 @@
       const buttons = parent.querySelectorAll('.rating-btn');
       buttons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      if (tg?.HapticFeedback) {
-        tg.HapticFeedback.impactOccurred('light');
-      }
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+    }
+
+    function selectNPS(val, btn) {
+      document.getElementById('nps_score').value = val;
+      const buttons = document.querySelectorAll('.nps-btn');
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
     }
 
     function addTag(tag) {
@@ -518,7 +614,7 @@
       currentStep = nextStep;
       document.getElementById(`step${currentStep}`).classList.remove('hidden');
 
-      // Update progress & header
+      // Update progress
       document.getElementById('stepTitle').innerText = stepTitles[currentStep - 1];
       document.getElementById('stepIndicator').innerText = `ជំហាន ${currentStep}/${totalSteps}`;
       document.getElementById('progressBar').style.width = `${(currentStep / totalSteps) * 100}%`;
@@ -547,6 +643,10 @@
       const formData = new FormData(form);
       const dataObj = Object.fromEntries(formData.entries());
 
+      // Collect checked priorities
+      const selectedPriorities = Array.from(document.querySelectorAll('input[name="priorities"]:checked')).map(cb => cb.value);
+      dataObj.top_priorities = selectedPriorities.join(', ');
+
       // Add Telegram User info if available
       if (tg?.initDataUnsafe?.user) {
         const u = tg.initDataUnsafe.user;
@@ -555,25 +655,18 @@
       }
 
       try {
-        if (SCRIPT_URL.includes("REPLACE_WITH")) {
-          // Demo fallback
-          console.warn("Script URL not configured yet. Simulating success.");
-          await new Promise(r => setTimeout(r, 1200));
-        } else {
-          await fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dataObj)
-          });
-        }
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dataObj)
+        });
 
         // Show Success
         document.getElementById(`step${currentStep}`).classList.add('hidden');
         document.getElementById('successScreen').classList.remove('hidden');
         document.getElementById('bottomNav').classList.add('hidden');
 
-        // Confetti effect
         confetti({
           particleCount: 80,
           spread: 70,
@@ -590,16 +683,12 @@
     }
 
     function closeApp() {
-      if (tg) {
-        tg.close();
-      } else {
-        alert("កម្រងសំណួរបានបញ្ចប់! សូមអរគុណ។");
-      }
+      if (tg) tg.close();
+      else alert("កម្រងសំណួរបានបញ្ចប់! សូមអរគុណ។");
     }
 
     // Init
     renderSurveyQuestions();
   </script>
 </body>
-
 </html>
