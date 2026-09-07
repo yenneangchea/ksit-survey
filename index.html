@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="km">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>កម្រងសំណួរវាយតម្លៃ KSIT - Telegram Mini App</title>
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Kantumruy Pro & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ksit: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#1e3a8a',
+              800: '#172554',
+              accent: '#10b981'
+            }
+          },
+          fontFamily: {
+            khmer: ['"Kantumruy Pro"', 'sans-serif'],
+            sans: ['"Inter"', '"Kantumruy Pro"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Kantumruy Pro', 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .rating-btn.active {
+      transform: scale(1.05);
+      border-color: #0284c7;
+      background-color: #e0f2fe;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
+    }
+
+    .step-card {
+      animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm px-4 py-3">
+    <div class="max-w-md mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div
+          class="w-10 h-10 rounded-xl bg-gradient-to-br from-ksit-700 to-ksit-500 flex items-center justify-center text-white shadow-md font-bold text-lg">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div>
+          <h1 class="text-sm font-bold text-ksit-800 leading-tight">វិទ្យាស្ថានបច្ចេកវិទ្យាកំពង់ស្ពឺ</h1>
+          <p class="text-xs text-slate-500 font-medium">ការវាយតម្លៃហេដ្ឋារចនាសម្ព័ន្ធ ២០២៦</p>
+        </div>
+      </div>
+      <div id="userBadge"
+        class="text-xs bg-sky-50 text-sky-700 font-semibold px-2.5 py-1 rounded-full border border-sky-200 flex items-center gap-1.5">
+        <i class="fa-brands fa-telegram text-sky-500"></i>
+        <span id="tgUserName">សិស្ស-និស្សិត</span>
+      </div>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div class="max-w-md mx-auto mt-3">
+      <div class="flex justify-between items-center text-xs font-semibold text-slate-500 mb-1.5">
+        <span id="stepTitle">ផ្នែកទី ១៖ ព័ត៌មានទូទៅ</span>
+        <span id="stepIndicator" class="text-sky-600 font-bold">ជំហាន ១/៧</span>
+      </div>
+      <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+        <div id="progressBar"
+          class="bg-gradient-to-r from-sky-500 to-emerald-500 h-full rounded-full transition-all duration-300 ease-out"
+          style="width: 14.28%;"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN FORM -->
+  <main class="flex-1 max-w-md w-full mx-auto p-4 pb-28">
+    <form id="surveyForm" onsubmit="event.preventDefault();">
+
+      <!-- STEP 1: GENERAL INFO -->
+      <section id="step1" class="step-card space-y-4">
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <div class="flex items-center space-x-2 text-sky-600 mb-2">
+            <i class="fa-solid fa-user-tag text-lg"></i>
+            <h2 class="text-base font-bold text-slate-800">I. ព័ត៌មានទូទៅ</h2>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">សូមបំពេញព័ត៌មានមូលដ្ឋានខាងក្រោម៖</p>
+
+          <!-- Role -->
+          <div class="space-y-2 mb-4">
+            <label class="block text-xs font-bold text-slate-700">១. មុខរបរ / ស្ថានភាពបច្ចុប្បន្ន <span
+                class="text-rose-500">*</span></label>
+            <div class="grid grid-cols-3 gap-2">
+              <label class="cursor-pointer">
+                <input type="radio" name="role" value="និស្សិត" checked class="peer sr-only">
+                <div
+                  class="p-3 text-center rounded-xl border border-slate-200 peer-checked:border-sky-500 peer-checked:bg-sky-50 peer-checked:text-sky-700 font-medium text-xs transition-all">
+                  <i class="fa-solid fa-user-graduate block text-base mb-1"></i>និស្សិត
+                </div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="role" value="សិស្ស" class="peer sr-only">
+                <div
+                  class="p-3 text-center rounded-xl border border-slate-200 peer-checked:border-sky-500 peer-checked:bg-sky-50 peer-checked:text-sky-700 font-medium text-xs transition-all">
+                  <i class="fa-solid fa-school block text-base mb-1"></i>សិស្ស (៩+៣)
+                </div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="role" value="បុគ្គលិកវិទ្យាស្ថាន" class="peer sr-only">
+                <div
+                  class="p-3 text-center rounded-xl border border-slate-200 peer-checked:border-sky-500 peer-checked:bg-sky-50 peer-checked:text-sky-700 font-medium text-xs transition-all">
+                  <i class="fa-solid fa-chalkboard-user block text-base mb-1"></i>បុគ្គលិក/គ្រូ
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Gender & Age -->
+          <div class="grid grid-cols-2 gap-3 mb-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">២. ភេទ <span
+                  class="text-rose-500">*</span></label>
+              <select name="gender"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                <option value="ប្រុស">ប្រុស</option>
+                <option value="ស្រី">ស្រី</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">៣. អាយុ <span
+                  class="text-rose-500">*</span></label>
+              <input type="number" name="age" value="20" min="15" max="60"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
+            </div>
+          </div>
+
+          <!-- Residence -->
+          <div class="mb-4">
+            <label class="block text-xs font-bold text-slate-700 mb-1.5">៤. ទីកន្លែងស្នាក់នៅ <span
+                class="text-rose-500">*</span></label>
+            <select name="residence"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
+              <option value="អគារថ្មី">អន្តេវាសិកដ្ឋាន (អគារថ្មី)</option>
+              <option value="អគារ A B C D">អន្តេវាសិកដ្ឋាន (អគារ A B C D)</option>
+              <option value="អគារសូឡា">អគារសូឡា</option>
+              <option value="កសិដ្ឋាន">កសិដ្ឋាន</option>
+              <option value="នៅក្រៅវិទ្យាស្ថាន">នៅក្រៅវិទ្យាស្ថាន (ផ្ទះជួល/ផ្ទះខ្លួនឯង)</option>
+            </select>
+          </div>
+
+          <!-- Major -->
+          <div class="mb-4">
+            <label class="block text-xs font-bold text-slate-700 mb-1.5">៥. ជំនាញសិក្សា <span
+                class="text-rose-500">*</span></label>
+            <select name="major"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
+              <option value="ជំនាញវិទ្យាសាស្រ្តកុំព្យូទ័រ">ជំនាញ វិទ្យាសាស្រ្តកុំព្យូទ័រ</option>
+              <option value="ជំនាញបច្ចេកវិទ្យាអាហារ">ជំនាញ បច្ចេកវិទ្យាអាហារ</option>
+              <option value="ជំនាញការដំឡើងប្រព័ន្ធអគ្គិសនី">ជំនាញ ការដំឡើងប្រព័ន្ធអគ្គិសនី</option>
+              <option value="ជំនាញវិទ្យាសាស្រ្តដំណាំ">ជំនាញ វិទ្យាសាស្រ្តដំណាំ</option>
+              <option value="ជំនាញវិទ្យាសាស្រ្តសត្វ">ជំនាញ វិទ្យាសាស្រ្តសត្វ</option>
+              <option value="ថ្នាក់អប់រំបច្ចេកទេស (៩+៣)">ថ្នាក់អប់រំបច្ចេកទេស (៩+៣)</option>
+              <option value="បុគ្គលិកការិយាល័យ">បុគ្គលិកការិយាល័យ / គ្រូបង្រៀន</option>
+            </select>
+          </div>
+
+          <!-- Academic Year -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1.5">៦. សិស្ស-និស្សិតឆ្នាំទី <span
+                class="text-rose-500">*</span></label>
+            <select name="year"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
+              <option value="1">ឆ្នាំទី ១</option>
+              <option value="2">ឆ្នាំទី ២</option>
+              <option value="3">ឆ្នាំទី ៣</option>
+              <option value="4">ឆ្នាំទី ៤</option>
+              <option value="បញ្ចប់ការសិក្សា">បញ្ចប់ការសិក្សា / បុគ្គលិក</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 2: ENVIRONMENT -->
+      <section id="step2" class="step-card space-y-4 hidden">
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <div class="flex items-center space-x-2 text-emerald-600 mb-2">
+            <i class="fa-solid fa-tree text-lg"></i>
+            <h2 class="text-base font-bold text-slate-800">II. បរិស្ថានវិទ្យាស្ថាន</h2>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">តើប្អូនពេញចិត្តចំពោះបរិស្ថានវិទ្យាស្ថានកម្រិតណា?</p>
+          <div id="container_env" class="space-y-4"></div>
+        </div>
+      </section>
+
+      <!-- STEP 3: BUILDING A -->
+      <section id="step3" class="step-card space-y-4 hidden">
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <div class="flex items-center space-x-2 text-indigo-600 mb-2">
+            <i class="fa-solid fa-school text-lg"></i>
+            <h2 class="text-base font-bold text-slate-800">III. អគារសិក្សា A</h2>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">តើប្អូនពេញចិត្តចំពោះ អគារសិក្សា A កម្រិតណា?</p>
+          <div id="container_b_a" class="space-y-4"></div>
+        </div>
+      </section>
+
+      <!-- STEP 4: ADMIN BUILDING -->
+      <section id="step4" class="step-card space-y-4 hidden">
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <div class="flex items-center space-x-2 text-amber-600 mb-2">
+            <i class="fa-solid fa-building-columns text-lg"></i>
+            <h2 class="text-base font-bold text-slate-800">IV. អគាររដ្ឋបាល</h2>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">តើប្អូនពេញចិត្តចំពោះ អគាររដ្ឋបាល កម្រិតណា?</p>
+          <div id="container_adm" class="space-y-4"></div>
+        </div>
+      </section>
+
+      <!-- STEP 5: DORMITORY -->
+      <section id="step5" class="step-card space-y-4 hidden">
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <div class="flex items-center space-x-2 text-purple-600 mb-2">
+            <i class="fa-solid fa-hotel text-lg"></i>
+            <h2 class="text-base font-bold text-slate-800">V. អន្តេវាសិកដ្ឋាន</h2>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">តើប្អូនពេញចិត្តចំពោះ អគារអន្តេវាសិកដ្ឋានកម្រិតណា?</p>
+          <div id="container_dorm" class="space-y-4"></div>
+        </div>
+      </section>
+
+      <!-- STEP 6: SOLAR BUILDING -->
+      <section id="step6" class="step-card space-y-4 hidden">
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <div class="flex items-center space-x-2 text-orange-500 mb-2">
+            <i class="fa-solid fa-solar-panel text-lg"></i>
+            <h2 class="text-base font-bold text-slate-800">VI. អគារសូឡា</h2>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">តើប្អូនពេញចិត្តចំពោះ អគារសូឡាកម្រិតណា?</p>
+          <div id="container_solar" class="space-y-4"></div>
+        </div>
+      </section>
+
+      <!-- STEP 7: FEEDBACK & SUBMISSION -->
+      <section id="step7" class="step-card space-y-4 hidden">
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <div class="flex items-center space-x-2 text-sky-600 mb-2">
+            <i class="fa-solid fa-comment-dots text-lg"></i>
+            <h2 class="text-base font-bold text-slate-800">VII. មតិយោបល់ និងសំណូមពរ</h2>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">តើប្អូនមានមតិយោបល់ ឬសំណូមពរអ្វីខ្លះដើម្បីកែលម្អវិទ្យាស្ថាន?</p>
+
+          <!-- Quick Tags -->
+          <div class="mb-3">
+            <p class="text-[11px] font-bold text-slate-500 mb-2">ជ្រើសរើសស្លាករហ័ស (Quick Tags):</p>
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" onclick="addTag('#អនាម័យ')"
+                class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">🧹
+                #អនាម័យ</button>
+              <button type="button" onclick="addTag('#ធុងសំរាម')"
+                class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">🗑️
+                #ធុងសំរាម</button>
+              <button type="button" onclick="addTag('#ទឹកភ្លើង')"
+                class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">💡
+                #ទឹកភ្លើង</button>
+              <button type="button" onclick="addTag('#WiFi')"
+                class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">📶
+                #WiFi</button>
+              <button type="button" onclick="addTag('#ដើមឈើ')"
+                class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">🌳
+                #ដើមឈើម្លប់</button>
+              <button type="button" onclick="addTag('#បន្ទប់ទឹក')"
+                class="px-2.5 py-1 bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 text-xs rounded-lg border border-slate-200 transition">🚻
+                #បន្ទប់ទឹក</button>
+            </div>
+          </div>
+
+          <textarea id="feedbackText" name="feedback" rows="4"
+            placeholder="សូមសរសេរមតិយោបល់ ឬសំណូមពររបស់ប្អូននៅទីនេះ..."
+            class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
+        </div>
+      </section>
+
+      <!-- SUCCESS SCREEN -->
+      <section id="successScreen" class="step-card space-y-4 hidden">
+        <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-md text-center">
+          <div
+            class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <h2 class="text-xl font-bold text-slate-800 mb-2">សូមអរគុណច្រើន!</h2>
+          <p class="text-xs text-slate-500 mb-6 leading-relaxed">
+            ការឆ្លើយតបរបស់ប្អូនត្រូវបានកត់ត្រាដោយជោគជ័យ។
+            មតិយោបល់របស់ប្អូនមានតម្លៃយ៉ាងខ្លាំងក្នុងការអភិវឌ្ឍន៍វិទ្យាស្ថានបច្ចេកវិទ្យាកំពង់ស្ពឺ។
+          </p>
+          <button type="button" onclick="closeApp()"
+            class="w-full py-3.5 bg-ksit-700 hover:bg-ksit-800 text-white font-bold text-xs rounded-xl shadow-md transition-all">
+            បិទកម្មវិធី (Close App)
+          </button>
+        </div>
+      </section>
+
+    </form>
+  </main>
+
+  <!-- BOTTOM FIXED NAVIGATION -->
+  <footer id="bottomNav"
+    class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t border-slate-200 p-3 z-30">
+    <div class="max-w-md mx-auto flex items-center justify-between gap-3">
+      <button id="prevBtn" type="button" onclick="changeStep(-1)"
+        class="hidden px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-chevron-left"></i>
+        <span>ថយក្រោយ</span>
+      </button>
+      <button id="nextBtn" type="button" onclick="changeStep(1)"
+        class="flex-1 py-3.5 bg-gradient-to-r from-sky-600 to-ksit-700 hover:from-sky-700 hover:to-ksit-800 text-white font-bold text-xs rounded-xl shadow-md shadow-sky-600/20 flex items-center justify-center gap-2 transition-all">
+        <span id="nextBtnText">បន្តទៅមុខ</span>
+        <i id="nextBtnIcon" class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // ==========================================
+    // ⚙️ CONFIGURATION: Set your Web App URL here
+    // ==========================================
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJsMkU5HJgdyHvsWirk7UG7fSRaHz_6j1q3n9AoxIzitIX8DjCY1XWmwL_cXXYZCA/exec";
+
+    // Initialize Telegram WebApp
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      if (tg.initDataUnsafe?.user) {
+        const u = tg.initDataUnsafe.user;
+        const name = u.first_name + (u.last_name ? " " + u.last_name : "");
+        document.getElementById("tgUserName").innerText = name;
+      }
+    }
+
+    // Step definitions
+    const totalSteps = 7;
+    let currentStep = 1;
+
+    const stepTitles = [
+      "ផ្នែកទី ១៖ ព័ត៌មានទូទៅ",
+      "ផ្នែកទី ២៖ បរិស្ថានវិទ្យាស្ថាន",
+      "ផ្នែកទី ៣៖ អគារសិក្សា A",
+      "ផ្នែកទី ៤៖ អគាររដ្ឋបាល",
+      "ផ្នែកទី ៥៖ អន្តេវាសិកដ្ឋាន",
+      "ផ្នែកទី ៦៖ អគារសូឡា",
+      "ផ្នែកទី ៧៖ មតិយោបល់ និងសំណូមពរ"
+    ];
+
+    // Survey questions configuration
+    const surveyConfig = {
+      env: {
+        container: "container_env",
+        prefix: "env_q",
+        questions: [
+          "១. ខ្លោងទ្វារ និងរបងព័ទ្ធជុំវិញ",
+          "២. សន្តិសុខយាមពេលចេញ-ចូលវិទ្យាស្ថាន",
+          "៣. ភាពស្អាតនៃទីធ្លាក្នុងវិទ្យាស្ថាន",
+          "៤. កន្លែងធ្វើលំហាត់ប្រាណមានបរិយាកាសល្អ",
+          "៥. មានទីកន្លែងសម្រាប់ចាក់សំរាម និងដុតសំរាម"
+        ]
+      },
+      b_a: {
+        container: "container_b_a",
+        prefix: "b_a_q",
+        questions: [
+          "១. បរិស្ថានជុំវិញអគារសិក្សាមានសោភណ្ឌភាពល្អ",
+          "២. បន្ទប់រៀនស្អាត មានខ្យល់ចេញចូលបានល្អ និងមានពន្លឺគ្រប់គ្រាន់",
+          "៣. បន្ទប់រៀនបំពាក់សម្ភារបរិក្ខារ (ម៉ាស៊ីនបញ្ចាំងរូបភាព តុ កៅអី)",
+          "៤. ទំហំរបស់បន្ទប់រៀនសមស្របជាមួយនឹងចំនួនសិស្ស និស្សិត",
+          "៥. ផ្លូវដើរខាងក្រៅបន្ទប់រៀនស្អាត មានកន្លែងអង្គុយរង់ចាំ",
+          "៦. មានបំពង់ពន្លត់អគ្គិភ័យ",
+          "៧. បន្ទប់ទឹកប្រើប្រាស់គ្រប់គ្រាន់ ស្ថានភាពល្អ មានអនាម័យ",
+          "៨. មានធុងសំរាមគ្រប់គ្រាន់"
+        ]
+      },
+      adm: {
+        container: "container_adm",
+        prefix: "adm_q",
+        questions: [
+          "១. បរិស្ថានជុំវិញអគារមានសោភណ្ឌភាពល្អ មានសួនលំអរ",
+          "២. អគារស្អាត រឹងមាំ មានខ្យល់ចេញចូលល្អ និងមានផាសុកភាព",
+          "៣. បន្ទប់ទឹកប្រើប្រាស់គ្រប់គ្រាន់ ស្ថានភាពល្អ មានអនាម័យ",
+          "៤. មានបំពង់ពន្លត់អគ្គិភ័យ"
+        ]
+      },
+      dorm: {
+        container: "container_dorm",
+        prefix: "dorm_q",
+        questions: [
+          "១. អន្តេវាសិកដ្ឋានបែងចែកអគារបុរស-នារីច្បាស់លាស់",
+          "២. មានខ្យល់ចេញចូលល្អ ពន្លឺគ្រប់គ្រាន់ និងមានសុវត្ថិភាព",
+          "៣. មានទឹក ភ្លើងប្រើប្រាស់គ្រប់គ្រាន់",
+          "៤. មានបំពង់ពន្លត់អគ្គិភ័យ",
+          "៥. មានធុងដាក់សំរាមគ្រប់គ្រាន់",
+          "៦. បន្ទប់ទឹកបែងចែកបន្ទប់បន្ទោរបង់ និងបន្ទប់ងូតទឹក",
+          "៧. ទំហំបន្ទប់ស្នាក់នៅសមស្របនឹងចំនួនសិស្ស"
+        ]
+      },
+      solar: {
+        container: "container_solar",
+        prefix: "solar_q",
+        questions: [
+          "១. បរិស្ថានទូទៅជុំវិញអគារសូឡា",
+          "២. បន្ទប់រៀន និងឧបករណ៍បរិក្ខារក្នុងអគារសូឡា",
+          "៣. ប្រព័ន្ធភ្លើង និងផាសុកភាពក្នុងអគារសូឡា"
+        ]
+      }
+    };
+
+    const ratingLevels = [
+      { val: "1. មិនពេញចិត្ត", emoji: "😡", label: "មិនពេញចិត្ត" },
+      { val: "2. មិនសូវពេញចិត្ត", emoji: "🙁", label: "មិនសូវ" },
+      { val: "3. ពេញចិត្ត", emoji: "😐", label: "ពេញចិត្ត" },
+      { val: "4. ពេញចិត្តខ្លាំង", emoji: "😊", label: "ខ្លាំង" },
+      { val: "5. ពេញចិត្តខ្លាំងបំផុត", emoji: "🤩", label: "ខ្លាំងបំផុត" }
+    ];
+
+    // Render questions dynamically
+    function renderSurveyQuestions() {
+      for (const key in surveyConfig) {
+        const section = surveyConfig[key];
+        const container = document.getElementById(section.container);
+        if (!container) continue;
+
+        container.innerHTML = section.questions.map((q, idx) => {
+          const qName = `${section.prefix}${idx + 1}`;
+          return `
+            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+              <p class="text-xs font-semibold text-slate-800 mb-2 leading-relaxed">${q}</p>
+              <input type="hidden" name="${qName}" id="${qName}" value="3. ពេញចិត្ត">
+              <div class="grid grid-cols-5 gap-1.5">
+                ${ratingLevels.map((lvl) => `
+                  <button type="button" 
+                    onclick="selectRating('${qName}', '${lvl.val}', this)" 
+                    class="rating-btn py-2 px-1 rounded-xl border border-slate-200 bg-white text-center transition flex flex-col items-center justify-center ${lvl.val === '3. ពេញចិត្ត' ? 'active' : ''}">
+                    <span class="text-lg leading-none mb-1">${lvl.emoji}</span>
+                    <span class="text-[9px] font-bold text-slate-600 truncate max-w-full">${lvl.label}</span>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    function selectRating(qName, val, btn) {
+      document.getElementById(qName).value = val;
+      const parent = btn.parentElement;
+      const buttons = parent.querySelectorAll('.rating-btn');
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (tg?.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('light');
+      }
+    }
+
+    function addTag(tag) {
+      const txt = document.getElementById('feedbackText');
+      txt.value = txt.value ? txt.value + " " + tag : tag;
+      txt.focus();
+    }
+
+    function changeStep(delta) {
+      const nextStep = currentStep + delta;
+      if (nextStep < 1) return;
+
+      if (delta > 0 && currentStep === totalSteps) {
+        submitSurvey();
+        return;
+      }
+
+      document.getElementById(`step${currentStep}`).classList.add('hidden');
+      currentStep = nextStep;
+      document.getElementById(`step${currentStep}`).classList.remove('hidden');
+
+      // Update progress & header
+      document.getElementById('stepTitle').innerText = stepTitles[currentStep - 1];
+      document.getElementById('stepIndicator').innerText = `ជំហាន ${currentStep}/${totalSteps}`;
+      document.getElementById('progressBar').style.width = `${(currentStep / totalSteps) * 100}%`;
+
+      // Update buttons
+      document.getElementById('prevBtn').classList.toggle('hidden', currentStep === 1);
+      if (currentStep === totalSteps) {
+        document.getElementById('nextBtnText').innerText = "បញ្ជូនការវាយតម្លៃ (Submit)";
+        document.getElementById('nextBtnIcon').className = "fa-solid fa-paper-plane";
+      } else {
+        document.getElementById('nextBtnText').innerText = "បន្តទៅមុខ";
+        document.getElementById('nextBtnIcon').className = "fa-solid fa-chevron-right";
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+    }
+
+    async function submitSurvey() {
+      const submitBtn = document.getElementById('nextBtn');
+      submitBtn.disabled = true;
+      document.getElementById('nextBtnText').innerText = "កំពុងបញ្ជូន...";
+      document.getElementById('nextBtnIcon').className = "fa-solid fa-spinner fa-spin";
+
+      const form = document.getElementById('surveyForm');
+      const formData = new FormData(form);
+      const dataObj = Object.fromEntries(formData.entries());
+
+      // Add Telegram User info if available
+      if (tg?.initDataUnsafe?.user) {
+        const u = tg.initDataUnsafe.user;
+        dataObj.tg_user = u.username || `${u.first_name} ${u.last_name || ''}`;
+        dataObj.tg_id = u.id;
+      }
+
+      try {
+        if (SCRIPT_URL.includes("REPLACE_WITH")) {
+          // Demo fallback
+          console.warn("Script URL not configured yet. Simulating success.");
+          await new Promise(r => setTimeout(r, 1200));
+        } else {
+          await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dataObj)
+          });
+        }
+
+        // Show Success
+        document.getElementById(`step${currentStep}`).classList.add('hidden');
+        document.getElementById('successScreen').classList.remove('hidden');
+        document.getElementById('bottomNav').classList.add('hidden');
+
+        // Confetti effect
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+      } catch (err) {
+        alert("មានបញ្ហាក្នុងការបញ្ជូនទិន្នន័យ សូមព្យាយាមម្តងទៀត!");
+        submitBtn.disabled = false;
+        document.getElementById('nextBtnText').innerText = "បញ្ជូនការវាយតម្លៃ (Submit)";
+        document.getElementById('nextBtnIcon').className = "fa-solid fa-paper-plane";
+      }
+    }
+
+    function closeApp() {
+      if (tg) {
+        tg.close();
+      } else {
+        alert("កម្រងសំណួរបានបញ្ចប់! សូមអរគុណ។");
+      }
+    }
+
+    // Init
+    renderSurveyQuestions();
+  </script>
+</body>
+
+</html>
