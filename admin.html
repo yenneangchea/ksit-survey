@@ -119,7 +119,7 @@
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
 
       <!-- ========================================== -->
-      <!-- 📅 YEAR FILTER TOOLBAR (CLEAN 4 OPTIONS) -->
+      <!-- 📅 YEAR FILTER TOOLBAR -->
       <!-- ========================================== -->
       <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center space-x-3">
@@ -180,7 +180,7 @@
           <div>
             <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">អគារពេញចិត្តខ្ពស់បំផុត</p>
             <h3 class="text-lg font-bold text-indigo-700" id="topFacilityName">អគារសិក្សា A</h3>
-            <p class="text-[11px] text-slate-500 font-medium mt-1" id="topFacilityScore">ពិន្ទុមធ្យម 4.15 / 5.0</p>
+            <p class="text-[11px] text-slate-500 font-medium mt-1" id="topFacilityScore">ពិន្ទុមធ្យម - / 5.0</p>
           </div>
           <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
             <i class="fa-solid fa-trophy"></i>
@@ -192,7 +192,7 @@
           <div>
             <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">តំបន់ត្រូវកែលម្អ</p>
             <h3 class="text-lg font-bold text-rose-600" id="urgentAreaName">បរិស្ថាន & WiFi</h3>
-            <p class="text-[11px] text-slate-500 font-medium mt-1">ធុងសំរាម & បន្ទប់ទឹក</p>
+            <p class="text-[11px] text-slate-500 font-medium mt-1" id="urgentAreaScore">ពិន្ទុមធ្យម - / 5.0</p>
           </div>
           <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl">
             <i class="fa-solid fa-triangle-exclamation"></i>
@@ -299,13 +299,51 @@
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJsMkU5HJgdyHvsWirk7UG7fSRaHz_6j1q3n9AoxIzitIX8DjCY1XWmwL_cXXYZCA/exec";
 
     // Master dataset
-    let allResponses = [{"id": 1, "timestamp": "11/20/2024 10:58:13", "role": "និស្សិត", "gender": "ប្រុស", "age": "21", "residence": "អគារថ្មី", "major": "ជំនាញការដំឡើងប្រព័ន្ធអគ្គិសនី", "year": "2", "env_avg": 4.2, "b_a_avg": 4.8, "adm_avg": 4.8, "dorm_avg": 4.6, "feedback": "ឧបករណ៍ពិសោធន៍ដំណើរការល្អ"}, {"id": 2, "timestamp": "11/20/2024 12:09:16", "role": "សិស្ស", "gender": "ប្រុស", "age": "16", "residence": "អគារថ្មី", "major": "ថ្នាក់អប់រំបច្ចេកទេស (៩+៣)", "year": "3", "env_avg": 3.4, "b_a_avg": 3.0, "adm_avg": 3.8, "dorm_avg": 3.0, "feedback": ""}, {"id": 3, "timestamp": "11/20/2024 12:10:02", "role": "បុគ្គលិកវិទ្យាស្ថាន", "gender": "ស្រី", "age": "32", "residence": "អគារថ្មី", "major": "ជំនាញវិទ្យាសាស្រ្តដំណាំ", "year": "គ្រូ", "env_avg": 3.0, "b_a_avg": 2.8, "adm_avg": 3.2, "dorm_avg": 3.6, "feedback": ""}, {"id": 4, "timestamp": "11/20/2024 12:10:19", "role": "និស្សិត", "gender": "ប្រុស", "age": "22", "residence": "នៅក្រៅវិទ្យាស្ថាន", "major": "ជំនាញការដំឡើងប្រព័ន្ធអគ្គិសនី", "year": "2", "env_avg": 3.2, "b_a_avg": 2.9, "adm_avg": 3.0, "dorm_avg": 3.3, "feedback": ""}, {"id": 5, "timestamp": "11/20/2024 12:11:23", "role": "សិស្ស", "gender": "ស្រី", "age": "19", "residence": "អគារថ្មី", "major": "ជំនាញបច្ចេកវិទ្យាអាហារ", "year": "1", "env_avg": 3.6, "b_a_avg": 4.4, "adm_avg": 5.0, "dorm_avg": 5.0, "feedback": "សាលាមានអនាម័យស្អាត"}, {"id": 6, "timestamp": "11/20/2024 12:11:35", "role": "និស្សិត", "gender": "ស្រី", "age": "20", "residence": "អគារថ្មី", "major": "ជំនាញបច្ចេកវិទ្យាអាហារ", "year": "1", "env_avg": 2.8, "b_a_avg": 2.9, "adm_avg": 3.0, "dorm_avg": 3.0, "feedback": ""}, {"id": 7, "timestamp": "11/20/2024 12:11:49", "role": "និស្សិត", "gender": "ស្រី", "age": "19", "residence": "នៅក្រៅវិទ្យាស្ថាន", "major": "ជំនាញបច្ចេកវិទ្យាអាហារ", "year": "2", "env_avg": 4.0, "b_a_avg": 4.3, "adm_avg": 4.0, "dorm_avg": 4.3, "feedback": ""}, {"id": 8, "timestamp": "11/20/2024 12:12:09", "role": "និស្សិត", "gender": "ស្រី", "age": "20", "residence": "កសិដ្ឋាន", "major": "ជំនាញវិទ្យាសាស្រ្តដំណាំ", "year": "2", "env_avg": 2.4, "b_a_avg": 3.4, "adm_avg": 3.0, "dorm_avg": 3.4, "feedback": "កន្លែងស្នាក់នៅកសិដ្ឋានស្រួល"}, {"id": 9, "timestamp": "11/20/2024 12:12:52", "role": "សិស្ស", "gender": "ប្រុស", "age": "17", "residence": "នៅក្រៅវិទ្យាស្ថាន", "major": "ថ្នាក់អប់រំបច្ចេកទេស (៩+៣)", "year": "3", "env_avg": 4.0, "b_a_avg": 4.6, "adm_avg": 4.8, "dorm_avg": 4.4, "feedback": "រីករាយក្នុងការរៀនសូត្រ"}, {"id": 10, "timestamp": "11/20/2024 12:18:48", "role": "និស្សិត", "gender": "ស្រី", "age": "19", "residence": "អគារ A B C D", "major": "ជំនាញវិទ្យាសាស្រ្តកុំព្យូទ័រ", "year": "2", "env_avg": 2.6, "b_a_avg": 2.3, "adm_avg": 2.5, "dorm_avg": 3.0, "feedback": "សូមជួយពង្រឹង WiFi នៅបន្ទប់រៀន"}, {"id": 11, "timestamp": "11/20/2024 12:54:39", "role": "សិស្ស", "gender": "ស្រី", "age": "19", "residence": "អគារ A B C D", "major": "ថ្នាក់អប់រំបច្ចេកទេស (៩+៣)", "year": "3", "env_avg": 3.6, "b_a_avg": 3.0, "adm_avg": 3.0, "dorm_avg": 3.0, "feedback": "សំណូមពរឱ្យមានធុងសំរាមច្រើនជាងមុន"}, {"id": 12, "timestamp": "11/20/2024 12:57:10", "role": "សិស្ស", "gender": "ស្រី", "age": "19", "residence": "អគារ A B C D", "major": "ថ្នាក់អប់រំបច្ចេកទេស (៩+៣)", "year": "3", "env_avg": 2.8, "b_a_avg": 2.9, "adm_avg": 3.0, "dorm_avg": 3.0, "feedback": "ខ្ញុំសូមអរគុណទៅដល់ខាងសាលាដែលបានផ្តល់ទឹកភ្លើងនិងសម្ភារផ្សេងៗ"}, {"id": 13, "timestamp": "11/20/2024 13:00:00", "role": "និស្សិត", "gender": "ស្រី", "age": "22", "residence": "អគារ A B C D", "major": "ជំនាញវិទ្យាសាស្រ្តសត្វ", "year": "2", "env_avg": 3.0, "b_a_avg": 3.1, "adm_avg": 3.0, "dorm_avg": 3.0, "feedback": "សំណូមពរឱ្យមានសម្ភារប្រើប្រាស់សម្រាប់អគារស្នាក់នៅឱ្យបានគ្រប់គ្រាន់"}, {"id": 14, "timestamp": "11/20/2024 14:04:08", "role": "និស្សិត", "gender": "ស្រី", "age": "18", "residence": "អគារថ្មី", "major": "ជំនាញវិទ្យាសាស្រ្តកុំព្យូទ័រ", "year": "1", "env_avg": 3.2, "b_a_avg": 3.1, "adm_avg": 3.3, "dorm_avg": 3.4, "feedback": "បង្កើនអនាម័យបន្ទប់ទឹក"}, {"id": 15, "timestamp": "11/20/2024 14:20:24", "role": "និស្សិត", "gender": "ប្រុស", "age": "45", "residence": "នៅក្រៅវិទ្យាស្ថាន", "major": "ជំនាញបច្ចេកវិទ្យាអាហារ", "year": "ចប់ហើយ", "env_avg": 4.0, "b_a_avg": 5.0, "adm_avg": 5.0, "dorm_avg": 5.0, "feedback": "អោយវិទ្យាស្ថានបើកថ្នាក់សៅរ៍-អាទិត្យ"}, {"id": 16, "timestamp": "11/20/2024 14:59:33", "role": "និស្សិត", "gender": "ប្រុស", "age": "21", "residence": "អគារ A B C D", "major": "ជំនាញការដំឡើងប្រព័ន្ធអគ្គិសនី", "year": "3", "env_avg": 3.0, "b_a_avg": 3.8, "adm_avg": 3.5, "dorm_avg": 3.6, "feedback": "ពង្រឹងវិន័យអោយបានល្អដូចមុន"}, {"id": 17, "timestamp": "11/20/2024 20:11:26", "role": "និស្សិត", "gender": "ស្រី", "age": "22", "residence": "អគារ A B C D", "major": "ជំនាញវិទ្យាសាស្រ្តសត្វ", "year": "2", "env_avg": 3.0, "b_a_avg": 3.0, "adm_avg": 3.0, "dorm_avg": 3.0, "feedback": "សូមជួយសម្អាតបរិស្ថានជុំវិញ និងកន្លែងសិក្សាទាំងអស់គ្នា"}, {"id": 18, "timestamp": "11/28/2024 17:54:23", "role": "និស្សិត", "gender": "ប្រុស", "age": "21", "residence": "អគារថ្មី", "major": "ជំនាញការដំឡើងប្រព័ន្ធអគ្គិសនី", "year": "1", "env_avg": 3.0, "b_a_avg": 3.0, "adm_avg": 3.0, "dorm_avg": 3.0, "feedback": "ឲ្យមានធុងសំរាមច្រើន"}, {"id": 19, "timestamp": "03/15/2025 09:30:10", "role": "និស្សិត", "gender": "ស្រី", "age": "20", "residence": "អគារថ្មី", "major": "ជំនាញវិទ្យាសាស្រ្តកុំព្យូទ័រ", "year": "2", "env_avg": 4.0, "b_a_avg": 4.5, "adm_avg": 4.2, "dorm_avg": 4.0, "feedback": "ប្រព័ន្ធអ៊ិនធឺណិតមានភាពប្រសើរឡើងច្រើន"}, {"id": 20, "timestamp": "09/07/2026 11:20:45", "role": "និស្សិត", "gender": "ប្រុស", "age": "21", "residence": "អគារថ្មី", "major": "ជំនាញការដំឡើងប្រព័ន្ធអគ្គិសនី", "year": "3", "env_avg": 4.4, "b_a_avg": 4.6, "adm_avg": 4.5, "dorm_avg": 4.7, "feedback": "អរគុណលោកគ្រូអ្នកគ្រូ និងវិទ្យាស្ថានដែលបានកែលម្អបរិស្ថានស្អាត"}];
+    let allResponses = [];
     let activeResponses = [];
     let currentSelectedYear = "ALL";
 
     let radarChartInstance = null;
     let doughnutChartInstance = null;
     let barChartInstance = null;
+
+    // Helper: Parse score from string like "4. ពេញចិត្តខ្លាំង" -> 4
+    function parseScore(val) {
+      if (val === null || val === undefined || val === "") return 0;
+      if (typeof val === "number") return val;
+      const str = String(val).trim();
+      const m = str.match(/([1-5])/);
+      return m ? parseInt(m, 10) : 0;
+    }
+
+    // Helper: Compute average scores for each facility
+    function processRecord(r) {
+      // 1. Environment Average (Q1 - Q5)
+      const envQs = [r.env_q1, r.env_q2, r.env_q3, r.env_q4, r.env_q5];
+      const envScores = envQs.map(parseScore).filter(s => s > 0);
+      r.env_avg = envScores.length > 0 ? Number((envScores.reduce((a, b) => a + b, 0) / envScores.length).toFixed(1)) : 0;
+
+      // 2. Building A Average (Q1 - Q8)
+      const baQs = [r.b_a_q1, r.b_a_q2, r.b_a_q3, r.b_a_q4, r.b_a_q5, r.b_a_q6, r.b_a_q7, r.b_a_q8];
+      const baScores = baQs.map(parseScore).filter(s => s > 0);
+      r.b_a_avg = baScores.length > 0 ? Number((baScores.reduce((a, b) => a + b, 0) / baScores.length).toFixed(1)) : 0;
+
+      // 3. Admin Building Average (Q1 - Q4)
+      const admQs = [r.adm_q1, r.adm_q2, r.adm_q3, r.adm_q4];
+      const admScores = admQs.map(parseScore).filter(s => s > 0);
+      r.adm_avg = admScores.length > 0 ? Number((admScores.reduce((a, b) => a + b, 0) / admScores.length).toFixed(1)) : 0;
+
+      // 4. Dormitory Average (Q1 - Q7)
+      const dormQs = [r.dorm_q1, r.dorm_q2, r.dorm_q3, r.dorm_q4, r.dorm_q5, r.dorm_q6, r.dorm_q7];
+      const dormScores = dormQs.map(parseScore).filter(s => s > 0);
+      r.dorm_avg = dormScores.length > 0 ? Number((dormScores.reduce((a, b) => a + b, 0) / dormScores.length).toFixed(1)) : 0;
+
+      // 5. Solar Building Average
+      const solarScores = [parseScore(r.solar_q1)].filter(s => s > 0);
+      r.solar_avg = solarScores.length > 0 ? solarScores[0] : (r.env_avg || 3.5);
+
+      return r;
+    }
 
     // Helper: Extract Year from timestamp
     function getYearFromTimestamp(ts) {
@@ -316,6 +354,18 @@
       const d = new Date(ts);
       if (!isNaN(d.getFullYear())) return String(d.getFullYear());
       return "";
+    }
+
+    // Helper: Format Date Display
+    function formatDateDisplay(ts) {
+      if (!ts) return "-";
+      try {
+        const d = new Date(ts);
+        if (!isNaN(d.getTime())) {
+          return d.toLocaleDateString('en-GB') + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+      } catch (e) {}
+      return String(ts).replace('T', ' ').slice(0, 19);
     }
 
     function checkAuth() {
@@ -392,10 +442,24 @@
       renderDashboardData();
     }
 
-    function initDashboard() {
+    async function initDashboard() {
       const select = document.getElementById("yearSelect");
       if (select) {
         select.value = currentSelectedYear;
+      }
+      // Load live data from Google Sheet first
+      await fetchLiveSheetData();
+    }
+
+    async function fetchLiveSheetData() {
+      try {
+        const res = await fetch(SCRIPT_URL);
+        const json = await res.json();
+        if (json.status === "success" && Array.isArray(json.data) && json.data.length > 0) {
+          allResponses = json.data.map(processRecord);
+        }
+      } catch (err) {
+        console.warn("Could not fetch live data, using cached fallback:", err);
       }
       onYearChange();
     }
@@ -408,34 +472,60 @@
     }
 
     function updateKPIs() {
-      document.getElementById('totalResponses').innerText = `${activeResponses.length} នាក់`;
-      document.getElementById('kpiYearLabel').innerText = currentSelectedYear === "ALL" ? "ទិន្នន័យគ្រប់ឆ្នាំ" : `ទិន្នន័យឆ្នាំ ${currentSelectedYear}`;
+      document.getElementById("totalResponses").innerText = `${activeResponses.length} នាក់`;
+      document.getElementById("kpiYearLabel").innerText = currentSelectedYear === "ALL" ? "ទិន្នន័យគ្រប់ឆ្នាំ" : `ទិន្នន័យឆ្នាំ ${currentSelectedYear}`;
 
       if (activeResponses.length === 0) {
-        document.getElementById('avgOverallScore').innerText = "0.0 / 5.0";
-        document.getElementById('satisfactionRatingLabel').innerText = "គ្មានទិន្នន័យ";
+        document.getElementById("avgOverallScore").innerText = "0.0 / 5.0";
+        document.getElementById("satisfactionRatingLabel").innerText = "គ្មានទិន្នន័យ";
+        document.getElementById("topFacilityScore").innerText = "ពិន្ទុមធ្យម - / 5.0";
+        document.getElementById("urgentAreaScore").innerText = "ពិន្ទុមធ្យម - / 5.0";
         return;
       }
 
-      let sum = 0, count = 0;
+      let sumOverall = 0;
+      let sumEnv = 0, sumBA = 0, sumAdm = 0, sumDorm = 0;
+
       activeResponses.forEach(r => {
-        sum += (r.env_avg + r.b_a_avg + r.adm_avg + r.dorm_avg) / 4;
-        count++;
+        sumEnv += r.env_avg;
+        sumBA += r.b_a_avg;
+        sumAdm += r.adm_avg;
+        sumDorm += r.dorm_avg;
+        sumOverall += (r.env_avg + r.b_a_avg + r.adm_avg + r.dorm_avg) / 4;
       });
-      const overallAvg = (sum / count).toFixed(2);
-      document.getElementById('avgOverallScore').innerText = `${overallAvg} / 5.0`;
+
+      const n = activeResponses.length;
+      const overallAvg = Number((sumOverall / n).toFixed(2));
+      document.getElementById("avgOverallScore").innerText = `${overallAvg} / 5.0`;
 
       if (overallAvg >= 4.0) {
-        document.getElementById('satisfactionRatingLabel').innerText = "កម្រិត «ពេញចិត្តខ្លាំង»";
+        document.getElementById("satisfactionRatingLabel").innerText = "កម្រិត «ពេញចិត្តខ្លាំង»";
       } else if (overallAvg >= 3.0) {
-        document.getElementById('satisfactionRatingLabel').innerText = "កម្រិត «ពេញចិត្ត»";
+        document.getElementById("satisfactionRatingLabel").innerText = "កម្រិត «ពេញចិត្ត»";
       } else {
-        document.getElementById('satisfactionRatingLabel').innerText = "កម្រិត «មិនសូវពេញចិត្ត»";
+        document.getElementById("satisfactionRatingLabel").innerText = "កម្រិត «មិនសូវពេញចិត្ត»";
       }
+
+      // Determine Top Facility & Urgent Attention Facility dynamically
+      const facilityScores = [
+        { name: "បរិស្ថានវិទ្យាស្ថាន", score: Number((sumEnv / n).toFixed(2)) },
+        { name: "អគារសិក្សា A", score: Number((sumBA / n).toFixed(2)) },
+        { name: "អគាររដ្ឋបាល", score: Number((sumAdm / n).toFixed(2)) },
+        { name: "អន្តេវាសិកដ្ឋាន", score: Number((sumDorm / n).toFixed(2)) }
+      ].sort((a, b) => b.score - a.score);
+
+      const top = facilityScores[0];
+      const urgent = facilityScores[facilityScores.length - 1];
+
+      document.getElementById("topFacilityName").innerText = top.name;
+      document.getElementById("topFacilityScore").innerText = `ពិន្ទុមធ្យម ${top.score} / 5.0`;
+
+      document.getElementById("urgentAreaName").innerText = urgent.name;
+      document.getElementById("urgentAreaScore").innerText = `ពិន្ទុមធ្យម ${urgent.score} / 5.0 (ត្រូវកែលម្អ)`;
     }
 
     function renderCharts() {
-      let envAvg = 0, baAvg = 0, admAvg = 0, dormAvg = 0;
+      let envAvg = 0, baAvg = 0, admAvg = 0, dormAvg = 0, solarAvg = 0;
       const n = activeResponses.length;
 
       if (n > 0) {
@@ -444,30 +534,31 @@
           baAvg += r.b_a_avg;
           admAvg += r.adm_avg;
           dormAvg += r.dorm_avg;
+          solarAvg += (r.solar_avg || 3.5);
         });
-        envAvg = (envAvg / n).toFixed(2);
-        baAvg = (baAvg / n).toFixed(2);
-        admAvg = (admAvg / n).toFixed(2);
-        dormAvg = (dormAvg / n).toFixed(2);
+        envAvg = Number((envAvg / n).toFixed(2));
+        baAvg = Number((baAvg / n).toFixed(2));
+        admAvg = Number((admAvg / n).toFixed(2));
+        dormAvg = Number((dormAvg / n).toFixed(2));
+        solarAvg = Number((solarAvg / n).toFixed(2));
       }
-      const solarAvg = n > 0 ? 3.65 : 0;
 
       // 1. Radar Chart
-      const ctxRadar = document.getElementById('radarChart').getContext('2d');
+      const ctxRadar = document.getElementById("radarChart").getContext("2d");
       if (radarChartInstance) radarChartInstance.destroy();
       radarChartInstance = new Chart(ctxRadar, {
-        type: 'radar',
+        type: "radar",
         data: {
-          labels: ['បរិស្ថានទូទៅ', 'អគារសិក្សា A', 'អគាររដ្ឋបាល', 'អន្តេវាសិកដ្ឋាន', 'អគារសូឡា'],
+          labels: ["បរិស្ថានទូទៅ", "អគារសិក្សា A", "អគាររដ្ឋបាល", "អន្តេវាសិកដ្ឋាន", "អគារសូឡា"],
           datasets: [{
-            label: currentSelectedYear === "ALL" ? 'ពិន្ទុមធ្យមគ្រប់ឆ្នាំ' : `ពិន្ទុមធ្យម ${currentSelectedYear}`,
+            label: currentSelectedYear === "ALL" ? "ពិន្ទុមធ្យមគ្រប់ឆ្នាំ" : `ពិន្ទុមធ្យម ${currentSelectedYear}`,
             data: [envAvg, baAvg, admAvg, dormAvg, solarAvg],
-            backgroundColor: 'rgba(2, 132, 199, 0.2)',
-            borderColor: '#0284c7',
-            pointBackgroundColor: '#0284c7',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: '#0284c7'
+            backgroundColor: "rgba(2, 132, 199, 0.2)",
+            borderColor: "#0284c7",
+            pointBackgroundColor: "#0284c7",
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "#0284c7"
           }]
         },
         options: {
@@ -477,45 +568,66 @@
         }
       });
 
-      // 2. Doughnut Chart
+      // 2. Doughnut Chart (Majors)
       const majorCounts = {};
       activeResponses.forEach(r => {
-        const m = r.major.replace('ជំនាញ', '').trim();
+        const m = (r.major || "មិនបានបញ្ជាក់").replace("ជំនាញ", "").trim();
         majorCounts[m] = (majorCounts[m] || 0) + 1;
       });
 
-      const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
+      const ctxDoughnut = document.getElementById("doughnutChart").getContext("2d");
       if (doughnutChartInstance) doughnutChartInstance.destroy();
       doughnutChartInstance = new Chart(ctxDoughnut, {
-        type: 'doughnut',
+        type: "doughnut",
         data: {
           labels: Object.keys(majorCounts),
           datasets: [{
             data: Object.values(majorCounts),
-            backgroundColor: ['#0284c7', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#64748b']
+            backgroundColor: ["#0284c7", "#10b981", "#f59e0b", "#8b5cf6", "#ec4899", "#64748b"]
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } }
+          plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } }
         }
       });
 
-      // 3. Bar Chart
-      const ctxBar = document.getElementById('barChart').getContext('2d');
+      // 3. Bar Chart (Dynamic Calculation of Key Criteria)
+      let sumClsClean = 0, sumEquip = 0, sumAesthetic = 0, sumToilet = 0, sumSecurity = 0, sumUtil = 0, sumTrash = 0;
+      activeResponses.forEach(r => {
+        sumClsClean += parseScore(r.b_a_q2);
+        sumEquip += parseScore(r.b_a_q3);
+        sumAesthetic += parseScore(r.b_a_q1);
+        sumToilet += parseScore(r.b_a_q7);
+        sumSecurity += parseScore(r.env_q2);
+        sumUtil += parseScore(r.dorm_q3);
+        sumTrash += (parseScore(r.env_q3) + parseScore(r.env_q5)) / 2;
+      });
+
+      const barData = n > 0 ? [
+        Number((sumClsClean / n).toFixed(1)),
+        Number((sumEquip / n).toFixed(1)),
+        Number((sumAesthetic / n).toFixed(1)),
+        Number((sumToilet / n).toFixed(1)),
+        Number((sumSecurity / n).toFixed(1)),
+        Number((sumUtil / n).toFixed(1)),
+        Number((sumTrash / n).toFixed(1))
+      ] : [0, 0, 0, 0, 0, 0, 0];
+
+      const ctxBar = document.getElementById("barChart").getContext("2d");
       if (barChartInstance) barChartInstance.destroy();
       barChartInstance = new Chart(ctxBar, {
-        type: 'bar',
+        type: "bar",
         data: {
           labels: [
-            'បន្ទប់រៀនស្អាត/ពន្លឺ', 'សម្ភារបរិក្ខារ/Projector', 'សោភណ្ឌភាពអគារ A', 
-            'បន្ទប់ទឹកអគារសិក្សា', 'សន្តិសុខចេញចូល', 'ទឹក-ភ្លើងអន្តេវាសិកដ្ឋាន', 'ទីធ្លា & ធុងសំរាម'
+            "បន្ទប់រៀនស្អាត/ពន្លឺ", "សម្ភារបរិក្ខារ/Projector", "សោភណ្ឌភាពអគារ A", 
+            "បន្ទប់ទឹកអគារសិក្សា", "សន្តិសុខចេញចូល", "ទឹក-ភ្លើងអន្តេវាសិកដ្ឋាន", "ទីធ្លា & ធុងសំរាម"
           ],
           datasets: [{
-            label: 'ពិន្ទុមធ្យម',
-            data: n > 0 ? [4.3, 4.1, 4.2, 3.1, 3.8, 4.0, 2.9] : [0,0,0,0,0,0,0],
-            backgroundColor: ['#0284c7', '#0284c7', '#0284c7', '#f43f5e', '#10b981', '#10b981', '#f43f5e'],
+            label: "ពិន្ទុមធ្យម",
+            data: barData,
+            backgroundColor: barData.map(v => v >= 3.5 ? "#0284c7" : (v >= 2.5 ? "#10b981" : "#f43f5e")),
             borderRadius: 6
           }]
         },
@@ -528,22 +640,22 @@
     }
 
     function renderFeedback() {
-      const grid = document.getElementById('feedbackGrid');
-      const validFeedbacks = activeResponses.filter(r => r.feedback && r.feedback.trim().length > 2);
-      document.getElementById('feedbackCount').innerText = `${validFeedbacks.length} សំណូមពរ`;
+      const grid = document.getElementById("feedbackGrid");
+      const validFeedbacks = activeResponses.filter(r => r.feedback && String(r.feedback).trim().length > 1);
+      document.getElementById("feedbackCount").innerText = `${validFeedbacks.length} សំណូមពរ`;
 
       if (validFeedbacks.length === 0) {
-        grid.innerHTML = '<div class="col-span-3 text-center py-6 text-xs text-slate-400">មិនមានមតិយោបល់សម្រាប់ឆ្នាំនេះឡើយ</div>';
+        grid.innerHTML = '<div class="col-span-3 text-center py-6 text-xs text-slate-400">មិនទាន់មានមតិយោបល់ ឬសំណូមពរសម្រាប់ឆ្នាំនេះឡើយ</div>';
         return;
       }
 
       grid.innerHTML = validFeedbacks.map(f => {
         const y = getYearFromTimestamp(f.timestamp);
         return `
-          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-[11px] font-bold text-sky-700 bg-sky-100 px-2 py-0.5 rounded-md">${f.major}</span>
-              <span class="text-[10px] text-slate-400">${f.role} • ឆ្នាំ${y}</span>
+              <span class="text-[11px] font-bold text-sky-700 bg-sky-100 px-2 py-0.5 rounded-md">${f.major || "និស្សិត"}</span>
+              <span class="text-[10px] text-slate-400">${f.role || "និស្សិត"} • ឆ្នាំ${y}</span>
             </div>
             <p class="text-xs text-slate-700 leading-relaxed italic">"${f.feedback}"</p>
           </div>
@@ -552,38 +664,46 @@
     }
 
     function renderTable() {
-      const tbody = document.getElementById('tableBody');
+      const tbody = document.getElementById("tableBody");
       if (activeResponses.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="11" class="text-center py-6 text-xs text-slate-400">គ្មានទិន្នន័យឆ្លើយតបសម្រាប់ឆ្នាំដែលបានជ្រើសរើសឡើយ</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="11" class="text-center py-8 text-xs text-slate-400">គ្មានទិន្នន័យឆ្លើយតបសម្រាប់ឆ្នាំដែលបានជ្រើសរើសឡើយ</td></tr>';
         return;
+      }
+
+      function getBadge(score) {
+        if (!score || score <= 0) return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-100 text-slate-500">-</span>`;
+        if (score >= 3.5) return `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">${score}</span>`;
+        if (score >= 2.5) return `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200">${score}</span>`;
+        return `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200">${score}</span>`;
       }
 
       tbody.innerHTML = activeResponses.map((r, i) => {
         const y = getYearFromTimestamp(r.timestamp);
+        const dt = formatDateDisplay(r.timestamp);
         return `
           <tr class="hover:bg-slate-50 transition">
             <td class="p-3 font-semibold text-slate-400">${i + 1}</td>
-            <td class="p-3 text-[11px] whitespace-nowrap">${r.timestamp}</td>
+            <td class="p-3 text-[11px] whitespace-nowrap text-slate-600">${dt}</td>
             <td class="p-3 text-[11px] font-bold text-sky-600">${y}</td>
-            <td class="p-3 font-medium text-slate-700">${r.role}</td>
-            <td class="p-3 text-sky-700 font-semibold">${r.major}</td>
-            <td class="p-3">${r.residence}</td>
-            <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-[11px] font-bold ${r.env_avg >= 3.5 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}">${r.env_avg}</span></td>
-            <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-[11px] font-bold ${r.b_a_avg >= 3.5 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}">${r.b_a_avg}</span></td>
-            <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-[11px] font-bold ${r.adm_avg >= 3.5 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}">${r.adm_avg}</span></td>
-            <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-[11px] font-bold ${r.dorm_avg >= 3.5 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}">${r.dorm_avg}</span></td>
-            <td class="p-3 text-[11px] text-slate-500 max-w-xs truncate" title="${r.feedback}">${r.feedback || '-'}</td>
+            <td class="p-3 font-medium text-slate-700">${r.role || "-"}</td>
+            <td class="p-3 text-sky-700 font-semibold">${r.major || "-"}</td>
+            <td class="p-3">${r.residence || "-"}</td>
+            <td class="p-3 text-center">${getBadge(r.env_avg)}</td>
+            <td class="p-3 text-center">${getBadge(r.b_a_avg)}</td>
+            <td class="p-3 text-center">${getBadge(r.adm_avg)}</td>
+            <td class="p-3 text-center">${getBadge(r.dorm_avg)}</td>
+            <td class="p-3 text-[11px] text-slate-500 max-w-xs truncate" title="${r.feedback || ''}">${r.feedback || '-'}</td>
           </tr>
         `;
       }).join('');
     }
 
     function filterTable() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      const rows = document.querySelectorAll('#tableBody tr');
+      const q = document.getElementById("searchInput").value.toLowerCase();
+      const rows = document.querySelectorAll("#tableBody tr");
       rows.forEach(r => {
         const text = r.innerText.toLowerCase();
-        r.style.display = text.includes(q) ? '' : 'none';
+        r.style.display = text.includes(q) ? "" : "none";
       });
     }
 
@@ -591,10 +711,10 @@
       try {
         const res = await fetch(SCRIPT_URL);
         const json = await res.json();
-        if (json.status === 'success' && json.data) {
-          allResponses = json.data;
+        if (json.status === "success" && json.data) {
+          allResponses = json.data.map(processRecord);
           alert(`បានទាញយកទិន្នន័យថ្មីចំនួន ${json.data.length} ជួរពី Google Sheet ដោយជោគជ័យ!`);
-          initDashboard();
+          onYearChange();
         }
       } catch (e) {
         alert("មិនអាចទាញយកទិន្នន័យបានទេ សូមពិនិត្យមើល Web App URL!");
@@ -605,7 +725,8 @@
       let csv = "ID,Timestamp,Year,Role,Major,Residence,Env_Score,Building_A_Score,Admin_Score,Dorm_Score,Feedback\n";
       activeResponses.forEach(r => {
         const y = getYearFromTimestamp(r.timestamp);
-        csv += `"${r.id}","${r.timestamp}","${y}","${r.role}","${r.major}","${r.residence}","${r.env_avg}","${r.b_a_avg}","${r.adm_avg}","${r.dorm_avg}","${(r.feedback||'').replace(/"/g, '""')}"\n`;
+        const dt = formatDateDisplay(r.timestamp);
+        csv += `"${r.id}","${dt}","${y}","${r.role||''}","${r.major||''}","${r.residence||''}","${r.env_avg}","${r.b_a_avg}","${r.adm_avg}","${r.dorm_avg}","${(r.feedback||'').replace(/"/g, '""')}"\n`;
       });
       const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
