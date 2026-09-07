@@ -119,7 +119,7 @@
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
 
       <!-- ========================================== -->
-      <!-- 📅 YEAR FILTER TOOLBAR -->
+      <!-- 📅 YEAR FILTER TOOLBAR (CLEAN 4 OPTIONS) -->
       <!-- ========================================== -->
       <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center space-x-3">
@@ -135,10 +135,10 @@
         <div class="flex items-center space-x-2">
           <span class="text-xs font-bold text-slate-600">ជ្រើសរើសឆ្នាំ៖</span>
           <select id="yearSelect" onchange="onYearChange()" class="bg-slate-50 border border-slate-300 text-slate-800 font-bold text-xs rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none cursor-pointer shadow-sm">
-            <option value="ALL">📅 គ្រប់ឆ្នាំទាំងអស់ (All Years)</option>
-            <option value="2026">ឆ្នាំ ២០២៦ (2026)</option>
-            <option value="2025">ឆ្នាំ ២០២៥ (2025)</option>
-            <option value="2024">ឆ្នាំ ២០២៤ (2024)</option>
+            <option value="ALL">📅 គ្រប់ឆ្នាំទាំងអស់ (All)</option>
+            <option value="2026">ឆ្នាំ ២០២៦</option>
+            <option value="2025">ឆ្នាំ ២០២៥</option>
+            <option value="2024">ឆ្នាំ ២០២៤</option>
           </select>
           <span id="activeYearBadge" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-sky-100 text-sky-800 border border-sky-200">
             បង្ហាញ៖ គ្រប់ឆ្នាំ
@@ -310,8 +310,9 @@
     // Helper: Extract Year from timestamp
     function getYearFromTimestamp(ts) {
       if (!ts) return "";
-      const match = String(ts).match(/\b(202\d)\b/);
-      if (match) return match;
+      const str = String(ts);
+      const m = str.match(/202[0-9]/);
+      if (m) return m[0];
       const d = new Date(ts);
       if (!isNaN(d.getFullYear())) return String(d.getFullYear());
       return "";
@@ -385,29 +386,17 @@
         badge.innerText = "បង្ហាញ៖ គ្រប់ឆ្នាំ";
         activeResponses = [...allResponses];
       } else {
-        badge.innerText = `បង្ហាញ៖ ឆ្នាំ ${currentSelectedYear}`;
+        badge.innerText = "បង្ហាញ៖ ឆ្នាំ " + currentSelectedYear;
         activeResponses = allResponses.filter(r => getYearFromTimestamp(r.timestamp) === currentSelectedYear);
       }
       renderDashboardData();
     }
 
     function initDashboard() {
-      // Auto-detect available years in dataset
-      const yearSet = new Set();
-      allResponses.forEach(r => {
-        const y = getYearFromTimestamp(r.timestamp);
-        if (y) yearSet.add(y);
-      });
-      yearSet.add("2026");
-      yearSet.add("2025");
-      yearSet.add("2024");
-
       const select = document.getElementById("yearSelect");
-      const sortedYears = Array.from(yearSet).sort().reverse();
-      select.innerHTML = '<option value="ALL">📅 គ្រប់ឆ្នាំទាំងអស់ (All Years)</option>' + 
-        sortedYears.map(y => `<option value="${y}">ឆ្នាំ ${y} (${y})</option>`).join('');
-
-      select.value = currentSelectedYear;
+      if (select) {
+        select.value = currentSelectedYear;
+      }
       onYearChange();
     }
 
