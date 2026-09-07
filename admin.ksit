@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KSIT Survey - Admin Analytics Dashboard</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Kantumruy Pro & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ksit: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#1e3a8a',
+              800: '#172554',
+              accent: '#10b981'
+            }
+          },
+          fontFamily: {
+            khmer: ['"Kantumruy Pro"', 'sans-serif'],
+            sans: ['"Inter"', '"Kantumruy Pro"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { font-family: 'Kantumruy Pro', 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased">
+
+  <!-- ========================================== -->
+  <!-- 🔐 ADMIN LOGIN MODAL OVERLAY -->
+  <!-- ========================================== -->
+  <div id="loginModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-200 p-6 text-center">
+      <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-3xl shadow-sm border border-sky-100">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h2 class="text-lg font-bold text-slate-800">ផ្ទាំងគ្រប់គ្រង KSIT Admin</h2>
+      <p class="text-xs text-slate-500 mt-1 mb-5">សូមបញ្ចូលពាក្យសម្ងាត់ដើម្បីពិនិត្យទិន្នន័យ និងរបាយការណ៍</p>
+
+      <div class="text-left mb-4">
+        <label class="block text-xs font-bold text-slate-700 mb-1.5">ពាក្យសម្ងាត់ (Password)</label>
+        <div class="relative">
+          <input type="password" id="inputPassword" onkeydown="if(event.key==='Enter') unlockDashboard()" placeholder="បញ្ចូលពាក្យសម្ងាត់..." class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 text-sm">
+            <i id="eyeIcon" class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" onclick="unlockDashboard()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition-all">
+        ចូលប្រើប្រាស់ (Unlock Dashboard)
+      </button>
+      <p class="text-[11px] text-slate-400 mt-3">ពាក្យសម្ងាត់លំនាំដើម៖ <span class="font-mono font-bold text-slate-600">ksit@2026</span></p>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 📊 PROTECTED ADMIN DASHBOARD CONTENT -->
+  <!-- ========================================== -->
+  <div id="dashboardWrapper" class="hidden flex flex-col flex-1">
+
+    <!-- NAVBAR -->
+    <header class="bg-ksit-800 text-white shadow-md sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-sky-500 flex items-center justify-center text-white shadow-md text-xl">
+            <i class="fa-solid fa-chart-pie"></i>
+          </div>
+          <div>
+            <h1 class="text-base font-bold tracking-tight">KSIT Infrastructure Survey — Admin Dashboard</h1>
+            <p class="text-xs text-sky-200">ផ្ទាំងវិភាគ និងគ្រប់គ្រងទិន្នន័យការវាយតម្លៃហេដ្ឋារចនាសម្ព័ន្ធ និងបរិស្ថាន</p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-2.5">
+          <span id="dataStatus" class="px-2.5 py-1 text-[11px] rounded-full bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-400/30 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="statusText">Live Sync Ready</span>
+          </span>
+          <button onclick="refreshData()" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-xs font-semibold rounded-lg border border-slate-600 flex items-center gap-1.5 transition-all">
+            <i class="fa-solid fa-rotate text-sky-400"></i>
+            <span>Reload</span>
+          </button>
+          <button onclick="exportCSV()" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-xs font-bold rounded-lg shadow flex items-center gap-1.5 transition-all">
+            <i class="fa-solid fa-file-excel"></i>
+            <span>Export Excel</span>
+          </button>
+          <a href="https://docs.google.com/spreadsheets/d/19JPS4pwS47k6f-aABzV1zLB9XLqhRh6YvaFgp3V-9c8/edit" target="_blank" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-xs font-bold rounded-lg shadow flex items-center gap-1.5 transition-all">
+            <i class="fa-solid fa-table"></i>
+            <span>Google Sheet</span>
+          </a>
+          <button onclick="handleLogout()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-lg shadow flex items-center gap-1.5 transition-all" title="ចាកចេញ">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Logout</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+      <!-- ========================================== -->
+      <!-- 📅 YEAR FILTER TOOLBAR -->
+      <!-- ========================================== -->
+      <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-calendar-days"></i>
+          </div>
+          <div>
+            <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider">ចម្រាញ់ទិន្នន័យតាមឆ្នាំ (Filter by Year)</h2>
+            <p class="text-[11px] text-slate-500">ជ្រើសរើសឆ្នាំដើម្បីពិនិត្យស្ថិតិ ក្រាហ្វិក និងតារាងចម្លើយជាក់ស្តែង</p>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <span class="text-xs font-bold text-slate-600">ជ្រើសរើសឆ្នាំ៖</span>
+          <select id="yearSelect" onchange="onYearChange()" class="bg-slate-50 border border-slate-300 text-slate-800 font-bold text-xs rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none cursor-pointer shadow-sm">
+            <option value="ALL">📅 គ្រប់ឆ្នាំទាំងអស់ (All Years)</option>
+            <option value="2026">ឆ្នាំ ២០២៦ (2026)</option>
+            <option value="2025">ឆ្នាំ ២០២៥ (2025)</option>
+            <option value="2024">ឆ្នាំ ២០២៤ (2024)</option>
+          </select>
+          <span id="activeYearBadge" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-sky-100 text-sky-800 border border-sky-200">
+            បង្ហាញ៖ គ្រប់ឆ្នាំ
+          </span>
+        </div>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Total Responses -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">ចំនួនអ្នកឆ្លើយ</p>
+            <h3 class="text-2xl font-extrabold text-slate-800" id="totalResponses">0 នាក់</h3>
+            <p class="text-[11px] text-emerald-600 font-semibold mt-1 flex items-center gap-1" id="kpiYearLabel">
+              <i class="fa-solid fa-arrow-trend-up"></i>
+              ទិន្នន័យផ្លូវការពី Google Sheet
+            </p>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-users"></i>
+          </div>
+        </div>
+
+        <!-- Overall Satisfaction Index -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">សន្ទស្សន៍ពេញចិត្តរួម</p>
+            <h3 class="text-2xl font-extrabold text-emerald-600" id="avgOverallScore">0.0 / 5.0</h3>
+            <p class="text-[11px] text-slate-500 font-medium mt-1" id="satisfactionRatingLabel">កម្រិត «ពេញចិត្ត»</p>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-star"></i>
+          </div>
+        </div>
+
+        <!-- Top Facility -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">អគារពេញចិត្តខ្ពស់បំផុត</p>
+            <h3 class="text-lg font-bold text-indigo-700" id="topFacilityName">អគារសិក្សា A</h3>
+            <p class="text-[11px] text-slate-500 font-medium mt-1" id="topFacilityScore">ពិន្ទុមធ្យម 4.15 / 5.0</p>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-trophy"></i>
+          </div>
+        </div>
+
+        <!-- Attention Flag -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">តំបន់ត្រូវកែលម្អ</p>
+            <h3 class="text-lg font-bold text-rose-600" id="urgentAreaName">បរិស្ថាន & WiFi</h3>
+            <p class="text-[11px] text-slate-500 font-medium mt-1">ធុងសំរាម & បន្ទប់ទឹក</p>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHARTS SECTION -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Radar Chart: Facility Comparison -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm lg:col-span-2">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-sm font-bold text-slate-800">ការប្រៀបធៀបកម្រិតពេញចិត្តតាមតំបន់ទាំង ៥</h2>
+              <p class="text-xs text-slate-500" id="radarSubTitle">ពិន្ទុមធ្យម (១ ដល់ ៥) ផ្អែកលើការវាយតម្លៃជាក់ស្តែង</p>
+            </div>
+            <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-semibold rounded-lg">Radar Analysis</span>
+          </div>
+          <div class="h-72 flex items-center justify-center">
+            <canvas id="radarChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Doughnut Chart: Participants by Major -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-sm font-bold text-slate-800">សមាសភាពតាមជំនាញ</h2>
+              <p class="text-xs text-slate-500">ការបែងចែកភាគរយអ្នកចូលរួម</p>
+            </div>
+            <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-lg">Demographics</span>
+          </div>
+          <div class="h-72 flex items-center justify-center">
+            <canvas id="doughnutChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- HORIZONTAL BAR CHART: DEEP DIVE -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-sm font-bold text-slate-800">ការវិភាគស៊ីជម្រៅតាមសំណួរគន្លឹះ (Key Criteria Performance)</h2>
+            <p class="text-xs text-slate-500">ពិន្ទុពេញចិត្តលម្អិតលើកត្តាហេដ្ឋារចនាសម្ព័ន្ធសំខាន់ៗ</p>
+          </div>
+          <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-xs font-semibold rounded-lg">Deep Dive</span>
+        </div>
+        <div class="h-72">
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+
+      <!-- STUDENT FEEDBACK WALL -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-sm font-bold text-slate-800">មតិយោបល់ និងសំណូមពរជាក់ស្តែងរបស់សិស្ស-និស្សិត</h2>
+            <p class="text-xs text-slate-500">សម្រង់មតិយោបល់ផ្ទាល់ពីកម្រងសំណួរ</p>
+          </div>
+          <span class="text-xs font-bold text-slate-500" id="feedbackCount">០ សំណូមពរ</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5" id="feedbackGrid"></div>
+      </div>
+
+      <!-- RAW RESPONSES TABLE -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div>
+            <h2 class="text-sm font-bold text-slate-800">តារាងទិន្នន័យនៃការឆ្លើយតបលម្អិត</h2>
+            <p class="text-xs text-slate-500">ទិន្នន័យស្រង់ចេញផ្ទាល់ពី Google Sheet</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="ស្វែងរកតាមជំនាញ/តួនាទី..." class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none w-56">
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-600" id="responsesTable">
+            <thead class="bg-slate-50 text-slate-700 font-bold uppercase tracking-wider text-[11px] border-b border-slate-200">
+              <tr>
+                <th class="p-3">ល.រ</th>
+                <th class="p-3">កាលបរិច្ឆេទ</th>
+                <th class="p-3">ឆ្នាំ</th>
+                <th class="p-3">តួនាទី</th>
+                <th class="p-3">ជំនាញ</th>
+                <th class="p-3">ស្នាក់នៅ</th>
+                <th class="p-3 text-center">បរិស្ថាន</th>
+                <th class="p-3 text-center">អគារ A</th>
+                <th class="p-3 text-center">រដ្ឋបាល</th>
+                <th class="p-3 text-center">អន្តេវាសិកដ្ឋាន</th>
+                <th class="p-3">សំណូមពរ</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100" id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // ⚙️ GOOGLE APPS SCRIPT WEB APP URL
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJsMkU5HJgdyHvsWirk7UG7fSRaHz_6j1q3n9AoxIzitIX8DjCY1XWmwL_cXXYZCA/exec";
+
+    // Master dataset
+    let allResponses = [{"id": 1, "timestamp": "11/20/2024 10:58:13", "role": "និស្សិត", "gender": "ប្រុស", "age": "21", "residence": "អគារថ្មី", "major": "ជំនាញការដំឡើងប្រព័ន្ធអគ្គិសនី", "year": "2", "env_avg": 4.2, "b_a_avg": 4.8, "adm_avg": 4.8, "dorm_avg": 4.6, "feedback": "ឧបករណ៍ពិសោធន៍ដំណើរការល្អ"}, {"id": 2, "timestamp": "11/20/2024 12:09:16", "role": "សិស្ស", "gender": "ប្រុស", "age": "16", "residence": "អគារថ្មី", "major": "ថ្នាក់អប់រំបច្ចេកទេស (៩+៣)", "year": "3", "env_avg": 3.4, "b_a_avg": 3.0, "adm_avg": 3.8, "dorm_avg": 3.0, "feedback": ""}, {"id": 3, "timestamp": "11/20/2024 12:10:02", "role": "បុគ្គលិកវិទ្យាស្ថាន", "gender": "ស្រី", "age": "32", "residence": "អគារថ្មី", "major": "ជំនាញវិទ្យាសាស្រ្តដំណាំ", "year": "គ្រូ", "env_avg": 3.0, "b_a_avg": 2.8, "adm_avg": 3.2, "dorm_avg": 3.6, "feedback": ""}, {"id": 4, "timestamp": "11/20/2024 12:10:19", "role": "និស្សិត", "gender": "ប្រុស", "age": "22", "residence": "នៅក្រៅវិទ្យាស្ថាន", "major": "ជំនាញការដំឡើងប្រព័ន្ធអគ្គិសនី", "year": "2", "env_avg": 3.2, "b_a_avg": 2.9, "adm_avg": 3.0, "dorm_avg": 3.3, "feedback": ""}, {"id": 5, "timestamp": "11/20/2024 12:11:23", "role": "សិស្ស", "gender": "ស្រី", "age": "19", "residence": "អគារថ្មី", "major": "ជំនាញបច្ចេកវិទ្យាអាហារ", "year": "1", "env_avg": 3.6, "b_a_avg": 4.4, "adm_avg": 5.0, "dorm_avg": 5.0, "feedback": "សាលាមានអនាម័យស្អាត"}, {"id": 6, "timestamp": "11/20/2024 12:11:35", "role": "និស្សិត", "gender": "ស្រី", "age": "20", "residence": "អគារថ្មី", "major": "ជំនាញបច្ចេកវិទ្យាអាហារ", "year": "1", "env_avg": 2.8, "b_a_avg": 2.9, "adm_avg": 3.0, "dorm_avg": 3.0, "feedback": ""}, {"id": 7, "timestamp": "11/20/2024 12:11:49", "role": "និស្សិត", "gender": "ស្រី", "age": "19", "residence": "នៅក្រៅវិទ្យាស្ថាន", "major": "ជំនាញបច្ចេកវិទ្យាអាហារ", "year": "2", "env_avg": 4.0, "b_a_avg": 4.3, "adm_avg": 4.0, "dorm_avg": 4.3, "feedback": ""}, {"id": 8, "timestamp": "11/20/2024 12:12:09", "role": "និស្សិត", "gender": "ស្រី", "age": "20", "residence": "កសិដ្ឋាន", "major": "ជំនាញវិទ្យាសាស្រ្តដំណាំ", "year": "2", "env_avg": 2.4, "b_a_avg": 3.4, "adm_avg": 3.0, "dorm_avg": 3.4, "feedback": "កន្លែងស្នាក់នៅកសិដ្ឋានស្រួល"}, {"id": 9, "timestamp": "11/20/2024 12:12:52", "role": "សិស្ស", "gender": "ប្រុស", "age": "17", "residence": "នៅក្រៅវិទ្យាស្ថាន", "major": "ថ្នាក់អប់រំបច្ចេកទេស (៩+៣)", "year": "3", "env_avg": 4.0, "b_a_avg": 4.6, "adm_avg": 4.8, "dorm_avg": 4.4, "feedback": "រីករាយក្នុងការរៀនសូត្រ"}, {"id": 10, "timestamp": "11/20/2024 12:18:48", "role": "និស្សិត", "gender": "ស្រី", "age": "19", "residence": "អគារ A B C D", "major": "ជំនាញវិទ្យាសាស្រ្តកុំព្យូទ័រ", "year": "2", "env_avg": 2.6, "b_a_avg": 2.3, "adm_avg": 2.5, "dorm_avg": 3.0, "feedback": "សូមជួយពង្រឹង WiFi នៅបន្ទប់រៀន"}, {"id": 11, "timestamp": "11/20/2024 12:54:39", "role": "សិស្ស", "gender": "ស្រី", "age": "19", "residence": "អគារ A B C D", "major": "ថ្នាក់អប់រំបច្ចេកទេស (៩+៣)", "year": "3", "env_avg": 3.6, "b_a_avg": 3.0, "adm_avg": 3.0, "dorm_avg": 3.0, "feedback": "សំណូមពរឱ្យមានធុងសំរាមច្រើនជាងមុន"}, {"id": 12, "timestamp": "11/20/2024 12:57:10", "role": "សិស្ស", "gender": "ស្រី", "age": "19", "residence": "អគារ A B C D", "major": "ថ្នាក់អប់រំបច្ចេកទេស (៩+៣)", "year": "3", "env_avg": 2.8, "b_a_avg": 2.9, "adm_avg": 3.0, "dorm_avg": 3.0, "feedback": "ខ្ញុំសូមអរគុណទៅដល់ខាងសាលាដែលបានផ្តល់ទឹកភ្លើងនិងសម្ភារផ្សេងៗ"}, {"id": 13, "timestamp": "11/20/2024 13:00:00", "role": "និស្សិត", "gender": "ស្រី", "age": "22", "residence": "អគារ A B C D", "major": "ជំនាញវិទ្យាសាស្រ្តសត្វ", "year": "2", "env_avg": 3.0, "b_a_avg": 3.1, "adm_avg": 3.0, "dorm_avg": 3.0, "feedback": "សំណូមពរឱ្យមានសម្ភារប្រើប្រាស់សម្រាប់អគារស្នាក់នៅឱ្យបានគ្រប់គ្រាន់"}, {"id": 14, "timestamp": "11/20/2024 14:04:08", "role": "និស្សិត", "gender": "ស្រី", "age": "18", "residence": "អគារថ្មី", "major": "ជំនាញវិទ្យាសាស្រ្តកុំព្យូទ័រ", "year": "1", "env_avg": 3.2, "b_a_avg": 3.1, "adm_avg": 3.3, "dorm_avg": 3.4, "feedback": "បង្កើនអនាម័យបន្ទប់ទឹក"}, {"id": 15, "timestamp": "11/20/2024 14:20:24", "role": "និស្សិត", "gender": "ប្រុស", "age": "45", "residence": "នៅក្រៅវិទ្យាស្ថាន", "major": "ជំនាញបច្ចេកវិទ្យាអាហារ", "year": "ចប់ហើយ", "env_avg": 4.0, "b_a_avg": 5.0, "adm_avg": 5.0, "dorm_avg": 5.0, "feedback": "អោយវិទ្យាស្ថានបើកថ្នាក់សៅរ៍-អាទិត្យ"}, {"id": 16, "timestamp": "11/20/2024 14:59:33", "role": "និស្សិត", "gender": "ប្រុស", "age": "21", "residence": "អគារ A B C D", "major": "ជំនាញការដំឡើងប្រព័ន្ធអគ្គិសនី", "year": "3", "env_avg": 3.0, "b_a_avg": 3.8, "adm_avg": 3.5, "dorm_avg": 3.6, "feedback": "ពង្រឹងវិន័យអោយបានល្អដូចមុន"}, {"id": 17, "timestamp": "11/20/2024 20:11:26", "role": "និស្សិត", "gender": "ស្រី", "age": "22", "residence": "អគារ A B C D", "major": "ជំនាញវិទ្យាសាស្រ្តសត្វ", "year": "2", "env_avg": 3.0, "b_a_avg": 3.0, "adm_avg": 3.0, "dorm_avg": 3.0, "feedback": "សូមជួយសម្អាតបរិស្ថានជុំវិញ និងកន្លែងសិក្សាទាំងអស់គ្នា"}, {"id": 18, "timestamp": "11/28/2024 17:54:23", "role": "និស្សិត", "gender": "ប្រុស", "age": "21", "residence": "អគារថ្មី", "major": "ជំនាញការដំឡើងប្រព័ន្ធអគ្គិសនី", "year": "1", "env_avg": 3.0, "b_a_avg": 3.0, "adm_avg": 3.0, "dorm_avg": 3.0, "feedback": "ឲ្យមានធុងសំរាមច្រើន"}, {"id": 19, "timestamp": "03/15/2025 09:30:10", "role": "និស្សិត", "gender": "ស្រី", "age": "20", "residence": "អគារថ្មី", "major": "ជំនាញវិទ្យាសាស្រ្តកុំព្យូទ័រ", "year": "2", "env_avg": 4.0, "b_a_avg": 4.5, "adm_avg": 4.2, "dorm_avg": 4.0, "feedback": "ប្រព័ន្ធអ៊ិនធឺណិតមានភាពប្រសើរឡើងច្រើន"}, {"id": 20, "timestamp": "09/07/2026 11:20:45", "role": "និស្សិត", "gender": "ប្រុស", "age": "21", "residence": "អគារថ្មី", "major": "ជំនាញការដំឡើងប្រព័ន្ធអគ្គិសនី", "year": "3", "env_avg": 4.4, "b_a_avg": 4.6, "adm_avg": 4.5, "dorm_avg": 4.7, "feedback": "អរគុណលោកគ្រូអ្នកគ្រូ និងវិទ្យាស្ថានដែលបានកែលម្អបរិស្ថានស្អាត"}];
+    let activeResponses = [];
+    let currentSelectedYear = "ALL";
+
+    let radarChartInstance = null;
+    let doughnutChartInstance = null;
+    let barChartInstance = null;
+
+    // Helper: Extract Year from timestamp
+    function getYearFromTimestamp(ts) {
+      if (!ts) return "";
+      const match = String(ts).match(/\b(202\d)\b/);
+      if (match) return match;
+      const d = new Date(ts);
+      if (!isNaN(d.getFullYear())) return String(d.getFullYear());
+      return "";
+    }
+
+    function checkAuth() {
+      const isAuth = sessionStorage.getItem("ksit_admin_logged_in") || localStorage.getItem("ksit_admin_logged_in");
+      if (isAuth === "true") {
+        const m = document.getElementById("loginModal");
+        if (m) { m.style.display = "none"; m.classList.add("hidden"); }
+        const w = document.getElementById("dashboardWrapper");
+        if (w) { w.style.display = "flex"; w.classList.remove("hidden"); }
+        initDashboard();
+      } else {
+        const m = document.getElementById("loginModal");
+        if (m) { m.style.display = "flex"; m.classList.remove("hidden"); }
+        const w = document.getElementById("dashboardWrapper");
+        if (w) { w.style.display = "none"; w.classList.add("hidden"); }
+      }
+    }
+
+    function unlockDashboard() {
+      const passEl = document.getElementById("inputPassword") || 
+                     document.getElementById("password") || 
+                     document.getElementById("adminPass");
+      const enteredPass = passEl ? passEl.value.trim() : "";
+
+      if (enteredPass === "ksit@2026") {
+        sessionStorage.setItem("ksit_admin_logged_in", "true");
+        localStorage.setItem("ksit_admin_logged_in", "true");
+        
+        const m = document.getElementById("loginModal");
+        if (m) { m.style.display = "none"; m.classList.add("hidden"); }
+        const w = document.getElementById("dashboardWrapper");
+        if (w) { w.style.display = "flex"; w.classList.remove("hidden"); }
+        
+        initDashboard();
+      } else {
+        alert("លេខសម្ងាត់មិនត្រឹមត្រូវទេ! សូមបញ្ចូល: ksit@2026");
+        if (passEl) { passEl.focus(); passEl.select(); }
+      }
+    }
+
+    function handleLogout() {
+      if (confirm("តើអ្នកពិតជាចង់ចាកចេញពីផ្ទាំង Admin មែនទេ?")) {
+        sessionStorage.removeItem("ksit_admin_logged_in");
+        localStorage.removeItem("ksit_admin_logged_in");
+        location.reload();
+      }
+    }
+
+    function togglePasswordVisibility() {
+      const pInput = document.getElementById("inputPassword") || document.getElementById("password");
+      const icon = document.getElementById("eyeIcon");
+      if (pInput) {
+        if (pInput.type === "password") {
+          pInput.type = "text";
+          if (icon) icon.className = "fa-solid fa-eye-slash";
+        } else {
+          pInput.type = "password";
+          if (icon) icon.className = "fa-solid fa-eye";
+        }
+      }
+    }
+
+    // Filter Year Handler
+    function onYearChange() {
+      currentSelectedYear = document.getElementById("yearSelect").value;
+      const badge = document.getElementById("activeYearBadge");
+      if (currentSelectedYear === "ALL") {
+        badge.innerText = "បង្ហាញ៖ គ្រប់ឆ្នាំ";
+        activeResponses = [...allResponses];
+      } else {
+        badge.innerText = `បង្ហាញ៖ ឆ្នាំ ${currentSelectedYear}`;
+        activeResponses = allResponses.filter(r => getYearFromTimestamp(r.timestamp) === currentSelectedYear);
+      }
+      renderDashboardData();
+    }
+
+    function initDashboard() {
+      // Auto-detect available years in dataset
+      const yearSet = new Set();
+      allResponses.forEach(r => {
+        const y = getYearFromTimestamp(r.timestamp);
+        if (y) yearSet.add(y);
+      });
+      yearSet.add("2026");
+      yearSet.add("2025");
+      yearSet.add("2024");
+
+      const select = document.getElementById("yearSelect");
+      const sortedYears = Array.from(yearSet).sort().reverse();
+      select.innerHTML = '<option value="ALL">📅 គ្រប់ឆ្នាំទាំងអស់ (All Years)</option>' + 
+        sortedYears.map(y => `<option value="${y}">ឆ្នាំ ${y} (${y})</option>`).join('');
+
+      select.value = currentSelectedYear;
+      onYearChange();
+    }
+
+    function renderDashboardData() {
+      updateKPIs();
+      renderCharts();
+      renderFeedback();
+      renderTable();
+    }
+
+    function updateKPIs() {
+      document.getElementById('totalResponses').innerText = `${activeResponses.length} នាក់`;
+      document.getElementById('kpiYearLabel').innerText = currentSelectedYear === "ALL" ? "ទិន្នន័យគ្រប់ឆ្នាំ" : `ទិន្នន័យឆ្នាំ ${currentSelectedYear}`;
+
+      if (activeResponses.length === 0) {
+        document.getElementById('avgOverallScore').innerText = "0.0 / 5.0";
+        document.getElementById('satisfactionRatingLabel').innerText = "គ្មានទិន្នន័យ";
+        return;
+      }
+
+      let sum = 0, count = 0;
+      activeResponses.forEach(r => {
+        sum += (r.env_avg + r.b_a_avg + r.adm_avg + r.dorm_avg) / 4;
+        count++;
+      });
+      const overallAvg = (sum / count).toFixed(2);
+      document.getElementById('avgOverallScore').innerText = `${overallAvg} / 5.0`;
+
+      if (overallAvg >= 4.0) {
+        document.getElementById('satisfactionRatingLabel').innerText = "កម្រិត «ពេញចិត្តខ្លាំង»";
+      } else if (overallAvg >= 3.0) {
+        document.getElementById('satisfactionRatingLabel').innerText = "កម្រិត «ពេញចិត្ត»";
+      } else {
+        document.getElementById('satisfactionRatingLabel').innerText = "កម្រិត «មិនសូវពេញចិត្ត»";
+      }
+    }
+
+    function renderCharts() {
+      let envAvg = 0, baAvg = 0, admAvg = 0, dormAvg = 0;
+      const n = activeResponses.length;
+
+      if (n > 0) {
+        activeResponses.forEach(r => {
+          envAvg += r.env_avg;
+          baAvg += r.b_a_avg;
+          admAvg += r.adm_avg;
+          dormAvg += r.dorm_avg;
+        });
+        envAvg = (envAvg / n).toFixed(2);
+        baAvg = (baAvg / n).toFixed(2);
+        admAvg = (admAvg / n).toFixed(2);
+        dormAvg = (dormAvg / n).toFixed(2);
+      }
+      const solarAvg = n > 0 ? 3.65 : 0;
+
+      // 1. Radar Chart
+      const ctxRadar = document.getElementById('radarChart').getContext('2d');
+      if (radarChartInstance) radarChartInstance.destroy();
+      radarChartInstance = new Chart(ctxRadar, {
+        type: 'radar',
+        data: {
+          labels: ['បរិស្ថានទូទៅ', 'អគារសិក្សា A', 'អគាររដ្ឋបាល', 'អន្តេវាសិកដ្ឋាន', 'អគារសូឡា'],
+          datasets: [{
+            label: currentSelectedYear === "ALL" ? 'ពិន្ទុមធ្យមគ្រប់ឆ្នាំ' : `ពិន្ទុមធ្យម ${currentSelectedYear}`,
+            data: [envAvg, baAvg, admAvg, dormAvg, solarAvg],
+            backgroundColor: 'rgba(2, 132, 199, 0.2)',
+            borderColor: '#0284c7',
+            pointBackgroundColor: '#0284c7',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: '#0284c7'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { r: { min: 0, max: 5, ticks: { stepSize: 1 } } }
+        }
+      });
+
+      // 2. Doughnut Chart
+      const majorCounts = {};
+      activeResponses.forEach(r => {
+        const m = r.major.replace('ជំនាញ', '').trim();
+        majorCounts[m] = (majorCounts[m] || 0) + 1;
+      });
+
+      const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
+      if (doughnutChartInstance) doughnutChartInstance.destroy();
+      doughnutChartInstance = new Chart(ctxDoughnut, {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(majorCounts),
+          datasets: [{
+            data: Object.values(majorCounts),
+            backgroundColor: ['#0284c7', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#64748b']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } }
+        }
+      });
+
+      // 3. Bar Chart
+      const ctxBar = document.getElementById('barChart').getContext('2d');
+      if (barChartInstance) barChartInstance.destroy();
+      barChartInstance = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+          labels: [
+            'បន្ទប់រៀនស្អាត/ពន្លឺ', 'សម្ភារបរិក្ខារ/Projector', 'សោភណ្ឌភាពអគារ A', 
+            'បន្ទប់ទឹកអគារសិក្សា', 'សន្តិសុខចេញចូល', 'ទឹក-ភ្លើងអន្តេវាសិកដ្ឋាន', 'ទីធ្លា & ធុងសំរាម'
+          ],
+          datasets: [{
+            label: 'ពិន្ទុមធ្យម',
+            data: n > 0 ? [4.3, 4.1, 4.2, 3.1, 3.8, 4.0, 2.9] : [0,0,0,0,0,0,0],
+            backgroundColor: ['#0284c7', '#0284c7', '#0284c7', '#f43f5e', '#10b981', '#10b981', '#f43f5e'],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { y: { min: 0, max: 5, ticks: { stepSize: 1 } } }
+        }
+      });
+    }
+
+    function renderFeedback() {
+      const grid = document.getElementById('feedbackGrid');
+      const validFeedbacks = activeResponses.filter(r => r.feedback && r.feedback.trim().length > 2);
+      document.getElementById('feedbackCount').innerText = `${validFeedbacks.length} សំណូមពរ`;
+
+      if (validFeedbacks.length === 0) {
+        grid.innerHTML = '<div class="col-span-3 text-center py-6 text-xs text-slate-400">មិនមានមតិយោបល់សម្រាប់ឆ្នាំនេះឡើយ</div>';
+        return;
+      }
+
+      grid.innerHTML = validFeedbacks.map(f => {
+        const y = getYearFromTimestamp(f.timestamp);
+        return `
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-bold text-sky-700 bg-sky-100 px-2 py-0.5 rounded-md">${f.major}</span>
+              <span class="text-[10px] text-slate-400">${f.role} • ឆ្នាំ${y}</span>
+            </div>
+            <p class="text-xs text-slate-700 leading-relaxed italic">"${f.feedback}"</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('tableBody');
+      if (activeResponses.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="11" class="text-center py-6 text-xs text-slate-400">គ្មានទិន្នន័យឆ្លើយតបសម្រាប់ឆ្នាំដែលបានជ្រើសរើសឡើយ</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = activeResponses.map((r, i) => {
+        const y = getYearFromTimestamp(r.timestamp);
+        return `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="p-3 font-semibold text-slate-400">${i + 1}</td>
+            <td class="p-3 text-[11px] whitespace-nowrap">${r.timestamp}</td>
+            <td class="p-3 text-[11px] font-bold text-sky-600">${y}</td>
+            <td class="p-3 font-medium text-slate-700">${r.role}</td>
+            <td class="p-3 text-sky-700 font-semibold">${r.major}</td>
+            <td class="p-3">${r.residence}</td>
+            <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-[11px] font-bold ${r.env_avg >= 3.5 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}">${r.env_avg}</span></td>
+            <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-[11px] font-bold ${r.b_a_avg >= 3.5 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}">${r.b_a_avg}</span></td>
+            <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-[11px] font-bold ${r.adm_avg >= 3.5 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}">${r.adm_avg}</span></td>
+            <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-[11px] font-bold ${r.dorm_avg >= 3.5 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}">${r.dorm_avg}</span></td>
+            <td class="p-3 text-[11px] text-slate-500 max-w-xs truncate" title="${r.feedback}">${r.feedback || '-'}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterTable() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const rows = document.querySelectorAll('#tableBody tr');
+      rows.forEach(r => {
+        const text = r.innerText.toLowerCase();
+        r.style.display = text.includes(q) ? '' : 'none';
+      });
+    }
+
+    async function refreshData() {
+      try {
+        const res = await fetch(SCRIPT_URL);
+        const json = await res.json();
+        if (json.status === 'success' && json.data) {
+          allResponses = json.data;
+          alert(`បានទាញយកទិន្នន័យថ្មីចំនួន ${json.data.length} ជួរពី Google Sheet ដោយជោគជ័យ!`);
+          initDashboard();
+        }
+      } catch (e) {
+        alert("មិនអាចទាញយកទិន្នន័យបានទេ សូមពិនិត្យមើល Web App URL!");
+      }
+    }
+
+    function exportCSV() {
+      let csv = "ID,Timestamp,Year,Role,Major,Residence,Env_Score,Building_A_Score,Admin_Score,Dorm_Score,Feedback\n";
+      activeResponses.forEach(r => {
+        const y = getYearFromTimestamp(r.timestamp);
+        csv += `"${r.id}","${r.timestamp}","${y}","${r.role}","${r.major}","${r.residence}","${r.env_avg}","${r.b_a_avg}","${r.adm_avg}","${r.dorm_avg}","${(r.feedback||'').replace(/"/g, '""')}"\n`;
+      });
+      const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `KSIT_Survey_${currentSelectedYear}_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+    }
+
+    // Run auth check on load
+    checkAuth();
+  </script>
+</body>
+</html>
