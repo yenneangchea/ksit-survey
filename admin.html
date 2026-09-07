@@ -49,60 +49,27 @@
   <!-- 🔐 ADMIN LOGIN MODAL OVERLAY -->
   <!-- ========================================== -->
   <div id="loginModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
-      <div class="bg-gradient-to-br from-ksit-800 to-ksit-600 p-6 text-white text-center relative">
-        <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-white/10 backdrop-blur flex items-center justify-center text-3xl shadow-inner border border-white/20">
-          <i class="fa-solid fa-lock text-sky-300"></i>
+    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-200 p-6 text-center">
+      <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-3xl shadow-sm border border-sky-100">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h2 class="text-lg font-bold text-slate-800">ផ្ទាំងគ្រប់គ្រង KSIT Admin</h2>
+      <p class="text-xs text-slate-500 mt-1 mb-5">សូមបញ្ចូលពាក្យសម្ងាត់ដើម្បីពិនិត្យទិន្នន័យ និងរបាយការណ៍</p>
+
+      <div class="text-left mb-4">
+        <label class="block text-xs font-bold text-slate-700 mb-1.5">ពាក្យសម្ងាត់ (Password)</label>
+        <div class="relative">
+          <input type="password" id="inputPassword" onkeydown="if(event.key==='Enter') unlockDashboard()" placeholder="បញ្ចូលពាក្យសម្ងាត់..." class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
+          <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 text-sm">
+            <i id="eyeIcon" class="fa-solid fa-eye"></i>
+          </button>
         </div>
-        <h2 class="text-lg font-bold">ផ្ទាំងគ្រប់គ្រងទិន្នន័យ KSIT</h2>
-        <p class="text-xs text-sky-200 mt-1">សូមបញ្ចូលឈ្មោះគណនី និងពាក្យសម្ងាត់ Admin</p>
       </div>
 
-      <form id="loginForm" onsubmit="handleLogin(event)" class="p-6 space-y-4">
-        <div id="loginError" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
-          <i class="fa-solid fa-circle-exclamation text-rose-500"></i>
-          <span>ឈ្មោះគណនី ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវឡើយ!</span>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">ឈ្មោះគណនី (Username)</label>
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-sm">
-              <i class="fa-solid fa-user"></i>
-            </span>
-            <input type="text" id="inputUsername" required placeholder="admin" value="admin" class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">ពាក្យសម្ងាត់ (Password)</label>
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-sm">
-              <i class="fa-solid fa-key"></i>
-            </span>
-            <input type="password" id="inputPassword" required placeholder="••••••••" class="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-sky-500 focus:outline-none">
-            <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 text-sm">
-              <i id="eyeIcon" class="fa-solid fa-eye"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between text-xs pt-1">
-          <label class="flex items-center space-x-2 cursor-pointer">
-            <input type="checkbox" id="rememberMe" checked class="rounded border-slate-300 text-sky-600 focus:ring-sky-500">
-            <span class="text-slate-600">ចងចាំការចូលប្រើប្រាស់ (Remember me)</span>
-          </label>
-        </div>
-
-        <button type="submit" class="w-full py-3 bg-gradient-to-r from-ksit-700 to-sky-600 hover:from-ksit-800 hover:to-sky-700 text-white font-bold text-xs rounded-xl shadow-lg shadow-sky-600/20 flex items-center justify-center gap-2 transition-all">
-          <i class="fa-solid fa-arrow-right-to-bracket"></i>
-          <span>ចូលប្រព័ន្ធ (Sign In)</span>
-        </button>
-
-        <p class="text-[11px] text-center text-slate-400 pt-2">
-          លំនាំដើម៖ <span class="font-mono text-slate-600 font-bold">admin</span> / <span class="font-mono text-slate-600 font-bold">ksit@2026</span>
-        </p>
-      </form>
+      <button type="button" onclick="unlockDashboard()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition-all">
+        ចូលប្រើប្រាស់ (Unlock Dashboard)
+      </button>
+      <p class="text-[11px] text-slate-400 mt-3">ពាក្យសម្ងាត់លំនាំដើម៖ <span class="font-mono font-bold text-slate-600">ksit@2026</span></p>
     </div>
   </div>
 
@@ -299,13 +266,7 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // 🔐 ADMIN LOGIN CREDENTIALS
-    const ADMIN_CREDENTIALS = {
-      username: "admin",
-      password: "ksit@2026"
-    };
-
-    // ⚙️ GOOGLE APPS SCRIPT WEB APP URL (ALREADY INJECTED)
+    // ⚙️ GOOGLE APPS SCRIPT WEB APP URL
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJsMkU5HJgdyHvsWirk7UG7fSRaHz_6j1q3n9AoxIzitIX8DjCY1XWmwL_cXXYZCA/exec";
 
     // Initial dataset
@@ -321,7 +282,7 @@
       {"id":9, "timestamp":"11/20/2024 12:12:52", "role":"សិស្ស", "gender":"ប្រុស", "age":"17", "residence":"នៅក្រៅវិទ្យាស្ថាន", "major":"ថ្នាក់អប់រំបច្ចេកទេស (៩+៣)", "year":"3", "env_avg":4.0, "b_a_avg":4.6, "adm_avg":4.8, "dorm_avg":4.4, "feedback":"រីករាយក្នុងការរៀនសូត្រ"},
       {"id":10, "timestamp":"11/20/2024 12:18:48", "role":"និស្សិត", "gender":"ស្រី", "age":"19", "residence":"អគារ A B C D", "major":"ជំនាញវិទ្យាសាស្រ្តកុំព្យូទ័រ", "year":"2", "env_avg":2.6, "b_a_avg":2.3, "adm_avg":2.5, "dorm_avg":3.0, "feedback":"សូមជួយពង្រឹង WiFi នៅបន្ទប់រៀន"},
       {"id":11, "timestamp":"11/20/2024 12:54:39", "role":"សិស្ស", "gender":"ស្រី", "age":"19", "residence":"អគារ A B C D", "major":"ថ្នាក់អប់រំបច្ចេកទេស (៩+៣)", "year":"3", "env_avg":3.6, "b_a_avg":3.0, "adm_avg":3.0, "dorm_avg":3.0, "feedback":"សំណូមពរឱ្យមានធុងសំរាមច្រើនជាងមុន"},
-      {"id":12, "timestamp":"11/20/2024 12:57:10", "role":"សិស្ស", "gender":"ស្រី", "age":"19", "residence":"អគារ A B C D", "major":"ថ្នាក់អប់រំបច្ចេកទេស (៩+៣)", "year":"3", "env_avg":2.8, "b_a_avg":2.9, "adm_avg":3.0, "dorm_avg":3.0, "feedback":"ខ្ញុំសូមអរគុណទៅដល់ខាងសាលាដែលបានផ្តល់ទឹកភ្លើងនិងសម្ភារផ្សេងៗ"},
+      {"id":12, "timestamp":"11/20/2024 12:57:10", "role":"សិស្ស", "gender":"ស្រី", "age":"19", "residence":"អគារ A B C D", "major":"ថ្នាក់អប់រំបច្ចេកទេស (៩+៣)", "year":"3", "env_avg":2.8, "b_a_2.9":3.0, "adm_avg":3.0, "dorm_avg":3.0, "feedback":"ខ្ញុំសូមអរគុណទៅដល់ខាងសាលាដែលបានផ្តល់ទឹកភ្លើងនិងសម្ភារផ្សេងៗ"},
       {"id":13, "timestamp":"11/20/2024 13:00:00", "role":"និស្សិត", "gender":"ស្រី", "age":"22", "residence":"អគារ A B C D", "major":"ជំនាញវិទ្យាសាស្រ្តសត្វ", "year":"2", "env_avg":3.0, "b_a_avg":3.1, "adm_avg":3.0, "dorm_avg":3.0, "feedback":"សំណូមពរឱ្យមានសម្ភារប្រើប្រាស់សម្រាប់អគារស្នាក់នៅឱ្យបានគ្រប់គ្រាន់"},
       {"id":14, "timestamp":"11/20/2024 14:04:08", "role":"និស្សិត", "gender":"ស្រី", "age":"18", "residence":"អគារថ្មី", "major":"ជំនាញវិទ្យាសាស្រ្តកុំព្យូទ័រ", "year":"1", "env_avg":3.2, "b_a_avg":3.1, "adm_avg":3.3, "dorm_avg":3.4, "feedback":"បង្កើនអនាម័យបន្ទប់ទឹក"},
       {"id":15, "timestamp":"11/20/2024 14:20:24", "role":"និស្សិត", "gender":"ប្រុស", "age":"45", "residence":"នៅក្រៅវិទ្យាស្ថាន", "major":"ជំនាញបច្ចេកវិទ្យាអាហារ", "year":"ចប់ហើយ", "env_avg":4.0, "b_a_avg":5.0, "adm_avg":5.0, "dorm_avg":5.0, "feedback":"អោយវិទ្យាស្ថានបើកថ្នាក់សៅរ៍-អាទិត្យ"},
@@ -337,33 +298,38 @@
     function checkAuth() {
       const isAuth = sessionStorage.getItem("ksit_admin_logged_in") || localStorage.getItem("ksit_admin_logged_in");
       if (isAuth === "true") {
-        document.getElementById("loginModal").classList.add("hidden");
-        document.getElementById("dashboardWrapper").classList.remove("hidden");
+        const m = document.getElementById("loginModal");
+        if (m) { m.style.display = "none"; m.classList.add("hidden"); }
+        const w = document.getElementById("dashboardWrapper");
+        if (w) { w.style.display = "flex"; w.classList.remove("hidden"); }
         initDashboard();
       } else {
-        document.getElementById("loginModal").classList.remove("hidden");
-        document.getElementById("dashboardWrapper").classList.add("hidden");
+        const m = document.getElementById("loginModal");
+        if (m) { m.style.display = "flex"; m.classList.remove("hidden"); }
+        const w = document.getElementById("dashboardWrapper");
+        if (w) { w.style.display = "none"; w.classList.add("hidden"); }
       }
     }
 
-    function handleLogin(e) {
-      e.preventDefault();
-      const u = document.getElementById("inputUsername").value.trim();
-      const p = document.getElementById("inputPassword").value;
-      const remember = document.getElementById("rememberMe").checked;
+    function unlockDashboard() {
+      const passEl = document.getElementById("inputPassword") || 
+                     document.getElementById("password") || 
+                     document.getElementById("adminPass");
+      const enteredPass = passEl ? passEl.value.trim() : "";
 
-      if (u === ADMIN_CREDENTIALS.username && p === ADMIN_CREDENTIALS.password) {
-        document.getElementById("loginError").classList.add("hidden");
-        if (remember) {
-          localStorage.setItem("ksit_admin_logged_in", "true");
-        } else {
-          sessionStorage.setItem("ksit_admin_logged_in", "true");
-        }
-        document.getElementById("loginModal").classList.add("hidden");
-        document.getElementById("dashboardWrapper").classList.remove("hidden");
+      if (enteredPass === "ksit@2026") {
+        sessionStorage.setItem("ksit_admin_logged_in", "true");
+        localStorage.setItem("ksit_admin_logged_in", "true");
+        
+        const m = document.getElementById("loginModal");
+        if (m) { m.style.display = "none"; m.classList.add("hidden"); }
+        const w = document.getElementById("dashboardWrapper");
+        if (w) { w.style.display = "flex"; w.classList.remove("hidden"); }
+        
         initDashboard();
       } else {
-        document.getElementById("loginError").classList.remove("hidden");
+        alert("លេខសម្ងាត់មិនត្រឹមត្រូវទេ! សូមបញ្ចូល: ksit@2026");
+        if (passEl) { passEl.focus(); passEl.select(); }
       }
     }
 
@@ -371,20 +337,21 @@
       if (confirm("តើអ្នកពិតជាចង់ចាកចេញពីផ្ទាំង Admin មែនទេ?")) {
         sessionStorage.removeItem("ksit_admin_logged_in");
         localStorage.removeItem("ksit_admin_logged_in");
-        document.getElementById("inputPassword").value = "";
-        checkAuth();
+        location.reload();
       }
     }
 
     function togglePasswordVisibility() {
-      const pInput = document.getElementById("inputPassword");
+      const pInput = document.getElementById("inputPassword") || document.getElementById("password");
       const icon = document.getElementById("eyeIcon");
-      if (pInput.type === "password") {
-        pInput.type = "text";
-        icon.className = "fa-solid fa-eye-slash";
-      } else {
-        pInput.type = "password";
-        icon.className = "fa-solid fa-eye";
+      if (pInput) {
+        if (pInput.type === "password") {
+          pInput.type = "text";
+          if (icon) icon.className = "fa-solid fa-eye-slash";
+        } else {
+          pInput.type = "password";
+          if (icon) icon.className = "fa-solid fa-eye";
+        }
       }
     }
 
