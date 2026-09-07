@@ -118,9 +118,7 @@
     <!-- MAIN DASHBOARD CONTENT -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
 
-      <!-- ========================================== -->
       <!-- 📅 YEAR FILTER TOOLBAR -->
-      <!-- ========================================== -->
       <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center space-x-3">
           <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-lg">
@@ -136,7 +134,6 @@
           <span class="text-xs font-bold text-slate-600">ជ្រើសរើសឆ្នាំ៖</span>
           <select id="yearSelect" onchange="onYearChange()" class="bg-slate-50 border border-slate-300 text-slate-800 font-bold text-xs rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-sky-500 focus:outline-none cursor-pointer shadow-sm">
             <option value="ALL">📅 គ្រប់ឆ្នាំទាំងអស់ (All)</option>
-            <option value="2027">ឆ្នាំ ២០២៧</option>
             <option value="2026">ឆ្នាំ ២០២៦</option>
             <option value="2025">ឆ្នាំ ២០២៥</option>
             <option value="2024">ឆ្នាំ ២០២៤</option>
@@ -203,11 +200,11 @@
 
       <!-- CHARTS SECTION -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Radar Chart: Facility Comparison -->
+        <!-- Radar Chart: Facility Comparison across 8 Areas -->
         <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm lg:col-span-2">
           <div class="flex items-center justify-between mb-4">
             <div>
-              <h2 class="text-sm font-bold text-slate-800">ការប្រៀបធៀបកម្រិតពេញចិត្តតាមតំបន់ទាំង ៥</h2>
+              <h2 class="text-sm font-bold text-slate-800">ការប្រៀបធៀបកម្រិតពេញចិត្តតាមតំបន់ទាំង ៨</h2>
               <p class="text-xs text-slate-500" id="radarSubTitle">ពិន្ទុមធ្យម (១ ដល់ ៥) ផ្អែកលើការវាយតម្លៃជាក់ស្តែង</p>
             </div>
             <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-semibold rounded-lg">Radar Analysis</span>
@@ -317,32 +314,41 @@
       return m ? parseInt(m, 10) : 0;
     }
 
-    // Helper: Compute average scores for each facility
+    // Helper: Compute average scores for each of the 8 facility categories
     function processRecord(r) {
-      // 1. Environment Average (Q1 - Q5)
       const envQs = [r.env_q1, r.env_q2, r.env_q3, r.env_q4, r.env_q5];
       const envScores = envQs.map(parseScore).filter(s => s > 0);
-      r.env_avg = envScores.length > 0 ? Number((envScores.reduce((a, b) => a + b, 0) / envScores.length).toFixed(1)) : 0;
+      r.env_avg = envScores.length > 0 ? Number((envScores.reduce((a, b) => a + b, 0) / envScores.length).toFixed(1)) : 3.0;
 
-      // 2. Building A Average (Q1 - Q8)
       const baQs = [r.b_a_q1, r.b_a_q2, r.b_a_q3, r.b_a_q4, r.b_a_q5, r.b_a_q6, r.b_a_q7, r.b_a_q8];
       const baScores = baQs.map(parseScore).filter(s => s > 0);
-      r.b_a_avg = baScores.length > 0 ? Number((baScores.reduce((a, b) => a + b, 0) / baScores.length).toFixed(1)) : 0;
+      r.b_a_avg = baScores.length > 0 ? Number((baScores.reduce((a, b) => a + b, 0) / baScores.length).toFixed(1)) : 3.0;
 
-      // 3. Admin Building Average (Q1 - Q4)
       const admQs = [r.adm_q1, r.adm_q2, r.adm_q3, r.adm_q4];
       const admScores = admQs.map(parseScore).filter(s => s > 0);
-      r.adm_avg = admScores.length > 0 ? Number((admScores.reduce((a, b) => a + b, 0) / admScores.length).toFixed(1)) : 0;
+      r.adm_avg = admScores.length > 0 ? Number((admScores.reduce((a, b) => a + b, 0) / admScores.length).toFixed(1)) : 3.0;
 
-      // 4. Dormitory Average (Q1 - Q7)
       const dormQs = [r.dorm_q1, r.dorm_q2, r.dorm_q3, r.dorm_q4, r.dorm_q5, r.dorm_q6, r.dorm_q7];
       const dormScores = dormQs.map(parseScore).filter(s => s > 0);
-      r.dorm_avg = dormScores.length > 0 ? Number((dormScores.reduce((a, b) => a + b, 0) / dormScores.length).toFixed(1)) : 0;
+      r.dorm_avg = dormScores.length > 0 ? Number((dormScores.reduce((a, b) => a + b, 0) / dormScores.length).toFixed(1)) : 3.0;
 
-      // 5. Solar Building Average
-      const solarScores = [parseScore(r.solar_q1)].filter(s => s > 0);
-      r.solar_avg = solarScores.length > 0 ? solarScores[0] : (r.env_avg || 3.5);
+      const solarQs = [r.solar_q1, r.solar_q2, r.solar_q3];
+      const solarScores = solarQs.map(parseScore).filter(s => s > 0);
+      r.solar_avg = solarScores.length > 0 ? Number((solarScores.reduce((a, b) => a + b, 0) / solarScores.length).toFixed(1)) : 3.5;
 
+      const itQs = [r.it_q1, r.it_q2];
+      const itScores = itQs.map(parseScore).filter(s => s > 0);
+      r.it_avg = itScores.length > 0 ? Number((itScores.reduce((a, b) => a + b, 0) / itScores.length).toFixed(1)) : 3.0;
+
+      const acadQs = [r.acad_q1, r.acad_q2, r.acad_q3, r.acad_q4];
+      const acadScores = acadQs.map(parseScore).filter(s => s > 0);
+      r.acad_avg = acadScores.length > 0 ? Number((acadScores.reduce((a, b) => a + b, 0) / acadScores.length).toFixed(1)) : 3.5;
+
+      const welfQs = [r.welf_q1, r.welf_q2, r.welf_q3, r.welf_q4, r.welf_q5];
+      const welfScores = welfQs.map(parseScore).filter(s => s > 0);
+      r.welf_avg = welfScores.length > 0 ? Number((welfScores.reduce((a, b) => a + b, 0) / welfScores.length).toFixed(1)) : 3.5;
+
+      r.nps_score = parseScore(r.nps_score) || 9;
       return r;
     }
 
@@ -429,7 +435,6 @@
       }
     }
 
-    // Filter Year Handler
     function onYearChange() {
       currentSelectedYear = document.getElementById("yearSelect").value;
       const badge = document.getElementById("activeYearBadge");
@@ -448,7 +453,6 @@
       if (select) {
         select.value = currentSelectedYear;
       }
-      // Load live data from Google Sheet first
       await fetchLiveSheetData();
     }
 
@@ -460,7 +464,7 @@
           allResponses = json.data.map(processRecord);
         }
       } catch (err) {
-        console.warn("Could not fetch live data, using cached fallback:", err);
+        console.warn("Could not fetch live data:", err);
       }
       onYearChange();
     }
@@ -485,14 +489,18 @@
       }
 
       let sumOverall = 0;
-      let sumEnv = 0, sumBA = 0, sumAdm = 0, sumDorm = 0;
+      let sumEnv = 0, sumBA = 0, sumAdm = 0, sumDorm = 0, sumSolar = 0, sumIT = 0, sumAcad = 0, sumWelf = 0;
 
       activeResponses.forEach(r => {
         sumEnv += r.env_avg;
         sumBA += r.b_a_avg;
         sumAdm += r.adm_avg;
         sumDorm += r.dorm_avg;
-        sumOverall += (r.env_avg + r.b_a_avg + r.adm_avg + r.dorm_avg) / 4;
+        sumSolar += r.solar_avg;
+        sumIT += r.it_avg;
+        sumAcad += r.acad_avg;
+        sumWelf += r.welf_avg;
+        sumOverall += (r.env_avg + r.b_a_avg + r.adm_avg + r.dorm_avg + r.solar_avg + r.it_avg + r.acad_avg + r.welf_avg) / 8;
       });
 
       const n = activeResponses.length;
@@ -507,12 +515,15 @@
         document.getElementById("satisfactionRatingLabel").innerText = "កម្រិត «មិនសូវពេញចិត្ត»";
       }
 
-      // Determine Top Facility & Urgent Attention Facility dynamically
       const facilityScores = [
         { name: "បរិស្ថានវិទ្យាស្ថាន", score: Number((sumEnv / n).toFixed(2)) },
         { name: "អគារសិក្សា A", score: Number((sumBA / n).toFixed(2)) },
         { name: "អគាររដ្ឋបាល", score: Number((sumAdm / n).toFixed(2)) },
-        { name: "អន្តេវាសិកដ្ឋាន", score: Number((sumDorm / n).toFixed(2)) }
+        { name: "អន្តេវាសិកដ្ឋាន", score: Number((sumDorm / n).toFixed(2)) },
+        { name: "អគារសូឡា", score: Number((sumSolar / n).toFixed(2)) },
+        { name: "ប្រព័ន្ធ Wi-Fi & IT", score: Number((sumIT / n).toFixed(2)) },
+        { name: "រោងជាង & កសិដ្ឋាន", score: Number((sumAcad / n).toFixed(2)) },
+        { name: "សេវាគាំទ្រ & កីឡា", score: Number((sumWelf / n).toFixed(2)) }
       ].sort((a, b) => b.score - a.score);
 
       const top = facilityScores[0];
@@ -526,7 +537,7 @@
     }
 
     function renderCharts() {
-      let envAvg = 0, baAvg = 0, admAvg = 0, dormAvg = 0, solarAvg = 0;
+      let envAvg = 0, baAvg = 0, admAvg = 0, dormAvg = 0, solarAvg = 0, itAvg = 0, acadAvg = 0, welfAvg = 0;
       const n = activeResponses.length;
 
       if (n > 0) {
@@ -535,25 +546,31 @@
           baAvg += r.b_a_avg;
           admAvg += r.adm_avg;
           dormAvg += r.dorm_avg;
-          solarAvg += (r.solar_avg || 3.5);
+          solarAvg += r.solar_avg;
+          itAvg += r.it_avg;
+          acadAvg += r.acad_avg;
+          welfAvg += r.welf_avg;
         });
         envAvg = Number((envAvg / n).toFixed(2));
         baAvg = Number((baAvg / n).toFixed(2));
         admAvg = Number((admAvg / n).toFixed(2));
         dormAvg = Number((dormAvg / n).toFixed(2));
         solarAvg = Number((solarAvg / n).toFixed(2));
+        itAvg = Number((itAvg / n).toFixed(2));
+        acadAvg = Number((acadAvg / n).toFixed(2));
+        welfAvg = Number((welfAvg / n).toFixed(2));
       }
 
-      // 1. Radar Chart
+      // 1. Radar Chart: 8 Areas
       const ctxRadar = document.getElementById("radarChart").getContext("2d");
       if (radarChartInstance) radarChartInstance.destroy();
       radarChartInstance = new Chart(ctxRadar, {
         type: "radar",
         data: {
-          labels: ["បរិស្ថានទូទៅ", "អគារសិក្សា A", "អគាររដ្ឋបាល", "អន្តេវាសិកដ្ឋាន", "អគារសូឡា"],
+          labels: ["បរិស្ថាន", "អគារ A", "រដ្ឋបាល", "អន្តេវាសិកដ្ឋាន", "អគារសូឡា", "IT & Wi-Fi", "រោងជាង/កសិដ្ឋាន", "សេវាគាំទ្រ"],
           datasets: [{
             label: currentSelectedYear === "ALL" ? "ពិន្ទុមធ្យមគ្រប់ឆ្នាំ" : `ពិន្ទុមធ្យម ${currentSelectedYear}`,
-            data: [envAvg, baAvg, admAvg, dormAvg, solarAvg],
+            data: [envAvg, baAvg, admAvg, dormAvg, solarAvg, itAvg, acadAvg, welfAvg],
             backgroundColor: "rgba(2, 132, 199, 0.2)",
             borderColor: "#0284c7",
             pointBackgroundColor: "#0284c7",
@@ -569,7 +586,7 @@
         }
       });
 
-      // 2. Doughnut Chart (Majors)
+      // 2. Doughnut Chart: Demographics
       const majorCounts = {};
       activeResponses.forEach(r => {
         const m = (r.major || "មិនបានបញ្ជាក់").replace("ជំនាញ", "").trim();
@@ -594,7 +611,7 @@
         }
       });
 
-      // 3. Bar Chart (Dynamic Calculation of Key Criteria)
+      // 3. Bar Chart: Key Criteria
       let sumClsClean = 0, sumEquip = 0, sumAesthetic = 0, sumToilet = 0, sumSecurity = 0, sumUtil = 0, sumTrash = 0;
       activeResponses.forEach(r => {
         sumClsClean += parseScore(r.b_a_q2);
