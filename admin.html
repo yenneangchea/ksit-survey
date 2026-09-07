@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KSIT Survey - Admin Analytics Dashboard</title>
+  <title>KSIT Survey - Executive Analytics Dashboard</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Chart.js CDN -->
@@ -41,6 +41,10 @@
 
   <style>
     body { font-family: 'Kantumruy Pro', 'Inter', sans-serif; }
+    .badge-excellent { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .badge-good { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .badge-average { background-color: #fef9c3; color: #a16207; border: 1px solid #fef08a; }
+    .badge-urgent { background-color: #ffe4e6; color: #be123c; border: 1px solid #fecdd3; }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased">
@@ -83,11 +87,11 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center space-x-3">
           <div class="w-10 h-10 rounded-xl bg-sky-500 flex items-center justify-center text-white shadow-md text-xl">
-            <i class="fa-solid fa-chart-pie"></i>
+            <i class="fa-solid fa-chart-line"></i>
           </div>
           <div>
-            <h1 class="text-base font-bold tracking-tight">KSIT Infrastructure Survey — Admin Dashboard</h1>
-            <p class="text-xs text-sky-200">ផ្ទាំងវិភាគ និងគ្រប់គ្រងទិន្នន័យការវាយតម្លៃហេដ្ឋារចនាសម្ព័ន្ធ និងបរិស្ថាន</p>
+            <h1 class="text-base font-bold tracking-tight">KSIT Infrastructure Survey — Executive Analytics</h1>
+            <p class="text-xs text-sky-200">ផ្ទាំងវិភាគ និងគ្រប់គ្រងទិន្នន័យការវាយតម្លៃគុណភាព និងហេដ្ឋារចនាសម្ព័ន្ធ KSIT</p>
           </div>
         </div>
         <div class="flex items-center space-x-2.5">
@@ -144,77 +148,117 @@
         </div>
       </div>
 
-      <!-- KPI CARDS -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- Total Responses -->
-        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
-          <div>
-            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">ចំនួនអ្នកឆ្លើយ</p>
-            <h3 class="text-2xl font-extrabold text-slate-800" id="totalResponses">0 នាក់</h3>
-            <p class="text-[11px] text-emerald-600 font-semibold mt-1 flex items-center gap-1" id="kpiYearLabel">
-              <i class="fa-solid fa-arrow-trend-up"></i>
-              ទិន្នន័យផ្លូវការពី Google Sheet
-            </p>
+      <!-- 6 STRATEGIC KPI CARDS -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+        <!-- 1. Total Responses -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">អ្នកឆ្លើយសរុប</span>
+            <span class="w-8 h-8 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-sm"><i class="fa-solid fa-users"></i></span>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl">
-            <i class="fa-solid fa-users"></i>
-          </div>
+          <h3 class="text-2xl font-extrabold text-slate-800" id="totalResponses">0 នាក់</h3>
+          <p class="text-[10px] text-emerald-600 font-medium mt-1" id="kpiYearLabel">ទិន្នន័យផ្លូវការពី Google Sheet</p>
         </div>
 
-        <!-- Overall Satisfaction Index -->
-        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
-          <div>
-            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">សន្ទស្សន៍ពេញចិត្តរួម</p>
-            <h3 class="text-2xl font-extrabold text-emerald-600" id="avgOverallScore">0.0 / 5.0</h3>
-            <p class="text-[11px] text-slate-500 font-medium mt-1" id="satisfactionRatingLabel">កម្រិត «ពេញចិត្ត»</p>
+        <!-- 2. Overall Satisfaction -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">ពេញចិត្តរួម</span>
+            <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm"><i class="fa-solid fa-star"></i></span>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
-            <i class="fa-solid fa-star"></i>
-          </div>
+          <h3 class="text-2xl font-extrabold text-emerald-600" id="avgOverallScore">0.0 / 5.0</h3>
+          <p class="text-[10px] text-slate-500 font-medium mt-1" id="satisfactionRatingLabel">កម្រិត «ពេញចិត្ត»</p>
         </div>
 
-        <!-- Top Facility -->
-        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
-          <div>
-            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">អគារពេញចិត្តខ្ពស់បំផុត</p>
-            <h3 class="text-lg font-bold text-indigo-700" id="topFacilityName">អគារសិក្សា A</h3>
-            <p class="text-[11px] text-slate-500 font-medium mt-1" id="topFacilityScore">ពិន្ទុមធ្យម - / 5.0</p>
+        <!-- 3. Top Facility -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">ពេញចិត្តខ្ពស់បំផុត</span>
+            <span class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-sm"><i class="fa-solid fa-trophy"></i></span>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
-            <i class="fa-solid fa-trophy"></i>
-          </div>
+          <h3 class="text-sm font-bold text-indigo-700 truncate" id="topFacilityName">-</h3>
+          <p class="text-[10px] text-slate-500 font-medium mt-1" id="topFacilityScore">ពិន្ទុមធ្យម - / 5.0</p>
         </div>
 
-        <!-- Attention Flag -->
-        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex items-center justify-between">
-          <div>
-            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">តំបន់ត្រូវកែលម្អ</p>
-            <h3 class="text-lg font-bold text-rose-600" id="urgentAreaName">បរិស្ថាន & WiFi</h3>
-            <p class="text-[11px] text-slate-500 font-medium mt-1" id="urgentAreaScore">ពិន្ទុមធ្យម - / 5.0</p>
+        <!-- 4. Urgent Attention Flag -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">ត្រូវកែលម្អបន្ទាន់</span>
+            <span class="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-sm"><i class="fa-solid fa-triangle-exclamation"></i></span>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl">
-            <i class="fa-solid fa-triangle-exclamation"></i>
+          <h3 class="text-sm font-bold text-rose-600 truncate" id="urgentAreaName">-</h3>
+          <p class="text-[10px] text-slate-500 font-medium mt-1" id="urgentAreaScore">ពិន្ទុមធ្យម - / 5.0</p>
+        </div>
+
+        <!-- 5. Net Promoter Score (NPS) -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">កម្រិតណែនាំ (NPS)</span>
+            <span class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-sm"><i class="fa-solid fa-bullhorn"></i></span>
           </div>
+          <h3 class="text-2xl font-extrabold text-purple-700" id="npsScoreDisplay">+0</h3>
+          <p class="text-[10px] text-slate-500 font-medium mt-1" id="npsBreakdownLabel">0% Promoters</p>
+        </div>
+
+        <!-- 6. Wi-Fi & IT Score -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Wi-Fi & IT Lab</span>
+            <span class="w-8 h-8 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-sm"><i class="fa-solid fa-wifi"></i></span>
+          </div>
+          <h3 class="text-2xl font-extrabold text-teal-700" id="itAvgScore">0.0 / 5.0</h3>
+          <p class="text-[10px] text-slate-500 font-medium mt-1" id="itPercentageLabel">0% ពេញចិត្ត</p>
         </div>
       </div>
 
-      <!-- CHARTS SECTION -->
+      <!-- ========================================== -->
+      <!-- 📋 FACILITY PERFORMANCE SCORECARD (8 AREAS) -->
+      <!-- ========================================== -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div>
+            <h2 class="text-sm font-bold text-slate-800">តារាងពិន្ទុ និងការវិភាគកម្រិតពេញចិត្តតាមផ្នែកទាំង ៨ (Facility Scorecard Matrix)</h2>
+            <p class="text-xs text-slate-500">ការបូកសរុបពិន្ទុមធ្យម ភាគរយសន្ទស្សន៍ និងចំណាត់ថ្នាក់គុណភាពស្ថាប័ន</p>
+          </div>
+          <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-semibold rounded-lg">8 Strategic Pillars</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 text-slate-600 font-bold uppercase tracking-wider text-[11px] border-b border-slate-200">
+              <tr>
+                <th class="p-3">ផ្នែកហេដ្ឋារចនាសម្ព័ន្ធ និងសេវាកម្ម</th>
+                <th class="p-3 text-center">ចំនួនសំណួរ</th>
+                <th class="p-3 text-center">ពិន្ទុមធ្យម (១-៥)</th>
+                <th class="p-3">សន្ទស្សន៍ភាគរយ (%)</th>
+                <th class="p-3 text-center">ស្ថានភាព</th>
+                <th class="p-3">សកម្មភាពអាទិភាពណែនាំ</th>
+              </tr>
+            </thead>
+            <tbody id="scorecardBody" class="divide-y divide-slate-100 font-medium"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- 📈 INTERACTIVE CHARTS GRID -->
+      <!-- ========================================== -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Radar Chart: Facility Comparison across 8 Areas -->
+        <!-- 1. Radar Chart (8 Pillars) -->
         <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm lg:col-span-2">
           <div class="flex items-center justify-between mb-4">
             <div>
-              <h2 class="text-sm font-bold text-slate-800">ការប្រៀបធៀបកម្រិតពេញចិត្តតាមតំបន់ទាំង ៨</h2>
-              <p class="text-xs text-slate-500" id="radarSubTitle">ពិន្ទុមធ្យម (១ ដល់ ៥) ផ្អែកលើការវាយតម្លៃជាក់ស្តែង</p>
+              <h2 class="text-sm font-bold text-slate-800">ការប្រៀបធៀបកម្រិតពេញចិត្តតាមសសរស្តម្ភទាំង ៨ (Radar Analysis)</h2>
+              <p class="text-xs text-slate-500">ការវិភាគលម្អិតឆ្លុះបញ្ចាំងពីតុល្យភាពនៃហេដ្ឋារចនាសម្ព័ន្ធវិទ្យាស្ថាន</p>
             </div>
-            <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-semibold rounded-lg">Radar Analysis</span>
+            <span class="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-semibold rounded-lg">Radar 8-Axis</span>
           </div>
-          <div class="h-72 flex items-center justify-center">
+          <div class="h-80 flex items-center justify-center">
             <canvas id="radarChart"></canvas>
           </div>
         </div>
 
-        <!-- Doughnut Chart: Participants by Major -->
+        <!-- 2. Demographics by Major -->
         <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
           <div class="flex items-center justify-between mb-4">
             <div>
@@ -223,47 +267,79 @@
             </div>
             <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-lg">Demographics</span>
           </div>
-          <div class="h-72 flex items-center justify-center">
+          <div class="h-80 flex items-center justify-center">
             <canvas id="doughnutChart"></canvas>
           </div>
         </div>
       </div>
 
-      <!-- HORIZONTAL BAR CHART: DEEP DIVE -->
-      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-        <div class="flex items-center justify-between mb-4">
-          <div>
-            <h2 class="text-sm font-bold text-slate-800">ការវិភាគស៊ីជម្រៅតាមសំណួរគន្លឹះ (Key Criteria Performance)</h2>
-            <p class="text-xs text-slate-500">ពិន្ទុពេញចិត្តលម្អិតលើកត្តាហេដ្ឋារចនាសម្ព័ន្ធសំខាន់ៗ</p>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- 3. Key Criteria Deep-Dive (12 Questions Bar Chart) -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm lg:col-span-2">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-sm font-bold text-slate-800">ការវិភាគស៊ីជម្រៅតាមសំណួរគន្លឹះទាំង ១២ (Key Criteria Performance)</h2>
+              <p class="text-xs text-slate-500">ពិន្ទុពេញចិត្តលម្អិតលើកត្តាសិក្សា បរិក្ខារ អនាម័យ និងបច្ចេកវិទ្យា</p>
+            </div>
+            <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-xs font-semibold rounded-lg">Deep Dive</span>
           </div>
-          <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-xs font-semibold rounded-lg">Deep Dive</span>
+          <div class="h-80">
+            <canvas id="barChart"></canvas>
+          </div>
         </div>
-        <div class="h-72">
-          <canvas id="barChart"></canvas>
+
+        <!-- 4. Top 3 Priorities Ranking (Horizontal Bar Chart) -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-sm font-bold text-slate-800">អាទិភាពកែលម្អកំពូលទាំង ៣</h2>
+              <p class="text-xs text-slate-500">ចំនួនសម្លេងបោះឆ្នោតទាមទារកែលម្អ</p>
+            </div>
+            <span class="px-2.5 py-1 bg-rose-50 text-rose-700 text-xs font-semibold rounded-lg">Top Priorities</span>
+          </div>
+          <div class="h-80">
+            <canvas id="prioritiesChart"></canvas>
+          </div>
         </div>
       </div>
 
-      <!-- STUDENT FEEDBACK WALL -->
-      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-        <div class="flex items-center justify-between mb-4">
+      <!-- ========================================== -->
+      <!-- 💬 STUDENT FEEDBACK WALL WITH TAG FILTER -->
+      <!-- ========================================== -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 class="text-sm font-bold text-slate-800">មតិយោបល់ និងសំណូមពរជាក់ស្តែងរបស់សិស្ស-និស្សិត</h2>
-            <p class="text-xs text-slate-500">សម្រង់មតិយោបល់ផ្ទាល់ពីកម្រងសំណួរ</p>
+            <p class="text-xs text-slate-500">សម្រង់មតិផ្ទាល់បែងចែកតាមប្រធានបទ</p>
           </div>
           <span class="text-xs font-bold text-slate-500" id="feedbackCount">០ សំណូមពរ</span>
         </div>
+
+        <!-- Tag Filter Buttons -->
+        <div class="flex flex-wrap gap-1.5 pb-1">
+          <button onclick="filterFeedback('ALL', this)" class="fb-tag-btn px-3 py-1 rounded-lg text-xs font-bold bg-sky-600 text-white shadow-sm transition">ទាំងអស់</button>
+          <button onclick="filterFeedback('Wi-Fi', this)" class="fb-tag-btn px-3 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-sky-50 transition">📶 #Wi-Fi</button>
+          <button onclick="filterFeedback('អនាម័យ', this)" class="fb-tag-btn px-3 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-sky-50 transition">🚻 #អនាម័យ</button>
+          <button onclick="filterFeedback('សំរាម', this)" class="fb-tag-btn px-3 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-sky-50 transition">🗑️ #សំរាម</button>
+          <button onclick="filterFeedback('ទឹកភ្លើង', this)" class="fb-tag-btn px-3 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-sky-50 transition">💡 #ទឹកភ្លើង</button>
+          <button onclick="filterFeedback('ពិសោធន៍', this)" class="fb-tag-btn px-3 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-sky-50 transition">🔬 #ពិសោធន៍</button>
+          <button onclick="filterFeedback('អាហារដ្ឋាន', this)" class="fb-tag-btn px-3 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-sky-50 transition">🍲 #អាហារដ្ឋាន</button>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5" id="feedbackGrid"></div>
       </div>
 
-      <!-- RAW RESPONSES TABLE -->
+      <!-- ========================================== -->
+      <!-- 📑 ADVANCED RAW RESPONSES TABLE -->
+      <!-- ========================================== -->
       <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm overflow-hidden">
         <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
           <div>
-            <h2 class="text-sm font-bold text-slate-800">តារាងទិន្នន័យនៃការឆ្លើយតបលម្អិត</h2>
-            <p class="text-xs text-slate-500">ទិន្នន័យស្រង់ចេញផ្ទាល់ពី Google Sheet</p>
+            <h2 class="text-sm font-bold text-slate-800">តារាងទិន្នន័យនៃការឆ្លើយតបលម្អិតគ្រប់ផ្នែក</h2>
+            <p class="text-xs text-slate-500">ទិន្នន័យស្រង់ចេញផ្ទាល់ពី Google Sheet ស្របតាម ៤៩ ជួរឈរ</p>
           </div>
           <div class="flex items-center space-x-2">
-            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="ស្វែងរកតាមជំនាញ/តួនាទី..." class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none w-56">
+            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="ស្វែងរកតាមជំនាញ/តួនាទី/សំណូមពរ..." class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none w-64">
           </div>
         </div>
         <div class="overflow-x-auto">
@@ -280,6 +356,11 @@
                 <th class="p-3 text-center">អគារ A</th>
                 <th class="p-3 text-center">រដ្ឋបាល</th>
                 <th class="p-3 text-center">អន្តេវាសិកដ្ឋាន</th>
+                <th class="p-3 text-center">សូឡា</th>
+                <th class="p-3 text-center">IT/Wi-Fi</th>
+                <th class="p-3 text-center">រោងជាង/កសិដ្ឋាន</th>
+                <th class="p-3 text-center">សេវាគាំទ្រ</th>
+                <th class="p-3 text-center">NPS</th>
                 <th class="p-3">សំណូមពរ</th>
               </tr>
             </thead>
@@ -296,16 +377,16 @@
     // ⚙️ GOOGLE APPS SCRIPT WEB APP URL
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJsMkU5HJgdyHvsWirk7UG7fSRaHz_6j1q3n9AoxIzitIX8DjCY1XWmwL_cXXYZCA/exec";
 
-    // Master dataset
-    let allResponses = [];
+    let allResponses = [{"id": 1, "timestamp": "11/20/2024 10:58:13", "role": "និស្សិត", "gender": "ប្រុស", "age": "21", "residence": "អគារថ្មី", "major": "ជំនាញការដំឡើងប្រព័ន្ធអគ្គិសនី", "year": "2", "other": "", "env_q1": "4. ពេញចិត្តខ្លាំង", "env_q2": "4. ពេញចិត្តខ្លាំង", "env_q3": "4. ពេញចិត្តខ្លាំង", "env_q4": "3. ពេញចិត្ត", "env_q5": "5. ពេញចិត្តខ្លាំងបំផុត", "b_a_q1": "5. ពេញចិត្តខ្លាំងបំផុត", "b_a_q2": "4. ពេញចិត្តខ្លាំង", "b_a_q3": "5. ពេញចិត្តខ្លាំងបំផុត", "b_a_q4": "4. ពេញចិត្តខ្លាំង", "b_a_q5": "5. ពេញចិត្តខ្លាំងបំផុត", "b_a_q6": "5. ពេញចិត្តខ្លាំងបំផុត", "b_a_q7": "5. ពេញចិត្តខ្លាំងបំផុត", "b_a_q8": "5. ពេញចិត្តខ្លាំងបំផុត", "adm_q1": "5. ពេញចិត្តខ្លាំងបំផុត", "adm_q2": "5. ពេញចិត្តខ្លាំងបំផុត", "adm_q3": "4. ពេញចិត្តខ្លាំង", "adm_q4": "5. ពេញចិត្តខ្លាំងបំផុត", "dorm_q1": "5. ពេញចិត្តខ្លាំងបំផុត", "dorm_q2": "5. ពេញចិត្តខ្លាំងបំផុត", "dorm_q3": "5. ពេញចិត្តខ្លាំងបំផុត", "dorm_q4": "4. ពេញចិត្តខ្លាំង", "dorm_q5": "4. ពេញចិត្តខ្លាំង", "dorm_q6": "4. ពេញចិត្តខ្លាំង", "dorm_q7": "5. ពេញចិត្តខ្លាំងបំផុត", "solar_q1": "4. ពេញចិត្តខ្លាំង", "solar_q2": "4. ពេញចិត្តខ្លាំង", "solar_q3": "4. ពេញចិត្តខ្លាំង", "it_q1": "3. ពេញចិត្ត", "it_q2": "4. ពេញចិត្តខ្លាំង", "acad_q1": "4. ពេញចិត្តខ្លាំង", "acad_q2": "5. ពេញចិត្តខ្លាំងបំផុត", "acad_q3": "4. ពេញចិត្តខ្លាំង", "acad_q4": "4. ពេញចិត្តខ្លាំង", "welf_q1": "4. ពេញចិត្តខ្លាំង", "welf_q2": "3. ពេញចិត្ត", "welf_q3": "4. ពេញចិត្តខ្លាំង", "welf_q4": "4. ពេញចិត្តខ្លាំង", "welf_q5": "4. ពេញចិត្តខ្លាំង", "nps_score": "9", "priorities": "Wi-Fi & IT, សម្ភាររោងជាង & Lab, បន្ទប់ទឹកស្អាត", "feedback": "ឧបករណ៍ពិសោធន៍ដំណើរការល្អណាស់"}, {"id": 2, "timestamp": "11/20/2024 12:09:16", "role": "សិស្ស", "gender": "ប្រុស", "age": "16", "residence": "អគារថ្មី", "major": "ថ្នាក់អប់រំបច្ចេកទេស (៩+៣)", "year": "3", "other": "", "env_q1": "3. ពេញចិត្ត", "env_q2": "3. ពេញចិត្ត", "env_q3": "3. ពេញចិត្ត", "env_q4": "4. ពេញចិត្តខ្លាំង", "env_q5": "3. ពេញចិត្ត", "b_a_q1": "3. ពេញចិត្ត", "b_a_q2": "3. ពេញចិត្ត", "b_a_q3": "3. ពេញចិត្ត", "b_a_q4": "3. ពេញចិត្ត", "b_a_q5": "3. ពេញចិត្ត", "b_a_q6": "3. ពេញចិត្ត", "b_a_q7": "3. ពេញចិត្ត", "b_a_q8": "3. ពេញចិត្ត", "adm_q1": "4. ពេញចិត្តខ្លាំង", "adm_q2": "4. ពេញចិត្តខ្លាំង", "adm_q3": "4. ពេញចិត្តខ្លាំង", "adm_q4": "3. ពេញចិត្ត", "dorm_q1": "3. ពេញចិត្ត", "dorm_q2": "3. ពេញចិត្ត", "dorm_q3": "3. ពេញចិត្ត", "dorm_q4": "3. ពេញចិត្ត", "dorm_q5": "3. ពេញចិត្ត", "dorm_q6": "3. ពេញចិត្ត", "dorm_q7": "3. ពេញចិត្ត", "solar_q1": "3. ពេញចិត្ត", "solar_q2": "3. ពេញចិត្ត", "solar_q3": "3. ពេញចិត្ត", "it_q1": "2. មិនសូវពេញចិត្ត", "it_q2": "3. ពេញចិត្ត", "acad_q1": "3. ពេញចិត្ត", "acad_q2": "3. ពេញចិត្ត", "acad_q3": "3. ពេញចិត្ត", "acad_q4": "3. ពេញចិត្ត", "welf_q1": "3. ពេញចិត្ត", "welf_q2": "3. ពេញចិត្ត", "welf_q3": "3. ពេញចិត្ត", "welf_q4": "3. ពេញចិត្ត", "welf_q5": "3. ពេញចិត្ត", "nps_score": "7", "priorities": "Wi-Fi & IT, អាហារដ្ឋាន & ទឹកពិសារ", "feedback": ""}, {"id": 3, "timestamp": "01/15/2025 08:24:15", "role": "និស្សិត", "gender": "ប្រុស", "age": "20", "residence": "អគារថ្មី", "major": "ជំនាញការដំឡើងប្រព័ន្ធអគ្គិសនី", "year": "2", "other": "", "env_q1": "4. ពេញចិត្តខ្លាំង", "env_q2": "4. ពេញចិត្តខ្លាំង", "env_q3": "3. ពេញចិត្ត", "env_q4": "4. ពេញចិត្តខ្លាំង", "env_q5": "4. ពេញចិត្តខ្លាំង", "b_a_q1": "4. ពេញចិត្តខ្លាំង", "b_a_q2": "5. ពេញចិត្តខ្លាំងបំផុត", "b_a_q3": "4. ពេញចិត្តខ្លាំង", "b_a_q4": "4. ពេញចិត្តខ្លាំង", "b_a_q5": "3. ពេញចិត្ត", "b_a_q6": "4. ពេញចិត្តខ្លាំង", "b_a_q7": "3. ពេញចិត្ត", "b_a_q8": "4. ពេញចិត្តខ្លាំង", "adm_q1": "4. ពេញចិត្តខ្លាំង", "adm_q2": "4. ពេញចិត្តខ្លាំង", "adm_q3": "4. ពេញចិត្តខ្លាំង", "adm_q4": "4. ពេញចិត្តខ្លាំង", "dorm_q1": "5. ពេញចិត្តខ្លាំងបំផុត", "dorm_q2": "4. ពេញចិត្តខ្លាំង", "dorm_q3": "4. ពេញចិត្តខ្លាំង", "dorm_q4": "4. ពេញចិត្តខ្លាំង", "dorm_q5": "3. ពេញចិត្ត", "dorm_q6": "4. ពេញចិត្តខ្លាំង", "dorm_q7": "5. ពេញចិត្តខ្លាំងបំផុត", "solar_q1": "4. ពេញចិត្តខ្លាំង", "solar_q2": "4. ពេញចិត្តខ្លាំង", "solar_q3": "4. ពេញចិត្តខ្លាំង", "it_q1": "3. ពេញចិត្ត", "it_q2": "4. ពេញចិត្តខ្លាំង", "acad_q1": "4. ពេញចិត្តខ្លាំង", "acad_q2": "5. ពេញចិត្តខ្លាំងបំផុត", "acad_q3": "4. ពេញចិត្តខ្លាំង", "acad_q4": "4. ពេញចិត្តខ្លាំង", "welf_q1": "4. ពេញចិត្តខ្លាំង", "welf_q2": "3. ពេញចិត្ត", "welf_q3": "4. ពេញចិត្តខ្លាំង", "welf_q4": "4. ពេញចិត្តខ្លាំង", "welf_q5": "4. ពេញចិត្តខ្លាំង", "nps_score": "9", "priorities": "Wi-Fi & IT, ភ្លើងបំភ្លឺផ្លូវយប់ & សន្តិសុខ", "feedback": "សូមជួយបង្កើនចំនួនធុងសំរាមនៅតាមផ្លូវដើរ និងអគារសិក្សា"}, {"id": 4, "timestamp": "09/07/2026 05:48:35", "role": "បុគ្គលិកវិទ្យាស្ថាន", "gender": "ប្រុស", "age": "35", "residence": "អគារថ្មី", "major": "បុគ្គលិកការិយាល័យ", "year": "បញ្ចប់ការសិក្សា", "other": "", "env_q1": "5. ពេញចិត្តខ្លាំងបំផុត", "env_q2": "1. មិនពេញចិត្ត", "env_q3": "1. មិនពេញចិត្ត", "env_q4": "1. មិនពេញចិត្ត", "env_q5": "1. មិនពេញចិត្ត", "b_a_q1": "3. ពេញចិត្ត", "b_a_q2": "3. ពេញចិត្ត", "b_a_q3": "3. ពេញចិត្ត", "b_a_q4": "3. ពេញចិត្ត", "b_a_q5": "3. ពេញចិត្ត", "b_a_q6": "3. ពេញចិត្ត", "b_a_q7": "3. ពេញចិត្ត", "b_a_q8": "3. ពេញចិត្ត", "adm_q1": "4. ពេញចិត្តខ្លាំង", "adm_q2": "4. ពេញចិត្តខ្លាំង", "adm_q3": "3. ពេញចិត្ត", "adm_q4": "4. ពេញចិត្តខ្លាំង", "dorm_q1": "3. ពេញចិត្ត", "dorm_q2": "3. ពេញចិត្ត", "dorm_q3": "3. ពេញចិត្ត", "dorm_q4": "3. ពេញចិត្ត", "dorm_q5": "3. ពេញចិត្ត", "dorm_q6": "3. ពេញចិត្ត", "dorm_q7": "3. ពេញចិត្ត", "solar_q1": "3. ពេញចិត្ត", "solar_q2": "3. ពេញចិត្ត", "solar_q3": "3. ពេញចិត្ត", "it_q1": "3. ពេញចិត្ត", "it_q2": "3. ពេញចិត្ត", "acad_q1": "4. ពេញចិត្តខ្លាំង", "acad_q2": "3. ពេញចិត្ត", "acad_q3": "4. ពេញចិត្តខ្លាំង", "acad_q4": "3. ពេញចិត្ត", "welf_q1": "3. ពេញចិត្ត", "welf_q2": "3. ពេញចិត្ត", "welf_q3": "3. ពេញចិត្ត", "welf_q4": "3. ពេញចិត្ត", "welf_q5": "4. ពេញចិត្តខ្លាំង", "nps_score": "9", "priorities": "ភ្លើងបំភ្លឺផ្លូវយប់ & សន្តិសុខ, អនាម័យបន្ទប់ទឹក", "feedback": "សូមជួយពង្រឹងសន្តិសុខពេលយប់ និងធុងសំរាម"}, {"id": 5, "timestamp": "09/07/2026 20:15:40", "role": "និស្សិត", "gender": "ស្រី", "age": "20", "residence": "អគារថ្មី", "major": "ជំនាញបច្ចេកវិទ្យាអាហារ", "year": "2", "other": "", "env_q1": "4. ពេញចិត្តខ្លាំង", "env_q2": "4. ពេញចិត្តខ្លាំង", "env_q3": "3. ពេញចិត្ត", "env_q4": "4. ពេញចិត្តខ្លាំង", "env_q5": "4. ពេញចិត្តខ្លាំង", "b_a_q1": "4. ពេញចិត្តខ្លាំង", "b_a_q2": "4. ពេញចិត្តខ្លាំង", "b_a_q3": "4. ពេញចិត្តខ្លាំង", "b_a_q4": "4. ពេញចិត្តខ្លាំង", "b_a_q5": "4. ពេញចិត្តខ្លាំង", "b_a_q6": "4. ពេញចិត្តខ្លាំង", "b_a_q7": "3. ពេញចិត្ត", "b_a_q8": "4. ពេញចិត្តខ្លាំង", "adm_q1": "4. ពេញចិត្តខ្លាំង", "adm_q2": "4. ពេញចិត្តខ្លាំង", "adm_q3": "4. ពេញចិត្តខ្លាំង", "adm_q4": "4. ពេញចិត្តខ្លាំង", "dorm_q1": "4. ពេញចិត្តខ្លាំង", "dorm_q2": "4. ពេញចិត្តខ្លាំង", "dorm_q3": "4. ពេញចិត្តខ្លាំង", "dorm_q4": "4. ពេញចិត្តខ្លាំង", "dorm_q5": "4. ពេញចិត្តខ្លាំង", "dorm_q6": "4. ពេញចិត្តខ្លាំង", "dorm_q7": "4. ពេញចិត្តខ្លាំង", "solar_q1": "4. ពេញចិត្តខ្លាំង", "solar_q2": "4. ពេញចិត្តខ្លាំង", "solar_q3": "4. ពេញចិត្តខ្លាំង", "it_q1": "4. ពេញចិត្តខ្លាំង", "it_q2": "4. ពេញចិត្តខ្លាំង", "acad_q1": "4. ពេញចិត្តខ្លាំង", "acad_q2": "4. ពេញចិត្តខ្លាំង", "acad_q3": "4. ពេញចិត្តខ្លាំង", "acad_q4": "4. ពេញចិត្តខ្លាំង", "welf_q1": "4. ពេញចិត្តខ្លាំង", "welf_q2": "4. ពេញចិត្តខ្លាំង", "welf_q3": "4. ពេញចិត្តខ្លាំង", "welf_q4": "4. ពេញចិត្តខ្លាំង", "welf_q5": "4. ពេញចិត្តខ្លាំង", "nps_score": "10", "priorities": "Wi-Fi & IT, អាហារដ្ឋាន & ទឹកពិសារ", "feedback": "អរគុណលោកគ្រូអ្នកគ្រូ និងវិទ្យាស្ថានដែលបានកែលម្អបរិស្ថានស្អាត"}];
     let activeResponses = [];
     let currentSelectedYear = "ALL";
+    let activeFeedbackTag = "ALL";
 
     let radarChartInstance = null;
     let doughnutChartInstance = null;
     let barChartInstance = null;
+    let prioritiesChartInstance = null;
 
-    // Helper: Parse score from string like "4. ពេញចិត្តខ្លាំង" -> 4
     function parseScore(val) {
       if (val === null || val === undefined || val === "") return 0;
       if (typeof val === "number") return val;
@@ -314,7 +395,6 @@
       return m ? parseInt(m, 10) : 0;
     }
 
-    // Helper: Compute average scores for each of the 8 facility categories
     function processRecord(r) {
       const envQs = [r.env_q1, r.env_q2, r.env_q3, r.env_q4, r.env_q5];
       const envScores = envQs.map(parseScore).filter(s => s > 0);
@@ -352,7 +432,6 @@
       return r;
     }
 
-    // Helper: Extract Year from timestamp
     function getYearFromTimestamp(ts) {
       if (!ts) return "";
       const str = String(ts);
@@ -363,7 +442,6 @@
       return "";
     }
 
-    // Helper: Format Date Display
     function formatDateDisplay(ts) {
       if (!ts) return "-";
       try {
@@ -392,9 +470,7 @@
     }
 
     function unlockDashboard() {
-      const passEl = document.getElementById("inputPassword") || 
-                     document.getElementById("password") || 
-                     document.getElementById("adminPass");
+      const passEl = document.getElementById("inputPassword");
       const enteredPass = passEl ? passEl.value.trim() : "";
 
       if (enteredPass === "ksit@2026") {
@@ -422,7 +498,7 @@
     }
 
     function togglePasswordVisibility() {
-      const pInput = document.getElementById("inputPassword") || document.getElementById("password");
+      const pInput = document.getElementById("inputPassword");
       const icon = document.getElementById("eyeIcon");
       if (pInput) {
         if (pInput.type === "password") {
@@ -449,6 +525,7 @@
     }
 
     async function initDashboard() {
+      allResponses = allResponses.map(processRecord);
       const select = document.getElementById("yearSelect");
       if (select) {
         select.value = currentSelectedYear;
@@ -464,32 +541,36 @@
           allResponses = json.data.map(processRecord);
         }
       } catch (err) {
-        console.warn("Could not fetch live data:", err);
+        console.warn("Could not fetch live data, using cached fallback:", err);
       }
       onYearChange();
     }
 
     function renderDashboardData() {
       updateKPIs();
+      renderScorecard();
       renderCharts();
       renderFeedback();
       renderTable();
     }
 
     function updateKPIs() {
-      document.getElementById("totalResponses").innerText = `${activeResponses.length} នាក់`;
+      const n = activeResponses.length;
+      document.getElementById("totalResponses").innerText = `${n} នាក់`;
       document.getElementById("kpiYearLabel").innerText = currentSelectedYear === "ALL" ? "ទិន្នន័យគ្រប់ឆ្នាំ" : `ទិន្នន័យឆ្នាំ ${currentSelectedYear}`;
 
-      if (activeResponses.length === 0) {
+      if (n === 0) {
         document.getElementById("avgOverallScore").innerText = "0.0 / 5.0";
         document.getElementById("satisfactionRatingLabel").innerText = "គ្មានទិន្នន័យ";
         document.getElementById("topFacilityScore").innerText = "ពិន្ទុមធ្យម - / 5.0";
         document.getElementById("urgentAreaScore").innerText = "ពិន្ទុមធ្យម - / 5.0";
+        document.getElementById("npsScoreDisplay").innerText = "+0";
+        document.getElementById("itAvgScore").innerText = "0.0 / 5.0";
         return;
       }
 
-      let sumOverall = 0;
       let sumEnv = 0, sumBA = 0, sumAdm = 0, sumDorm = 0, sumSolar = 0, sumIT = 0, sumAcad = 0, sumWelf = 0;
+      let promoters = 0, detractors = 0;
 
       activeResponses.forEach(r => {
         sumEnv += r.env_avg;
@@ -500,22 +581,23 @@
         sumIT += r.it_avg;
         sumAcad += r.acad_avg;
         sumWelf += r.welf_avg;
-        sumOverall += (r.env_avg + r.b_a_avg + r.adm_avg + r.dorm_avg + r.solar_avg + r.it_avg + r.acad_avg + r.welf_avg) / 8;
+
+        if (r.nps_score >= 9) promoters++;
+        else if (r.nps_score <= 6) detractors++;
       });
 
-      const n = activeResponses.length;
-      const overallAvg = Number((sumOverall / n).toFixed(2));
+      const overallAvg = Number(((sumEnv + sumBA + sumAdm + sumDorm + sumSolar + sumIT + sumAcad + sumWelf) / (8 * n)).toFixed(2));
       document.getElementById("avgOverallScore").innerText = `${overallAvg} / 5.0`;
 
       if (overallAvg >= 4.0) {
-        document.getElementById("satisfactionRatingLabel").innerText = "កម្រិត «ពេញចិត្តខ្លាំង»";
+        document.getElementById("satisfactionRatingLabel").innerText = "កម្រិត «ពេញចិត្តខ្លាំង» (" + (overallAvg*20).toFixed(0) + "%)";
       } else if (overallAvg >= 3.0) {
-        document.getElementById("satisfactionRatingLabel").innerText = "កម្រិត «ពេញចិត្ត»";
+        document.getElementById("satisfactionRatingLabel").innerText = "កម្រិត «ពេញចិត្ត» (" + (overallAvg*20).toFixed(0) + "%)";
       } else {
-        document.getElementById("satisfactionRatingLabel").innerText = "កម្រិត «មិនសូវពេញចិត្ត»";
+        document.getElementById("satisfactionRatingLabel").innerText = "កម្រិត «មិនសូវពេញចិត្ត» (" + (overallAvg*20).toFixed(0) + "%)";
       }
 
-      const facilityScores = [
+      const pillars = [
         { name: "បរិស្ថានវិទ្យាស្ថាន", score: Number((sumEnv / n).toFixed(2)) },
         { name: "អគារសិក្សា A", score: Number((sumBA / n).toFixed(2)) },
         { name: "អគាររដ្ឋបាល", score: Number((sumAdm / n).toFixed(2)) },
@@ -526,30 +608,88 @@
         { name: "សេវាគាំទ្រ & កីឡា", score: Number((sumWelf / n).toFixed(2)) }
       ].sort((a, b) => b.score - a.score);
 
-      const top = facilityScores[0];
-      const urgent = facilityScores[facilityScores.length - 1];
+      const top = pillars[0];
+      const urgent = pillars[pillars.length - 1];
 
       document.getElementById("topFacilityName").innerText = top.name;
       document.getElementById("topFacilityScore").innerText = `ពិន្ទុមធ្យម ${top.score} / 5.0`;
 
       document.getElementById("urgentAreaName").innerText = urgent.name;
       document.getElementById("urgentAreaScore").innerText = `ពិន្ទុមធ្យម ${urgent.score} / 5.0 (ត្រូវកែលម្អ)`;
+
+      const npsScore = Math.round(((promoters - detractors) / n) * 100);
+      document.getElementById("npsScoreDisplay").innerText = (npsScore >= 0 ? "+" : "") + npsScore;
+      document.getElementById("npsBreakdownLabel").innerText = `${Math.round((promoters/n)*100)}% Promoters, ${Math.round((detractors/n)*100)}% Detractors`;
+
+      const itAvg = Number((sumIT / n).toFixed(2));
+      document.getElementById("itAvgScore").innerText = `${itAvg} / 5.0`;
+      document.getElementById("itPercentageLabel").innerText = `${(itAvg * 20).toFixed(0)}% សន្ទស្សន៍ពេញចិត្ត`;
+    }
+
+    function renderScorecard() {
+      const tbody = document.getElementById("scorecardBody");
+      const n = activeResponses.length;
+      if (n === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400">គ្មានទិន្នន័យសម្រាប់ឆ្នាំនេះឡើយ</td></tr>';
+        return;
+      }
+
+      let sumEnv = 0, sumBA = 0, sumAdm = 0, sumDorm = 0, sumSolar = 0, sumIT = 0, sumAcad = 0, sumWelf = 0;
+      activeResponses.forEach(r => {
+        sumEnv += r.env_avg; sumBA += r.b_a_avg; sumAdm += r.adm_avg; sumDorm += r.dorm_avg;
+        sumSolar += r.solar_avg; sumIT += r.it_avg; sumAcad += r.acad_avg; sumWelf += r.welf_avg;
+      });
+
+      const categories = [
+        { name: "II. បរិស្ថានវិទ្យាស្ថាន", icon: "fa-tree text-emerald-600", count: 5, avg: Number((sumEnv/n).toFixed(2)), action: "បង្កើនធុងសំរាម និងអំពូលបំភ្លឺផ្លូវដើរ" },
+        { name: "III. អគារសិក្សា A", icon: "fa-school text-indigo-600", count: 8, avg: Number((sumBA/n).toFixed(2)), action: "ពង្រឹងអនាម័យបន្ទប់ទឹក និងសម្ភារ Projector" },
+        { name: "IV. អគាររដ្ឋបាល", icon: "fa-building-columns text-amber-600", count: 4, avg: Number((sumAdm/n).toFixed(2)), action: "រក្សាអនាម័យ និងបន្តសោភណ្ឌភាពសួន" },
+        { name: "V. អន្តេវាសិកដ្ឋាន", icon: "fa-hotel text-purple-600", count: 7, avg: Number((sumDorm/n).toFixed(2)), action: "ធានាស្ថេរភាពទឹក-ភ្លើង និងបន្ទប់ទឹក" },
+        { name: "VI. អគារសូឡា", icon: "fa-solar-panel text-orange-500", count: 3, avg: Number((sumSolar/n).toFixed(2)), action: "ថែទាំប្រព័ន្ធសូឡា និងបំពាក់សម្ភារបន្ថែម" },
+        { name: "VII. ប្រព័ន្ធ IT & Wi-Fi", icon: "fa-wifi text-sky-600", count: 2, avg: Number((sumIT/n).toFixed(2)), action: "ពង្រីកល្បឿន Bandwidth និងបំពាក់ Access Points" },
+        { name: "VIII. បណ្ណាល័យ រោងជាង & កសិដ្ឋាន", icon: "fa-flask-vial text-teal-600", count: 4, avg: Number((sumAcad/n).toFixed(2)), action: "ផ្គត់ផ្គង់សម្ភារអនុវត្ត និងឧបករណ៍ OSH/PPE" },
+        { name: "IX. សេវាគាំទ្រ សុខុមាលភាព & កីឡា", icon: "fa-hand-holding-heart text-rose-600", count: 5, avg: Number((sumWelf/n).toFixed(2)), action: "កែលម្អអនាម័យអាហារដ្ឋាន និងទីលានកីឡា" }
+      ];
+
+      tbody.innerHTML = categories.map(c => {
+        const pct = Math.round((c.avg / 5) * 100);
+        let statusBadge = '';
+        if (c.avg >= 4.0) statusBadge = '<span class="px-2.5 py-1 rounded-md text-[11px] font-bold badge-excellent">ឆ្នើម (Excellent)</span>';
+        else if (c.avg >= 3.5) statusBadge = '<span class="px-2.5 py-1 rounded-md text-[11px] font-bold badge-good">ល្អ (Good)</span>';
+        else if (c.avg >= 3.0) statusBadge = '<span class="px-2.5 py-1 rounded-md text-[11px] font-bold badge-average">មធ្យម (Fair)</span>';
+        else statusBadge = '<span class="px-2.5 py-1 rounded-md text-[11px] font-bold badge-urgent">ត្រូវកែលម្អ (Action)</span>';
+
+        return `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="p-3 font-semibold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid ${c.icon}"></i>
+              <span>${c.name}</span>
+            </td>
+            <td class="p-3 text-center text-slate-500">${c.count} សំណួរ</td>
+            <td class="p-3 text-center font-bold text-sky-700">${c.avg} / 5.0</td>
+            <td class="p-3">
+              <div class="flex items-center gap-2">
+                <div class="w-24 bg-slate-200 h-2 rounded-full overflow-hidden">
+                  <div class="bg-gradient-to-r from-sky-500 to-emerald-500 h-full rounded-full" style="width: ${pct}%;"></div>
+                </div>
+                <span class="text-[11px] font-bold text-slate-600">${pct}%</span>
+              </div>
+            </td>
+            <td class="p-3 text-center">${statusBadge}</td>
+            <td class="p-3 text-[11px] text-slate-600">${c.action}</td>
+          </tr>
+        `;
+      }).join('');
     }
 
     function renderCharts() {
-      let envAvg = 0, baAvg = 0, admAvg = 0, dormAvg = 0, solarAvg = 0, itAvg = 0, acadAvg = 0, welfAvg = 0;
       const n = activeResponses.length;
+      let envAvg = 0, baAvg = 0, admAvg = 0, dormAvg = 0, solarAvg = 0, itAvg = 0, acadAvg = 0, welfAvg = 0;
 
       if (n > 0) {
         activeResponses.forEach(r => {
-          envAvg += r.env_avg;
-          baAvg += r.b_a_avg;
-          admAvg += r.adm_avg;
-          dormAvg += r.dorm_avg;
-          solarAvg += r.solar_avg;
-          itAvg += r.it_avg;
-          acadAvg += r.acad_avg;
-          welfAvg += r.welf_avg;
+          envAvg += r.env_avg; baAvg += r.b_a_avg; admAvg += r.adm_avg; dormAvg += r.dorm_avg;
+          solarAvg += r.solar_avg; itAvg += r.it_avg; acadAvg += r.acad_avg; welfAvg += r.welf_avg;
         });
         envAvg = Number((envAvg / n).toFixed(2));
         baAvg = Number((baAvg / n).toFixed(2));
@@ -561,7 +701,7 @@
         welfAvg = Number((welfAvg / n).toFixed(2));
       }
 
-      // 1. Radar Chart: 8 Areas
+      // 1. Radar Chart (8 Pillars)
       const ctxRadar = document.getElementById("radarChart").getContext("2d");
       if (radarChartInstance) radarChartInstance.destroy();
       radarChartInstance = new Chart(ctxRadar, {
@@ -586,7 +726,7 @@
         }
       });
 
-      // 2. Doughnut Chart: Demographics
+      // 2. Demographics Donut
       const majorCounts = {};
       activeResponses.forEach(r => {
         const m = (r.major || "មិនបានបញ្ជាក់").replace("ជំនាញ", "").trim();
@@ -601,37 +741,39 @@
           labels: Object.keys(majorCounts),
           datasets: [{
             data: Object.values(majorCounts),
-            backgroundColor: ["#0284c7", "#10b981", "#f59e0b", "#8b5cf6", "#ec4899", "#64748b"]
+            backgroundColor: ["#0284c7", "#10b981", "#f59e0b", "#8b5cf6", "#ec4899", "#64748b", "#06b6d4"]
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 } } } }
+          plugins: { legend: { position: "bottom", labels: { boxWidth: 10, font: { size: 10 } } } }
         }
       });
 
-      // 3. Bar Chart: Key Criteria
-      let sumClsClean = 0, sumEquip = 0, sumAesthetic = 0, sumToilet = 0, sumSecurity = 0, sumUtil = 0, sumTrash = 0;
+      // 3. Deep-Dive Bar Chart (12 Key Criteria)
+      let sCls=0, sProj=0, sBToil=0, sWifi=0, sLab=0, sWork=0, sFarm=0, sOsh=0, sUtil=0, sNight=0, sCant=0, sSport=0;
       activeResponses.forEach(r => {
-        sumClsClean += parseScore(r.b_a_q2);
-        sumEquip += parseScore(r.b_a_q3);
-        sumAesthetic += parseScore(r.b_a_q1);
-        sumToilet += parseScore(r.b_a_q7);
-        sumSecurity += parseScore(r.env_q2);
-        sumUtil += parseScore(r.dorm_q3);
-        sumTrash += (parseScore(r.env_q3) + parseScore(r.env_q5)) / 2;
+        sCls += parseScore(r.b_a_q2);
+        sProj += parseScore(r.b_a_q3);
+        sBToil += parseScore(r.b_a_q7);
+        sWifi += parseScore(r.it_q1);
+        sLab += parseScore(r.it_q2);
+        sWork += parseScore(r.acad_q2);
+        sFarm += parseScore(r.acad_q3);
+        sOsh += parseScore(r.acad_q4);
+        sUtil += parseScore(r.dorm_q3);
+        sNight += parseScore(r.welf_q3);
+        sCant += parseScore(r.welf_q1);
+        sSport += parseScore(r.welf_q4);
       });
 
-      const barData = n > 0 ? [
-        Number((sumClsClean / n).toFixed(1)),
-        Number((sumEquip / n).toFixed(1)),
-        Number((sumAesthetic / n).toFixed(1)),
-        Number((sumToilet / n).toFixed(1)),
-        Number((sumSecurity / n).toFixed(1)),
-        Number((sumUtil / n).toFixed(1)),
-        Number((sumTrash / n).toFixed(1))
-      ] : [0, 0, 0, 0, 0, 0, 0];
+      const criteriaData = n > 0 ? [
+        Number((sCls/n).toFixed(1)), Number((sProj/n).toFixed(1)), Number((sBToil/n).toFixed(1)),
+        Number((sWifi/n).toFixed(1)), Number((sLab/n).toFixed(1)), Number((sWork/n).toFixed(1)),
+        Number((sFarm/n).toFixed(1)), Number((sOsh/n).toFixed(1)), Number((sUtil/n).toFixed(1)),
+        Number((sNight/n).toFixed(1)), Number((sCant/n).toFixed(1)), Number((sSport/n).toFixed(1))
+      ] : [0,0,0,0,0,0,0,0,0,0,0,0];
 
       const ctxBar = document.getElementById("barChart").getContext("2d");
       if (barChartInstance) barChartInstance.destroy();
@@ -639,13 +781,13 @@
         type: "bar",
         data: {
           labels: [
-            "បន្ទប់រៀនស្អាត/ពន្លឺ", "សម្ភារបរិក្ខារ/Projector", "សោភណ្ឌភាពអគារ A", 
-            "បន្ទប់ទឹកអគារសិក្សា", "សន្តិសុខចេញចូល", "ទឹក-ភ្លើងអន្តេវាសិកដ្ឋាន", "ទីធ្លា & ធុងសំរាម"
+            "បន្ទប់រៀនស្អាត", "Projector/តុ", "បន្ទប់ទឹកអគារ A", "ល្បឿន Wi-Fi", "បន្ទប់ Lab", 
+            "រោងជាងអនុវត្ត", "កសិដ្ឋាន", "សុវត្ថិភាព OSH", "ទឹកភ្លើងអន្តេវា", "ភ្លើងផ្លូវយប់", "អាហារដ្ឋាន", "ទីលានកីឡា"
           ],
           datasets: [{
             label: "ពិន្ទុមធ្យម",
-            data: barData,
-            backgroundColor: barData.map(v => v >= 3.5 ? "#0284c7" : (v >= 2.5 ? "#10b981" : "#f43f5e")),
+            data: criteriaData,
+            backgroundColor: criteriaData.map(v => v >= 4.0 ? "#0284c7" : (v >= 3.0 ? "#10b981" : "#f43f5e")),
             borderRadius: 6
           }]
         },
@@ -655,27 +797,81 @@
           scales: { y: { min: 0, max: 5, ticks: { stepSize: 1 } } }
         }
       });
+
+      // 4. Top 3 Priorities Horizontal Bar
+      const prioCounts = {
+        "Wi-Fi & IT": 0, "បន្ទប់ទឹកស្អាត": 0, "ទឹកភ្លើងអន្តេវាសិកដ្ឋាន": 0,
+        "សម្ភាររោងជាង & Lab": 0, "អាហារដ្ឋាន & ទឹកពិសារ": 0, "ភ្លើងបំភ្លឺផ្លូវយប់ & សន្តិសុខ": 0,
+        "ទីលានកីឡា": 0, "បណ្ណាល័យ & សៀវភៅ": 0
+      };
+
+      activeResponses.forEach(r => {
+        if (r.priorities) {
+          for (const key in prioCounts) {
+            if (r.priorities.includes(key)) prioCounts[key]++;
+          }
+        }
+      });
+
+      const ctxPriorities = document.getElementById("prioritiesChart").getContext("2d");
+      if (prioritiesChartInstance) prioritiesChartInstance.destroy();
+      prioritiesChartInstance = new Chart(ctxPriorities, {
+        type: "bar",
+        data: {
+          labels: ["Wi-Fi & IT", "បន្ទប់ទឹក", "ទឹកភ្លើង", "រោងជាង/Lab", "អាហារដ្ឋាន", "ភ្លើងផ្លូវ", "កីឡា", "បណ្ណាល័យ"],
+          datasets: [{
+            label: "ចំនួនបោះឆ្នោត",
+            data: Object.values(prioCounts),
+            backgroundColor: "#f43f5e",
+            borderRadius: 6
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+
+    function filterFeedback(tag, btn) {
+      activeFeedbackTag = tag;
+      const buttons = document.querySelectorAll(".fb-tag-btn");
+      buttons.forEach(b => {
+        b.className = "fb-tag-btn px-3 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-sky-50 transition";
+      });
+      btn.className = "fb-tag-btn px-3 py-1 rounded-lg text-xs font-bold bg-sky-600 text-white shadow-sm transition";
+      renderFeedback();
     }
 
     function renderFeedback() {
       const grid = document.getElementById("feedbackGrid");
-      const validFeedbacks = activeResponses.filter(r => r.feedback && String(r.feedback).trim().length > 1);
-      document.getElementById("feedbackCount").innerText = `${validFeedbacks.length} សំណូមពរ`;
+      let valid = activeResponses.filter(r => r.feedback && String(r.feedback).trim().length > 1);
 
-      if (validFeedbacks.length === 0) {
-        grid.innerHTML = '<div class="col-span-3 text-center py-6 text-xs text-slate-400">មិនទាន់មានមតិយោបល់ ឬសំណូមពរសម្រាប់ឆ្នាំនេះឡើយ</div>';
+      if (activeFeedbackTag !== "ALL") {
+        valid = valid.filter(r => r.feedback.toLowerCase().includes(activeFeedbackTag.toLowerCase()));
+      }
+
+      document.getElementById("feedbackCount").innerText = `${valid.length} សំណូមពរ`;
+
+      if (valid.length === 0) {
+        grid.innerHTML = '<div class="col-span-3 text-center py-8 text-xs text-slate-400">មិនទាន់មានមតិយោបល់សម្រាប់ប្រធានបទនេះឡើយ</div>';
         return;
       }
 
-      grid.innerHTML = validFeedbacks.map(f => {
+      grid.innerHTML = valid.map(f => {
         const y = getYearFromTimestamp(f.timestamp);
         return `
-          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-[11px] font-bold text-sky-700 bg-sky-100 px-2 py-0.5 rounded-md">${f.major || "និស្សិត"}</span>
-              <span class="text-[10px] text-slate-400">${f.role || "និស្សិត"} • ឆ្នាំ${y}</span>
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-bold text-sky-700 bg-sky-100 px-2 py-0.5 rounded-md">${f.major || "និស្សិត"}</span>
+                <span class="text-[10px] text-slate-400">${f.role || "និស្សិត"} • ឆ្នាំ${y}</span>
+              </div>
+              <p class="text-xs text-slate-700 leading-relaxed italic">"${f.feedback}"</p>
             </div>
-            <p class="text-xs text-slate-700 leading-relaxed italic">"${f.feedback}"</p>
+            ${f.priorities ? `<p class="text-[10px] text-rose-600 font-semibold mt-3 pt-2 border-t border-slate-200/80"><i class="fa-solid fa-flag text-[9px]"></i> អាទិភាព៖ ${f.priorities}</p>` : ''}
           </div>
         `;
       }).join('');
@@ -684,15 +880,15 @@
     function renderTable() {
       const tbody = document.getElementById("tableBody");
       if (activeResponses.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="11" class="text-center py-8 text-xs text-slate-400">គ្មានទិន្នន័យឆ្លើយតបសម្រាប់ឆ្នាំដែលបានជ្រើសរើសឡើយ</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="16" class="text-center py-8 text-xs text-slate-400">គ្មានទិន្នន័យឆ្លើយតបសម្រាប់ឆ្នាំដែលបានជ្រើសរើសឡើយ</td></tr>';
         return;
       }
 
       function getBadge(score) {
         if (!score || score <= 0) return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-100 text-slate-500">-</span>`;
-        if (score >= 3.5) return `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">${score}</span>`;
-        if (score >= 2.5) return `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200">${score}</span>`;
-        return `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200">${score}</span>`;
+        if (score >= 4.0) return `<span class="px-2 py-0.5 rounded text-[11px] font-bold badge-excellent">${score}</span>`;
+        if (score >= 3.0) return `<span class="px-2 py-0.5 rounded text-[11px] font-bold badge-good">${score}</span>`;
+        return `<span class="px-2 py-0.5 rounded text-[11px] font-bold badge-urgent">${score}</span>`;
       }
 
       tbody.innerHTML = activeResponses.map((r, i) => {
@@ -710,6 +906,11 @@
             <td class="p-3 text-center">${getBadge(r.b_a_avg)}</td>
             <td class="p-3 text-center">${getBadge(r.adm_avg)}</td>
             <td class="p-3 text-center">${getBadge(r.dorm_avg)}</td>
+            <td class="p-3 text-center">${getBadge(r.solar_avg)}</td>
+            <td class="p-3 text-center">${getBadge(r.it_avg)}</td>
+            <td class="p-3 text-center">${getBadge(r.acad_avg)}</td>
+            <td class="p-3 text-center">${getBadge(r.welf_avg)}</td>
+            <td class="p-3 text-center font-bold text-purple-700">${r.nps_score || "-"}</td>
             <td class="p-3 text-[11px] text-slate-500 max-w-xs truncate" title="${r.feedback || ''}">${r.feedback || '-'}</td>
           </tr>
         `;
@@ -740,11 +941,11 @@
     }
 
     function exportCSV() {
-      let csv = "ID,Timestamp,Year,Role,Major,Residence,Env_Score,Building_A_Score,Admin_Score,Dorm_Score,Feedback\n";
+      let csv = "ID,Timestamp,Year,Role,Major,Residence,Env,Building_A,Admin,Dorm,Solar,IT_WiFi,Acad_Workshops,Support_Welfare,NPS,Feedback\n";
       activeResponses.forEach(r => {
         const y = getYearFromTimestamp(r.timestamp);
         const dt = formatDateDisplay(r.timestamp);
-        csv += `"${r.id}","${dt}","${y}","${r.role||''}","${r.major||''}","${r.residence||''}","${r.env_avg}","${r.b_a_avg}","${r.adm_avg}","${r.dorm_avg}","${(r.feedback||'').replace(/"/g, '""')}"\n`;
+        csv += `"${r.id}","${dt}","${y}","${r.role||''}","${r.major||''}","${r.residence||''}","${r.env_avg}","${r.b_a_avg}","${r.adm_avg}","${r.dorm_avg}","${r.solar_avg}","${r.it_avg}","${r.acad_avg}","${r.welf_avg}","${r.nps_score}","${(r.feedback||'').replace(/"/g, '""')}"\n`;
       });
       const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
