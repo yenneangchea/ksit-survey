@@ -993,8 +993,7 @@
     }
 
     function exportCSV() {
-      let csv = "ID,Timestamp,Year,Role,Major,Residence,Env,Building_A,Admin,Dorm,Solar,IT_WiFi,Acad_Workshops,Support_Welfare,NPS,Feedback
-";
+      let csv = "ID,Timestamp,Year,Role,Major,Residence,Env,Building_A,Admin,Dorm,Solar,IT_WiFi,Acad_Workshops,Support_Welfare,NPS,Feedback\n";
       activeResponses.forEach(r => {
         const y = getYearFromTimestamp(r.timestamp);
         const dt = formatDateDisplay(r.timestamp);
