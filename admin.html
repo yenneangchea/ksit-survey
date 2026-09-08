@@ -957,6 +957,7 @@
         const json = await res.json();
         if (json.status === "success" && Array.isArray(json.data) && json.data.length > 0) {
           allResponses = json.data.map(processRecord);
+          closeDeployModal();
           showToast(`បានទាញយកទិន្នន័យផ្សាយផ្ទាល់ចំនួន ${json.data.length} ជួរពី Google Sheet ដោយជោគជ័យ!`, "success");
           onYearChange();
         } else {
